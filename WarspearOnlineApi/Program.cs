@@ -1,0 +1,98 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using WarspearOnlineApi.Controllers;
+using WarspearOnlineApi.Data;
+using WarspearOnlineApi.Services;
+using WarspearOnlineApi.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Настройка сервисов
+ConfigureServices(builder);
+// Настройка приложения
+var app = builder.Build();
+ConfigureApplication(app, builder.Environment);
+app.Run();
+
+
+// Метод для настройки сервисов
+static void ConfigureServices(WebApplicationBuilder builder)
+{
+    // Сервисы для аутентификации
+    AddJwtAuthentication(builder.Services, builder.Configuration);
+
+    // Сервисы для базы данных
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    // Другие сервисы
+    builder.Services.AddSingleton<JwtTokenService>();
+    builder.Services.AddSingleton<AuthController>();
+    builder.Services.AddAuthorization();
+    builder.Services.AddControllers();
+}
+
+// Метод для настройки приложения (middleware и маршруты)
+void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
+{
+    // Настройка middleware
+    UseMiddlewareConfiguration(app, env);
+
+    // Применение миграций при запуске приложения
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate(); // Применяет все миграции, которые еще не были применены
+    }
+
+    // Настройка маршрутов
+    app.UseRouting();
+    app.MapControllers();
+}
+
+// Метод для настройки аутентификации через JWT
+static void AddJwtAuthentication(IServiceCollection services, IConfiguration configuration)
+{
+    var jwtSettings = configuration.GetSection("JwtSettings");
+    services.Configure<JwtSetting>(jwtSettings);
+
+    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidateAudience = true,
+                ValidAudience = jwtSettings["Audience"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+            };
+        });
+}
+
+// Метод для настройки middleware
+static void UseMiddlewareConfiguration(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+        app.UseExceptionHandler("/Home/Error");
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+}
