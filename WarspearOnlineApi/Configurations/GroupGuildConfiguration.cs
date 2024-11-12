@@ -5,15 +5,15 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="GroupGuildEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_GroupGuild"/>.
     /// </summary>
-    public class GroupGuildConfiguration : IEntityTypeConfiguration<GroupGuildEntity>
+    public class GroupGuildConfiguration : IEntityTypeConfiguration<wo_GroupGuild>
     {
-        public void Configure(EntityTypeBuilder<GroupGuildEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_GroupGuild> builder)
         {
-            builder.ToTable("GroupGuild");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("GroupGuildID");
+            builder.ToTable("wo_GroupGuild");
+            builder.HasKey(m => m.GroupGuildID);
+
             builder.Property(m => m.GroupId).HasColumnName("rf_GroupID");
             builder.Property(m => m.GuildId).HasColumnName("rf_GuildID");
         }

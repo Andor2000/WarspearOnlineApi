@@ -3,8 +3,13 @@
     /// <summary>
     /// Entity-модель гильдии.
     /// </summary>
-    public class GuildEntity : BaseModel
+    public class wo_Guild
     {
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int GuildID { get; set; }
+
         /// <summary>
         /// Название.
         /// </summary>

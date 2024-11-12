@@ -5,16 +5,14 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="FractionEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_Fraction"/>.
     /// </summary>
-    public class FractionConfiguration : IEntityTypeConfiguration<FractionEntity>
+    public class FractionConfiguration : IEntityTypeConfiguration<wo_Fraction>
     {
-        public void Configure(EntityTypeBuilder<FractionEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_Fraction> builder)
         {
-            builder.ToTable("Fraction");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("Id");
-            builder.Property(m => m.Name).HasColumnName("FractionName");
+            builder.ToTable("wo_Fraction");
+            builder.HasKey(m => m.DropPlayerID);
         }
     }
 }

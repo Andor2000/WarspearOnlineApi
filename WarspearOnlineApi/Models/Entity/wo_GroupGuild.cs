@@ -3,8 +3,13 @@
     /// <summary>
     /// Entity-модель связи группы и гильдии.
     /// </summary>
-    public class GroupGuildEntity : BaseModel
+    public class wo_GroupGuild
     {
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int GroupGuildID { get; set; }
+
         /// <summary>
         /// Идентификатор группы.
         /// </summary>

@@ -5,16 +5,14 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="ServerEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_Server"/>.
     /// </summary>
-    public class ServerConfiguration : IEntityTypeConfiguration<ServerEntity>
+    public class ServerConfiguration : IEntityTypeConfiguration<wo_Server>
     {
-        public void Configure(EntityTypeBuilder<ServerEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_Server> builder)
         {
-            builder.ToTable("Server");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("ServerID");
-            builder.Property(m => m.Name).HasColumnName("ServerName");
+            builder.ToTable("wo_Server");
+            builder.HasKey(m => m.ServerID);
         }
     }
 }

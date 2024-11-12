@@ -6,16 +6,24 @@ using WarspearOnlineApi.Controllers;
 using WarspearOnlineApi.Data;
 using WarspearOnlineApi.Services;
 using WarspearOnlineApi.Models;
+using System.Reflection.Emit;
 
+
+// Добавить миграцию: add-migration InitMigration
 var builder = WebApplication.CreateBuilder(args);
 
 // Настройка сервисов
 ConfigureServices(builder);
+
+
+// Добавляем инициализатор базы данных
+builder.Services.AddTransient<DatabaseInitializer>();
+
 // Настройка приложения
 var app = builder.Build();
 ConfigureApplication(app, builder.Environment);
-app.Run();
 
+app.Run();
 
 // Метод для настройки сервисов
 static void ConfigureServices(WebApplicationBuilder builder)
@@ -45,6 +53,10 @@ void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Database.Migrate(); // Применяет все миграции, которые еще не были применены
+
+        // Инициализация пустых записей
+        var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
+        initializer.AddEmptyRecords(); // Вставка пустых записей
     }
 
     // Настройка маршрутов

@@ -3,8 +3,13 @@
     /// <summary>
     /// Entity-модель типа объекта.
     /// </summary>
-    public class ObjectTypeEntity : BaseModel
+    public class wo_ObjectType
     {
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int ObjectTypeID { get; set; }
+
         /// <summary>
         /// Название типа объекта.
         /// </summary>

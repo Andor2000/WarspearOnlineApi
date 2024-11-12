@@ -5,17 +5,15 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="ObjectEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_Object"/>.
     /// </summary>
-    public class ObjectConfiguration : IEntityTypeConfiguration<ObjectEntity>
+    public class ObjectConfiguration : IEntityTypeConfiguration<wo_Object>
     {
-        public void Configure(EntityTypeBuilder<ObjectEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_Object> builder)
         {
-            builder.ToTable("Object");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("ObjectID");
-            builder.Property(m => m.Name).HasColumnName("ObjectName");
-            builder.Property(m => m.Image).HasColumnName("Image");
+            builder.ToTable("wo_Object");
+            builder.HasKey(m => m.ObjectID);
+
             builder.Property(m => m.ObjectTypeId).HasColumnName("rf_ObjectTypeID");
         }
     }

@@ -5,16 +5,14 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="GroupEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_Group"/>.
     /// </summary>
-    public class GroupConfiguration : IEntityTypeConfiguration<GroupEntity>
+    public class GroupConfiguration : IEntityTypeConfiguration<wo_Group>
     {
-        public void Configure(EntityTypeBuilder<GroupEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_Group> builder)
         {
-            builder.ToTable("Group");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("GroupID");
-            builder.Property(m => m.Name).HasColumnName("Name");
+            builder.ToTable("wo_Group");
+            builder.HasKey(m => m.GroupID);
         }
     }
 }

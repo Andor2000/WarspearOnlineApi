@@ -5,16 +5,14 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="ObjectTypeEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_ObjectType"/>.
     /// </summary>
-    public class ObjectTypeConfiguration : IEntityTypeConfiguration<ObjectTypeEntity>
+    public class ObjectTypeConfiguration : IEntityTypeConfiguration<wo_ObjectType>
     {
-        public void Configure(EntityTypeBuilder<ObjectTypeEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_ObjectType> builder)
         {
-            builder.ToTable("ObjectType");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("ObjectTypeID");
-            builder.Property(m => m.Name).HasColumnName("ObjectTypeName");
+            builder.ToTable("wo_ObjectType");
+            builder.HasKey(m => m.ObjectTypeID);
         }
     }
 }

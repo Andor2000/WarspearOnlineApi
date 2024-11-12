@@ -3,8 +3,13 @@
     /// <summary>
     /// Entity-модель игрока.
     /// </summary>
-    public class PlayerEntity : BaseModel
+    public class wo_Player
     {
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int PlayerID { get; set; }
+
         /// <summary>
         /// Ник игрока.
         /// </summary>

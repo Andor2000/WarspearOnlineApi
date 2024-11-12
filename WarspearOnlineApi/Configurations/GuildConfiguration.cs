@@ -5,16 +5,15 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="GuildEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_Guild"/>.
     /// </summary>
-    public class GuildConfiguration : IEntityTypeConfiguration<GuildEntity>
+    public class GuildConfiguration : IEntityTypeConfiguration<wo_Guild>
     {
-        public void Configure(EntityTypeBuilder<GuildEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_Guild> builder)
         {
-            builder.ToTable("Guild");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("GuildID");
-            builder.Property(m => m.Name).HasColumnName("Name");
+            builder.ToTable("wo_Guild");
+            builder.HasKey(m => m.GuildID);
+
             builder.Property(m => m.ServerId).HasColumnName("rf_ServerID");
             builder.Property(m => m.FractionId).HasColumnName("rf_FractionID");
         }

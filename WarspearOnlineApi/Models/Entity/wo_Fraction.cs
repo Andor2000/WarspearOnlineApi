@@ -3,8 +3,13 @@
     /// <summary>
     /// Entity-модель фракции.
     /// </summary>
-    public class FractionEntity : BaseModel
+    public class wo_Fraction
     {
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int DropPlayerID { get; set; }
+
         /// <summary>
         /// Название фракции.
         /// </summary>

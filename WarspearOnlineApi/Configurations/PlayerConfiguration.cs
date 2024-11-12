@@ -5,16 +5,15 @@ using WarspearOnlineApi.Models.Entity;
 namespace WarspearOnlineApi.Configurations
 {
     /// <summary>
-    /// Конфигуратор набора данных для <see cref="PlayerEntity"/>.
+    /// Конфигуратор набора данных для <see cref="wo_Player"/>.
     /// </summary>
-    public class PlayerConfiguration : IEntityTypeConfiguration<PlayerEntity>
+    public class PlayerConfiguration : IEntityTypeConfiguration<wo_Player>
     {
-        public void Configure(EntityTypeBuilder<PlayerEntity> builder)
+        public void Configure(EntityTypeBuilder<wo_Player> builder)
         {
-            builder.ToTable("Player");
-            builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id).HasColumnName("PlayerID");
-            builder.Property(m => m.Nick).HasColumnName("Nick");
+            builder.ToTable("wo_Player");
+            builder.HasKey(m => m.PlayerID);
+
             builder.Property(m => m.ServerId).HasColumnName("rf_ServerID");
             builder.Property(m => m.FractionId).HasColumnName("rf_FractionID");
         }

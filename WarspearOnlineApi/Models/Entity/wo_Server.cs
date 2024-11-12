@@ -3,8 +3,13 @@
     /// <summary>
     /// Entity-модель сервера.
     /// </summary>
-    public class ServerEntity : BaseModel
+    public class wo_Server
     {
+        /// <summary>
+        /// Идентификатор.
+        /// </summary>
+        public int ServerID { get; set; }
+
         /// <summary>
         /// Название сервера.
         /// </summary>
