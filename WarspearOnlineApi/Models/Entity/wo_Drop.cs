@@ -18,7 +18,7 @@
         /// <summary>
         /// Цена.
         /// </summary>
-        public decimal Price { get; set; }
+        public int Price { get; set; }
 
         /// <summary>
         /// Идентификатор объекта.
@@ -39,5 +39,10 @@
         /// Группа.
         /// </summary>
         public wo_Group Group { get; set; }
+
+        /// <summary>
+        /// Интерсекция дропа с игроками.
+        /// </summary>
+        public ICollection<wo_DropPlayer> DropPlayers { get; set; } = new List<wo_DropPlayer>();
     }
 }

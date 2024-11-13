@@ -13,11 +13,16 @@
         /// <summary>
         /// Название группы.
         /// </summary>
-        public string Name { get; set; }
+        public string GroupName { get; set; }
 
         /// <summary>
         /// Список дропа.
         /// </summary>
         public ICollection<wo_Drop> Drops { get; set; } = new List<wo_Drop>();
+
+        /// <summary>
+        /// Интерсекиция группы и гильдии.
+        /// </summary>
+        public ICollection<wo_GroupGuild> GroupGuilds { get; set; } = new List<wo_GroupGuild>();
     }
 }

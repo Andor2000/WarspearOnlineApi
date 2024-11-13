@@ -13,11 +13,21 @@
         /// <summary>
         /// Идентификатор группы.
         /// </summary>
-        public int GroupId { get; set; }
+        public int rf_GroupID { get; set; }
+
+        /// <summary>
+        /// Группа.
+        /// </summary>
+        public wo_Group Group { get; set; }
 
         /// <summary>
         /// Идентификатор гильдии.
         /// </summary>
-        public int GuildId { get; set; }
+        public int rf_GuildID { get; set; }
+
+        /// <summary>
+        /// Гильдия.
+        /// </summary>
+        public wo_Guild Guild { get; set; }
     }
 }

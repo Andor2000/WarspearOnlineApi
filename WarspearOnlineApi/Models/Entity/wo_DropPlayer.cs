@@ -11,13 +11,23 @@
         public int DropPlayerID { get; set; }
 
         /// <summary>
-        /// Идентификатор записи в журнале дропа.
+        /// Идентификатор дропа.
         /// </summary>
         public int rf_DropID { get; set; }
+
+        /// <summary>
+        /// Дроп.
+        /// </summary>
+        public wo_Drop Drop { get; set; }
 
         /// <summary>
         /// Идентификатор игрока.
         /// </summary>
         public int rf_PlayerID { get; set; }
+
+        /// <summary>
+        /// Игрок.
+        /// </summary>
+        public wo_Player Player { get; set; }
     }
 }

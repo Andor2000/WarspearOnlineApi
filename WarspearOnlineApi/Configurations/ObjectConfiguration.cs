@@ -14,7 +14,12 @@ namespace WarspearOnlineApi.Configurations
             builder.ToTable("wo_Object");
             builder.HasKey(m => m.ObjectID);
 
-            builder.Property(m => m.ObjectTypeId).HasColumnName("rf_ObjectTypeID");
+            builder.Property(m => m.ObjectID).HasColumnName("ObjectID").UseIdentityColumn();
+            builder.Property(m => m.ObjectName).HasColumnName("ObjectName").HasDefaultValue("");
+            builder.Property(m => m.Image).HasColumnName("Image").HasDefaultValue("");
+
+            builder.Property(m => m.rf_ObjectTypeID).HasColumnName("rf_ObjectTypeID").HasDefaultValue(0);
+            builder.HasOne(x => x.ObjectType).WithMany(x => x.Objects).HasForeignKey(x => x.rf_ObjectTypeID);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace WarspearOnlineApi.Configurations
         {
             builder.ToTable("wo_Group");
             builder.HasKey(m => m.GroupID);
+
+            builder.Property(m => m.GroupID).HasColumnName("GroupID").UseIdentityColumn();
+            builder.Property(m => m.GroupName).HasColumnName("GroupName").HasDefaultValue("");
         }
     }
 }

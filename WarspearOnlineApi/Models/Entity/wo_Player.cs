@@ -18,11 +18,26 @@
         /// <summary>
         /// Идентификатор сервера.
         /// </summary>
-        public int ServerId { get; set; }
+        public int rf_ServerID { get; set; }
+
+        /// <summary>
+        /// Сервер.
+        /// </summary>
+        public wo_Server Server { get; set; }
 
         /// <summary>
         /// Идентификатор фракции.
         /// </summary>
-        public int FractionId { get; set; }
+        public int rf_FractionID { get; set; }
+
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public wo_Fraction Fraction { get; set; }
+
+        /// <summary>
+        /// Интерсекция дропа с игроками.
+        /// </summary>
+        public ICollection<wo_DropPlayer> DropPlayers { get; set; } = new List<wo_DropPlayer>();
     }
 }

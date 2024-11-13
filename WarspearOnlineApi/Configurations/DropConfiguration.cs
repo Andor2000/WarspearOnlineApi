@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WarspearOnlineApi.Enums;
 using WarspearOnlineApi.Models.Entity;
 
 namespace WarspearOnlineApi.Configurations
@@ -14,7 +15,14 @@ namespace WarspearOnlineApi.Configurations
             builder.ToTable("wo_Drop");
             builder.HasKey(m => m.DropID);
 
+            builder.Property(m => m.DropID).HasColumnName("DropID").UseIdentityColumn();
+            builder.Property(m => m.Drop_Date).HasColumnName("Drop_Date").HasDefaultValue(DefaultsDates.MinDate);
+            builder.Property(m => m.Price).HasColumnName("Price").HasDefaultValue(0);
+
+            builder.Property(m => m.rf_ObjectID).HasColumnName("rf_ObjectID").HasDefaultValue(0);
             builder.HasOne(x => x.Object).WithMany(x => x.Drops).HasForeignKey(x => x.rf_ObjectID);
+
+            builder.Property(m => m.rf_GroupID).HasColumnName("rf_GroupID").HasDefaultValue(0);
             builder.HasOne(x => x.Group).WithMany(x => x.Drops).HasForeignKey(x => x.rf_GroupID);
         }
     }

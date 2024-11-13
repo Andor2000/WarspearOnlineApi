@@ -13,6 +13,16 @@
         /// <summary>
         /// Название сервера.
         /// </summary>
-        public string Name { get; set; }
+        public string ServerName { get; set; }
+
+        /// <summary>
+        /// Гильдии.
+        /// </summary>
+        public ICollection<wo_Guild> Guilds { get; set; } = new List<wo_Guild>();
+
+        /// <summary>
+        /// Игроки.
+        /// </summary>
+        public ICollection<wo_Player> Players { get; set; } =  new List<wo_Player>();
     }
 }

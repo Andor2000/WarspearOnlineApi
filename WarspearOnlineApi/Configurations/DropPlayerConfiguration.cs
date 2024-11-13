@@ -14,8 +14,13 @@ namespace WarspearOnlineApi.Configurations
             builder.ToTable("wo_DropPlayer");
             builder.HasKey(m => m.DropPlayerID);
 
-            builder.Property(m => m.rf_DropID).HasColumnName("rf_DropID");
-            builder.Property(m => m.rf_PlayerID).HasColumnName("rf_PlayerID");
+            builder.Property(m => m.DropPlayerID).HasColumnName("DropPlayerID").UseIdentityColumn();
+
+            builder.Property(m => m.rf_DropID).HasColumnName("rf_DropID").HasDefaultValue(0);
+            builder.HasOne(x => x.Drop).WithMany(x => x.DropPlayers).HasForeignKey(x => x.rf_DropID);
+
+            builder.Property(m => m.rf_PlayerID).HasColumnName("rf_PlayerID").HasDefaultValue(0);
+            builder.HasOne(x => x.Player).WithMany(x => x.DropPlayers).HasForeignKey(x => x.rf_PlayerID);
         }
     }
 }

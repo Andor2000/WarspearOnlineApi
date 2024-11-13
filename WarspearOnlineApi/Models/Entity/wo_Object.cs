@@ -13,7 +13,7 @@
         /// <summary>
         /// Название объекта.
         /// </summary>
-        public string Name { get; set; }
+        public string ObjectName { get; set; }
 
         /// <summary>
         /// Изображение объекта.
@@ -23,7 +23,12 @@
         /// <summary>
         /// Идентификатор типа объекта.
         /// </summary>
-        public int ObjectTypeId { get; set; }
+        public int rf_ObjectTypeID { get; set; }
+
+        /// <summary>
+        /// Тип объекта.
+        /// </summary>
+        public wo_ObjectType ObjectType { get; set; } 
 
         /// <summary>
         /// Список дропа.

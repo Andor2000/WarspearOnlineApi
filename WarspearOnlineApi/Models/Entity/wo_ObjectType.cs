@@ -13,6 +13,11 @@
         /// <summary>
         /// Название типа объекта.
         /// </summary>
-        public string Name { get; set; }
+        public string ObjectTypeName { get; set; }
+
+        /// <summary>
+        /// Объекты.
+        /// </summary>
+        public ICollection<wo_Object> Objects { get; set; } = new List<wo_Object>();
     }
 }

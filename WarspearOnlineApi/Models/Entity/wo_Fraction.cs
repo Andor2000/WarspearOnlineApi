@@ -8,11 +8,21 @@
         /// <summary>
         /// Идентификатор.
         /// </summary>
-        public int DropPlayerID { get; set; }
+        public int FractionID { get; set; }
 
         /// <summary>
         /// Название фракции.
         /// </summary>
-        public string Name { get; set; }
+        public string FractionName { get; set; }
+
+        /// <summary>
+        /// Гильдии.
+        /// </summary>
+        public ICollection<wo_Guild> Guilds { get; set; } = new List<wo_Guild>();
+
+        /// <summary>
+        /// Игроки.
+        /// </summary>
+        public ICollection<wo_Player> Players { get; set; } = new List<wo_Player>();
     }
 }

@@ -89,54 +89,7 @@ namespace WarspearOnlineApi.Data
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            // Добавляем дефолтные значения для всех сущностей
-            this.AddDefaultValuesForEntities(modelBuilder);
             base.OnModelCreating(modelBuilder);
-        }
-
-        private void AddDefaultValuesForEntities(ModelBuilder modelBuilder)
-        {
-            var entityTypes = modelBuilder.Model.GetEntityTypes();
-
-            foreach (var entityType in entityTypes)
-            {
-                var entityClrType = entityType.ClrType;
-
-                // Если у сущности есть свойства, проходим по ним и применяем дефолтные значения
-                foreach (var property in entityClrType.GetProperties())
-                {
-                    // Пропускаем свойство, если оно уже явно конфигурируется в конфигураторе сущности
-                    if (property.GetCustomAttributes(typeof(DatabaseGeneratedAttribute), true).Any())
-                        continue;
-
-                    // Применяем дефолтные значения в зависимости от типа
-                    if (property.PropertyType == typeof(string))
-                    {
-                        modelBuilder.Entity(entityClrType)
-                            .Property(property.Name)
-                            .HasDefaultValue(string.Empty);
-                    }
-                    else if (property.PropertyType == typeof(DateTime))
-                    {
-                        modelBuilder.Entity(entityClrType)
-                            .Property(property.Name)
-                            .HasDefaultValue(DefaultsDates.MinDate); // Предположим, что это ваш дефолт для даты
-                    }
-                    else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
-                    {
-                        modelBuilder.Entity(entityClrType)
-                            .Property(property.Name)
-                            .HasDefaultValue(0);
-                    }
-                    else if (property.PropertyType == typeof(decimal) || property.PropertyType == typeof(decimal?))
-                    {
-                        modelBuilder.Entity(entityClrType)
-                            .Property(property.Name)
-                            .HasDefaultValue(0m);
-                    }
-                    // Добавьте другие типы данных по необходимости
-                }
-            }
         }
     }
 }

@@ -13,16 +13,31 @@
         /// <summary>
         /// Название.
         /// </summary>
-        public string Name { get; set; }
+        public string GuildName { get; set; }
 
         /// <summary>
         /// Идентификатор сервера.
         /// </summary>
-        public int ServerId { get; set; }
+        public int rf_ServerID { get; set; }
+
+        /// <summary>
+        /// Сервер.
+        /// </summary>
+        public wo_Server Server { get; set; }
 
         /// <summary>
         /// Идентификтаор фракции.
         /// </summary>
-        public int FractionId { get; set; }
+        public int rf_FractionID { get; set; }
+
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public wo_Fraction Fraction { get; set; }
+
+        /// <summary>
+        /// Интерсекиция группы и гильдии.
+        /// </summary>
+        public ICollection<wo_GroupGuild> GroupGuilds { get; set; } = new List<wo_GroupGuild>();
     }
 }

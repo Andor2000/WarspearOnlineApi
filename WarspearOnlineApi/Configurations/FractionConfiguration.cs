@@ -12,7 +12,10 @@ namespace WarspearOnlineApi.Configurations
         public void Configure(EntityTypeBuilder<wo_Fraction> builder)
         {
             builder.ToTable("wo_Fraction");
-            builder.HasKey(m => m.DropPlayerID);
+            builder.HasKey(m => m.FractionID);
+
+            builder.Property(m => m.FractionID).HasColumnName("FractionID").UseIdentityColumn();
+            builder.Property(m => m.FractionName).HasColumnName("FractionName").HasDefaultValue("");
         }
     }
 }

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WarspearOnlineApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8aec7e10827ee7cfeccba4ecdf0efd55268e0cd0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4782e10492fb8765ac6de834168f2de545bf948d")]
 [assembly: System.Reflection.AssemblyProductAttribute("WarspearOnlineApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WarspearOnlineApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
