@@ -1,0 +1,114 @@
+# comments
+syntax: glob
+
+
+#System Files
+.DS_Store
+Thumbs.db
+.vs/
+*.vspscc
+*.scc
+*.vssscc
+*.suo
+*.orig
+*.log
+*.vsmdi
+*.user
+*.obj
+*.exe
+*.pdb
+*.aps
+*.pch
+*_i.c
+*_p.c
+*.ncb
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.lib
+*.sbr
+*.lock.json
+*.vspscc
+*.scc
+*.vssscc
+*.suo
+*.TeamCity.user
+*.csproj.user
+*.ReSharper.user
+*.pubxml.user
+*.orig
+*.log
+*.DotSettings.user
+*.vsmdi
+*.user
+StyleCop.Cache
+*.TeamCity.user
+*.csproj.user
+*.ReSharper.user
+*.pubxml.user
+*.DotSettings.user
+
+StyleCop.Cache
+.vs/config/applicationhost.config
+src/SofTrust.Whc.NetCore/.vs/
+src/SofTrust.Whc.NetCore/.vs/restore.dg
+.idea/
+assets/bower_components/
+_ReSharper.WebHealthcare/
+packages/
+
+src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Logs/*
+src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Authorization/TicketAuthorizationMiddleware.cs.rej
+src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/appsettings.Development.json.rej
+src/SofTrust.Whc.NetCore/.vs/SofTrust.Mis.NetCore/v15/Server/sqlite3/storage.ide-wal
+src/SofTrust.Whc.NetCore/.vs/SofTrust.Mis.NetCore/v15/Server/sqlite3/db.lock
+src/SofTrust.Whc.NetCore/.vs/SofTrust.Mis.NetCore/v15/Server/sqlite3/storage.ide
+src/SofTrust.Whc.NetCore/.vs/SofTrust.Mis.NetCore/v15/Server/sqlite3/storage.ide-shm
+src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Properties/PublishProfiles/FolderProfile2.pubxml
+
+packages/
+
+[Oo]bj
+[Bb]in
+[Dd]ebug
+[Rr]elease
+typings
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+# compiled output
+/dist
+/tmp
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+/.vs/*
