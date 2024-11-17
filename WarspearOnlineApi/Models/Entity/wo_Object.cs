@@ -28,7 +28,7 @@
         /// <summary>
         /// Тип объекта.
         /// </summary>
-        public wo_ObjectType ObjectType { get; set; } 
+        public wo_ObjectType rf_ObjectType { get; set; } 
 
         /// <summary>
         /// Список дропа.

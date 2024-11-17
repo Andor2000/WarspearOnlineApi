@@ -28,7 +28,7 @@
         /// <summary>
         /// Объект.
         /// </summary>
-        public wo_Object Object { get; set; }
+        public wo_Object rf_Object { get; set; }
 
         /// <summary>
         /// Идентификатор группы.
@@ -38,7 +38,17 @@
         /// <summary>
         /// Группа.
         /// </summary>
-        public wo_Group Group { get; set; }
+        public wo_Group rf_Group { get; set; }
+
+        /// <summary>
+        /// Идентификатор сервера.
+        /// </summary>
+        public int rf_ServerID { get; set; }
+
+        /// <summary>
+        /// Сервер.
+        /// </summary>
+        public wo_Server rf_Server { get; set; }
 
         /// <summary>
         /// Интерсекция дропа с игроками.

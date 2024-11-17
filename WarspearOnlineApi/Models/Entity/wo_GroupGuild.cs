@@ -18,7 +18,7 @@
         /// <summary>
         /// Группа.
         /// </summary>
-        public wo_Group Group { get; set; }
+        public wo_Group rf_Group { get; set; }
 
         /// <summary>
         /// Идентификатор гильдии.
@@ -28,6 +28,6 @@
         /// <summary>
         /// Гильдия.
         /// </summary>
-        public wo_Guild Guild { get; set; }
+        public wo_Guild rf_Guild { get; set; }
     }
 }

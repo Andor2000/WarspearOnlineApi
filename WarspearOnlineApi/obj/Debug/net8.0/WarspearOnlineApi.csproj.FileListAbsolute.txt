@@ -289,3 +289,7 @@ F:\WarspearOnlineApi\WarspearOnlineApi\bin\Debug\net8.0\WarspearOnlineApi.pdb
 F:\WarspearOnlineApi\WarspearOnlineApi\obj\Debug\net8.0\ref\WarspearOnlineApi.dll
 F:\WarspearOnlineApi\WarspearOnlineApi\bin\Debug\net8.0\Dapper.dll
 F:\WarspearOnlineApi\WarspearOnlineApi\bin\Debug\net8.0\Dapper.SqlBuilder.dll
+F:\WarspearOnlineApi\WarspearOnlineApi\bin\Debug\net8.0\AutoMapper.dll
+F:\WarspearOnlineApi\WarspearOnlineApi\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+F:\WarspearOnlineApi\WarspearOnlineApi\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+F:\WarspearOnlineApi\WarspearOnlineApi\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll

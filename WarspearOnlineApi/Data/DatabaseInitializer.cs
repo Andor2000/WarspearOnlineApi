@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace WarspearOnlineApi.Data
 {
@@ -25,21 +26,31 @@ namespace WarspearOnlineApi.Data
         public void AddEmptyRecords()
         {
             var entityTypes = this._сontext.Model.GetEntityTypes();
+            var queries= new StringBuilder();
             foreach (var entityType in entityTypes)
             {
                 var tableName = entityType.GetTableName();
-                var colomnKeyName = entityType.FindPrimaryKey()?.Properties?.FirstOrDefault()?.GetColumnName() ?? string.Empty;
+                var colomnKeyName = entityType.FindPrimaryKey().Properties.FirstOrDefault().GetColumnName();
 
-                this._сontext.Database.GetDbConnection().Execute($@"
-SET IDENTITY_INSERT {tableName} ON
+                var query = $@"
 if not exists(select 1 from {tableName} where {colomnKeyName} = 0)
 begin
-    INSERT INTO {tableName}
-    ({colomnKeyName})
-    VALUES (0)
+    SET IDENTITY_INSERT {tableName} ON
+    -- Отключаем все ограничения для таблицы
+    ALTER TABLE {tableName} NOCHECK CONSTRAINT ALL
+        INSERT INTO {tableName}
+        ({colomnKeyName})
+        VALUES (0)
+    -- Включаем все ограничения обратно
+    ALTER TABLE {tableName} CHECK CONSTRAINT ALL
+    SET IDENTITY_INSERT {tableName} OFF
 end
-SET IDENTITY_INSERT {tableName} OFF");
+";
+                queries.Append(query);
             }
+
+            var resQuery = queries.ToString();
+            this._сontext.Database.GetDbConnection().Execute(resQuery);
         }
     }
 }

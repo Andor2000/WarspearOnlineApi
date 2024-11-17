@@ -23,7 +23,7 @@
         /// <summary>
         /// Сервер.
         /// </summary>
-        public wo_Server Server { get; set; }
+        public wo_Server rf_Server { get; set; }
 
         /// <summary>
         /// Идентификатор фракции.
@@ -33,7 +33,7 @@
         /// <summary>
         /// Фракция.
         /// </summary>
-        public wo_Fraction Fraction { get; set; }
+        public wo_Fraction rf_Fraction { get; set; }
 
         /// <summary>
         /// Интерсекция дропа с игроками.

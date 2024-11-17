@@ -144,7 +144,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     DropID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Drop_Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
+                    Drop_Date = table.Column<DateTime>(type: "datetime2(3)", nullable: false, defaultValue: new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
                     Price = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_ObjectID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_GroupID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)

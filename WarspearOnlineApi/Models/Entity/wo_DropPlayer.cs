@@ -18,7 +18,7 @@
         /// <summary>
         /// Дроп.
         /// </summary>
-        public wo_Drop Drop { get; set; }
+        public wo_Drop rf_Drop { get; set; }
 
         /// <summary>
         /// Идентификатор игрока.
@@ -28,6 +28,6 @@
         /// <summary>
         /// Игрок.
         /// </summary>
-        public wo_Player Player { get; set; }
+        public wo_Player rf_Player { get; set; }
     }
 }

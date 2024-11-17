@@ -16,6 +16,26 @@
         public string GroupName { get; set; }
 
         /// <summary>
+        /// Идентификатор сервера.
+        /// </summary>
+        public int rf_ServerID { get; set; }
+
+        /// <summary>
+        /// Сервер.
+        /// </summary>
+        public wo_Server rf_Server { get; set; }
+
+        /// <summary>
+        /// Идентификтаор фракции.
+        /// </summary>
+        public int rf_FractionID { get; set; }
+
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public wo_Fraction rf_Fraction { get; set; }
+
+        /// <summary>
         /// Список дропа.
         /// </summary>
         public ICollection<wo_Drop> Drops { get; set; } = new List<wo_Drop>();

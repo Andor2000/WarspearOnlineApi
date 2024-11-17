@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using WarspearOnlineApi.Configurations;
-using WarspearOnlineApi.Enums;
 using WarspearOnlineApi.Models.Entity;
 
 namespace WarspearOnlineApi.Data
@@ -73,23 +70,20 @@ namespace WarspearOnlineApi.Data
         /// <param name="modelBuilder">Построитель модели.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Применяем конфигурации для всех сущностей из текущей сборки
-            //modelBuilder.ApplyConfiguration(new DropConfiguration());
-            //modelBuilder.ApplyConfiguration(new DropPlayerConfiguration());
-            //modelBuilder.ApplyConfiguration(new FractionConfiguration());
-            //modelBuilder.ApplyConfiguration(new GroupConfiguration());
-            //modelBuilder.ApplyConfiguration(new GroupGuildConfiguration());
-            //modelBuilder.ApplyConfiguration(new GuildConfiguration());
-            //modelBuilder.ApplyConfiguration(new ObjectConfiguration());
-            //modelBuilder.ApplyConfiguration(new ObjectTypeConfiguration());
-            //modelBuilder.ApplyConfiguration(new PlayerConfiguration());
-            //modelBuilder.ApplyConfiguration(new ServerConfiguration());
-
-
-            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
+
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entity.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetColumnType("datetime2(3)");
+                    }
+                }
+            }
         }
     }
 }

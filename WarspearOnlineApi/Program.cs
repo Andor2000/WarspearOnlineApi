@@ -2,11 +2,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WarspearOnlineApi.Controllers;
 using WarspearOnlineApi.Data;
-using WarspearOnlineApi.Services;
 using WarspearOnlineApi.Models;
-using System.Reflection.Emit;
+using System.Reflection;
+using WarspearOnlineApi.Services.Base;
+using WarspearOnlineApi.Services.Journals;
+using WarspearOnlineApi.Controllers;
+using WarspearOnlineApi.Services;
+using WarspearOnlineApi.Mapper;
 
 
 // Добавить миграцию: add-migration InitMigration
@@ -15,7 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Настройка сервисов
 ConfigureServices(builder);
 
-
+// Регистрация AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Добавляем инициализатор базы данных
 builder.Services.AddTransient<DatabaseInitializer>();
 
@@ -28,16 +32,17 @@ app.Run();
 // Метод для настройки сервисов
 static void ConfigureServices(WebApplicationBuilder builder)
 {
-    // Сервисы для аутентификации
     AddJwtAuthentication(builder.Services, builder.Configuration);
 
-    // Сервисы для базы данных
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    // Другие сервисы
     builder.Services.AddSingleton<JwtTokenService>();
     builder.Services.AddSingleton<AuthController>();
+    builder.Services.AddScoped<JournalDropService>();
+    builder.Services.AddScoped<PlayerService>();
+    builder.Services.AddScoped<DropService>();
+
     builder.Services.AddAuthorization();
     builder.Services.AddControllers();
 }

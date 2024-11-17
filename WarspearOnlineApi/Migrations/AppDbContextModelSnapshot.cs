@@ -33,7 +33,7 @@ namespace WarspearOnlineApi.Migrations
 
                     b.Property<DateTime>("Drop_Date")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime2(3)")
                         .HasDefaultValue(new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
                         .HasColumnName("Drop_Date");
 
@@ -320,108 +320,108 @@ namespace WarspearOnlineApi.Migrations
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Drop", b =>
                 {
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Group", "Group")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Group", "rf_Group")
                         .WithMany("Drops")
                         .HasForeignKey("rf_GroupID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Object", "Object")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Object", "rf_Object")
                         .WithMany("Drops")
                         .HasForeignKey("rf_ObjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Group");
+                    b.Navigation("rf_Group");
 
-                    b.Navigation("Object");
+                    b.Navigation("rf_Object");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_DropPlayer", b =>
                 {
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Drop", "Drop")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Drop", "rf_Drop")
                         .WithMany("DropPlayers")
                         .HasForeignKey("rf_DropID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Player", "Player")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Player", "rf_Player")
                         .WithMany("DropPlayers")
                         .HasForeignKey("rf_PlayerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Drop");
+                    b.Navigation("rf_Drop");
 
-                    b.Navigation("Player");
+                    b.Navigation("rf_Player");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_GroupGuild", b =>
                 {
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Group", "Group")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Group", "rf_Group")
                         .WithMany("GroupGuilds")
                         .HasForeignKey("rf_GroupID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Guild", "Guild")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Guild", "rf_Guild")
                         .WithMany("GroupGuilds")
                         .HasForeignKey("rf_GuildID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Group");
+                    b.Navigation("rf_Group");
 
-                    b.Navigation("Guild");
+                    b.Navigation("rf_Guild");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Guild", b =>
                 {
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "Fraction")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
                         .WithMany("Guilds")
                         .HasForeignKey("rf_FractionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "Server")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "rf_Server")
                         .WithMany("Guilds")
                         .HasForeignKey("rf_ServerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Fraction");
+                    b.Navigation("rf_Fraction");
 
-                    b.Navigation("Server");
+                    b.Navigation("rf_Server");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Object", b =>
                 {
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_ObjectType", "ObjectType")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_ObjectType", "rf_ObjectType")
                         .WithMany("Objects")
                         .HasForeignKey("rf_ObjectTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ObjectType");
+                    b.Navigation("rf_ObjectType");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Player", b =>
                 {
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "Fraction")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
                         .WithMany("Players")
                         .HasForeignKey("rf_FractionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "Server")
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "rf_Server")
                         .WithMany("Players")
                         .HasForeignKey("rf_ServerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Fraction");
+                    b.Navigation("rf_Fraction");
 
-                    b.Navigation("Server");
+                    b.Navigation("rf_Server");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Drop", b =>

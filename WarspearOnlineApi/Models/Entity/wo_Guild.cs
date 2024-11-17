@@ -13,7 +13,7 @@
         /// <summary>
         /// Название.
         /// </summary>
-        public string GuildName { get; set; }
+        public string GuildName { get; set; } = string.Empty;
 
         /// <summary>
         /// Идентификатор сервера.
@@ -23,7 +23,7 @@
         /// <summary>
         /// Сервер.
         /// </summary>
-        public wo_Server Server { get; set; }
+        public wo_Server rf_Server { get; set; }
 
         /// <summary>
         /// Идентификтаор фракции.
@@ -33,7 +33,7 @@
         /// <summary>
         /// Фракция.
         /// </summary>
-        public wo_Fraction Fraction { get; set; }
+        public wo_Fraction rf_Fraction { get; set; }
 
         /// <summary>
         /// Интерсекиция группы и гильдии.
