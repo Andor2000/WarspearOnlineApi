@@ -59,6 +59,8 @@ assets/bower_components/
 _ReSharper.WebHealthcare/
 packages/
 
+/WarspearOnlineApi/bin/*
+
 src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Logs/*
 src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Authorization/TicketAuthorizationMiddleware.cs.rej
 src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/appsettings.Development.json.rej
