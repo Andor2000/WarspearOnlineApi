@@ -20,13 +20,13 @@ namespace WarspearOnlineApi.Configurations
             builder.Property(m => m.Price).HasColumnName("Price").HasDefaultValue(0);
 
             builder.Property(m => m.rf_ObjectID).HasColumnName("rf_ObjectID").HasDefaultValue(0);
-            builder.HasOne(x => x.rf_Object).WithMany(x => x.Drops).HasForeignKey(x => x.rf_ObjectID);
+            builder.HasOne(x => x.rf_Object).WithMany(x => x.Drops).HasForeignKey(x => x.rf_ObjectID).OnDelete(DeleteBehavior.NoAction);
 
             builder.Property(m => m.rf_GroupID).HasColumnName("rf_GroupID").HasDefaultValue(0);
-            builder.HasOne(x => x.rf_Group).WithMany(x => x.Drops).HasForeignKey(x => x.rf_GroupID);
+            builder.HasOne(x => x.rf_Group).WithMany(x => x.Drops).HasForeignKey(x => x.rf_GroupID).OnDelete(DeleteBehavior.NoAction);
 
             builder.Property(m => m.rf_ServerID).HasColumnName("rf_ServerID").HasDefaultValue(0);
-            builder.HasOne(x => x.rf_Server).WithMany(x => x.Drops).HasForeignKey(x => x.rf_ServerID);
+            builder.HasOne(x => x.rf_Server).WithMany(x => x.Drops).HasForeignKey(x => x.rf_ServerID).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

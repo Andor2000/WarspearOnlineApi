@@ -60,6 +60,7 @@ _ReSharper.WebHealthcare/
 packages/
 
 /WarspearOnlineApi/bin/*
+WarspearOnlineApi/bin/*
 
 src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Logs/*
 src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Authorization/TicketAuthorizationMiddleware.cs.rej

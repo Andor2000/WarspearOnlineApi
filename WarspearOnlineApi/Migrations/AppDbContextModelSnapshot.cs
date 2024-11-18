@@ -17,7 +17,7 @@ namespace WarspearOnlineApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -55,11 +55,19 @@ namespace WarspearOnlineApi.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("rf_ObjectID");
 
+                    b.Property<int>("rf_ServerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("rf_ServerID");
+
                     b.HasKey("DropID");
 
                     b.HasIndex("rf_GroupID");
 
                     b.HasIndex("rf_ObjectID");
+
+                    b.HasIndex("rf_ServerID");
 
                     b.ToTable("wo_Drop", (string)null);
                 });
@@ -131,7 +139,23 @@ namespace WarspearOnlineApi.Migrations
                         .HasDefaultValue("")
                         .HasColumnName("GroupName");
 
+                    b.Property<int>("rf_FractionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("rf_FractionID");
+
+                    b.Property<int>("rf_ServerID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("rf_ServerID");
+
                     b.HasKey("GroupID");
+
+                    b.HasIndex("rf_FractionID");
+
+                    b.HasIndex("rf_ServerID");
 
                     b.ToTable("wo_Group", (string)null);
                 });
@@ -323,18 +347,26 @@ namespace WarspearOnlineApi.Migrations
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Group", "rf_Group")
                         .WithMany("Drops")
                         .HasForeignKey("rf_GroupID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Object", "rf_Object")
                         .WithMany("Drops")
                         .HasForeignKey("rf_ObjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "rf_Server")
+                        .WithMany("Drops")
+                        .HasForeignKey("rf_ServerID")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("rf_Group");
 
                     b.Navigation("rf_Object");
+
+                    b.Navigation("rf_Server");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_DropPlayer", b =>
@@ -342,13 +374,13 @@ namespace WarspearOnlineApi.Migrations
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Drop", "rf_Drop")
                         .WithMany("DropPlayers")
                         .HasForeignKey("rf_DropID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Player", "rf_Player")
                         .WithMany("DropPlayers")
                         .HasForeignKey("rf_PlayerID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("rf_Drop");
@@ -356,18 +388,37 @@ namespace WarspearOnlineApi.Migrations
                     b.Navigation("rf_Player");
                 });
 
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Group", b =>
+                {
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
+                        .WithMany("Groups")
+                        .HasForeignKey("rf_FractionID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "rf_Server")
+                        .WithMany("Groups")
+                        .HasForeignKey("rf_ServerID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("rf_Fraction");
+
+                    b.Navigation("rf_Server");
+                });
+
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_GroupGuild", b =>
                 {
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Group", "rf_Group")
                         .WithMany("GroupGuilds")
                         .HasForeignKey("rf_GroupID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Guild", "rf_Guild")
                         .WithMany("GroupGuilds")
                         .HasForeignKey("rf_GuildID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("rf_Group");
@@ -380,13 +431,13 @@ namespace WarspearOnlineApi.Migrations
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
                         .WithMany("Guilds")
                         .HasForeignKey("rf_FractionID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "rf_Server")
                         .WithMany("Guilds")
                         .HasForeignKey("rf_ServerID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("rf_Fraction");
@@ -399,7 +450,7 @@ namespace WarspearOnlineApi.Migrations
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_ObjectType", "rf_ObjectType")
                         .WithMany("Objects")
                         .HasForeignKey("rf_ObjectTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("rf_ObjectType");
@@ -410,13 +461,13 @@ namespace WarspearOnlineApi.Migrations
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
                         .WithMany("Players")
                         .HasForeignKey("rf_FractionID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Server", "rf_Server")
                         .WithMany("Players")
                         .HasForeignKey("rf_ServerID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("rf_Fraction");
@@ -431,6 +482,8 @@ namespace WarspearOnlineApi.Migrations
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Fraction", b =>
                 {
+                    b.Navigation("Groups");
+
                     b.Navigation("Guilds");
 
                     b.Navigation("Players");
@@ -465,6 +518,10 @@ namespace WarspearOnlineApi.Migrations
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Server", b =>
                 {
+                    b.Navigation("Drops");
+
+                    b.Navigation("Groups");
+
                     b.Navigation("Guilds");
 
                     b.Navigation("Players");

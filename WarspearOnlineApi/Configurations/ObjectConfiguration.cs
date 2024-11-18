@@ -19,7 +19,7 @@ namespace WarspearOnlineApi.Configurations
             builder.Property(m => m.Image).HasColumnName("Image").HasDefaultValue(string.Empty);
 
             builder.Property(m => m.rf_ObjectTypeID).HasColumnName("rf_ObjectTypeID").HasDefaultValue(0);
-            builder.HasOne(x => x.rf_ObjectType).WithMany(x => x.Objects).HasForeignKey(x => x.rf_ObjectTypeID);
+            builder.HasOne(x => x.rf_ObjectType).WithMany(x => x.Objects).HasForeignKey(x => x.rf_ObjectTypeID).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
