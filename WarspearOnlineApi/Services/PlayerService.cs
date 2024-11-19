@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Data;
 using WarspearOnlineApi.Extensions;
+using WarspearOnlineApi.Models.Dto;
 using WarspearOnlineApi.Services.Base;
 
 namespace WarspearOnlineApi.Services
@@ -59,6 +61,23 @@ namespace WarspearOnlineApi.Services
             return result
                 .Select(x => (x.DropId, x.CountPlayer))
                 .ToArray();
+        }
+
+        /// <summary>
+        /// Получить список игроков по дропу.
+        /// </summary>
+        /// <param name="dropId">Идентификатор дропа.</param>
+        /// <returns>Список игроков.</returns>
+        public async Task<IEnumerable<PlayerDto>> GetPlayerByDropId(int dropId)
+        {
+            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
+
+            var players = await this._context.wo_DropPlayer
+                .Where(x => x.rf_DropID == dropId)
+                .ProjectTo<PlayerDto>(this._mapper.ConfigurationProvider)
+                .ToArrayAsync();
+
+            return players;
         }
     }
 }

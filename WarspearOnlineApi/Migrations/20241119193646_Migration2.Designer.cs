@@ -12,8 +12,8 @@ using WarspearOnlineApi.Data;
 namespace WarspearOnlineApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241118212630_InitMigration")]
-    partial class InitMigration
+    [Migration("20241119193646_Migration2")]
+    partial class Migration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,15 @@ namespace WarspearOnlineApi.Migrations
                         .HasColumnName("DropPlayerID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DropPlayerID"));
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Part")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("Part");
 
                     b.Property<int>("rf_DropID")
                         .ValueGeneratedOnAdd()

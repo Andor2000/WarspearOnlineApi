@@ -15,6 +15,7 @@ namespace WarspearOnlineApi.Configurations
             builder.HasKey(m => m.DropPlayerID);
 
             builder.Property(m => m.DropPlayerID).HasColumnName("DropPlayerID").UseIdentityColumn();
+            builder.Property(m => m.Part).HasColumnName("Part").HasDefaultValue(0);
 
             builder.Property(m => m.rf_DropID).HasColumnName("rf_DropID").HasDefaultValue(0);
             builder.HasOne(x => x.rf_Drop).WithMany(x => x.DropPlayers).HasForeignKey(x => x.rf_DropID).OnDelete(DeleteBehavior.NoAction);

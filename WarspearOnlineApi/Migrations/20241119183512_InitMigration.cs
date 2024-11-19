@@ -207,6 +207,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     DropPlayerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Part = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_DropID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_PlayerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },

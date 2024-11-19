@@ -11,6 +11,16 @@
         public int DropPlayerID { get; set; }
 
         /// <summary>
+        /// Доля.
+        /// </summary>
+        public int Part {  get; set; }
+
+        /// <summary>
+        /// Признак выплаты.
+        /// </summary>
+        public bool IsPaid { get; set; }
+
+        /// <summary>
         /// Идентификатор дропа.
         /// </summary>
         public int rf_DropID { get; set; }

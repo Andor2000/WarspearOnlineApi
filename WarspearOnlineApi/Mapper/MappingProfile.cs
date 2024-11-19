@@ -42,6 +42,12 @@ namespace WarspearOnlineApi.Mapper
                 .ForMember(x => x.Object, opt => opt.MapFrom(s => s.rf_Object))
                 .ForMember(x => x.Group, opt => opt.MapFrom(s => s.rf_Group))
                 .ForMember(x => x.Server, opt => opt.MapFrom(s => s.rf_Server));
+
+            CreateMap<wo_DropPlayer, PlayerDto>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.DropPlayerID))
+                .ForMember(x => x.Nick, opt => opt.MapFrom(s => s.rf_Player.Nick))
+                .ForMember(x => x.Part, opt => opt.MapFrom(s => s.Part))
+                .ForMember(x => x.IsPaid, opt => opt.MapFrom(s => s.IsPaid));
         }
     }
 }
