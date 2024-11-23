@@ -36,9 +36,11 @@ namespace WarspearOnlineApi.Services.Journals
         /// <param name="mapper">Маппер.</param>
         public JournalDropService(AppDbContext context,
             PlayerService playerService,
+            DropService dropService,
             IMapper mapper) : base(context)
         {
             this._playerService = playerService;
+            this._dropService = dropService;
             this._mapper = mapper;
         }
 
