@@ -61,6 +61,8 @@ packages/
 
 /WarspearOnlineApi/bin/*
 WarspearOnlineApi/bin/*
+.vs/ProjectEvaluation/*
+.vs/WarspearOnlineApi/config/applicationhost.config
 
 src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Logs/*
 src/SofTrust.Whc.NetCore/SofTrust.Mis.NetCore.Web.Api/Authorization/TicketAuthorizationMiddleware.cs.rej
