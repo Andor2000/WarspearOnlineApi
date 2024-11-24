@@ -29,5 +29,10 @@
         /// Игроки.
         /// </summary>
         public ICollection<wo_Player> Players { get; set; } = new List<wo_Player>();
+
+        /// <summary>
+        /// Интерсекция класса и фракции.
+        /// </summary>
+        public ICollection<wo_ClassFraction> ClassFractions { get; set; } = new List<wo_ClassFraction>();
     }
 }

@@ -16,13 +16,8 @@
         public string Nick { get; set; } = string.Empty;
 
         /// <summary>
-        /// Доля.
+        /// Класс
         /// </summary>
-        public int Part { get; set; }
-
-        /// <summary>
-        /// Признак выплаты.
-        /// </summary>
-        public bool IsPaid { get; set; }
+        public ClassDto Class { get; set; } = new ClassDto();
     }
 }

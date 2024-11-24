@@ -36,6 +36,16 @@
         public wo_Fraction rf_Fraction { get; set; }
 
         /// <summary>
+        /// Идентификатор класса.
+        /// </summary>
+        public int rf_ClassID { get; set; }
+
+        /// <summary>
+        /// Класс.
+        /// </summary>
+        public wo_Class rf_Class { get; set; }
+
+        /// <summary>
         /// Интерсекция дропа с игроками.
         /// </summary>
         public ICollection<wo_DropPlayer> DropPlayers { get; set; } = new List<wo_DropPlayer>();

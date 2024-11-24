@@ -14,8 +14,8 @@ namespace WarspearOnlineApi.Configurations
             builder.ToTable("wo_Fraction");
             builder.HasKey(m => m.FractionID);
 
-            builder.Property(m => m.FractionID).HasColumnName("FractionID").UseIdentityColumn();
-            builder.Property(m => m.FractionName).HasColumnName("FractionName").HasDefaultValue("");
+            builder.Property(m => m.FractionID).UseIdentityColumn();
+            builder.Property(m => m.FractionName).HasDefaultValue(string.Empty);
         }
     }
 }

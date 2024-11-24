@@ -14,12 +14,12 @@ namespace WarspearOnlineApi.Configurations
             builder.ToTable("wo_GroupGuild");
             builder.HasKey(m => m.GroupGuildID);
 
-            builder.Property(m => m.GroupGuildID).HasColumnName("GroupGuildID").UseIdentityColumn();
+            builder.Property(m => m.GroupGuildID).UseIdentityColumn();
 
-            builder.Property(m => m.rf_GroupID).HasColumnName("rf_GroupID").HasDefaultValue(0);
+            builder.Property(m => m.rf_GroupID).HasDefaultValue(0);
             builder.HasOne(x => x.rf_Group).WithMany(x => x.GroupGuilds).HasForeignKey(x => x.rf_GroupID).OnDelete(DeleteBehavior.NoAction);
 
-            builder.Property(m => m.rf_GuildID).HasColumnName("rf_GuildID").HasDefaultValue(0);
+            builder.Property(m => m.rf_GuildID).HasDefaultValue(0);
             builder.HasOne(x => x.rf_Guild).WithMany(x => x.GroupGuilds).HasForeignKey(x => x.rf_GuildID).OnDelete(DeleteBehavior.NoAction);
         }
     }

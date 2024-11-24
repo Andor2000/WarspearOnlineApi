@@ -14,8 +14,8 @@ namespace WarspearOnlineApi.Configurations
             builder.ToTable("wo_Server");
             builder.HasKey(m => m.ServerID);
 
-            builder.Property(m => m.ServerID).HasColumnName("ServerID").UseIdentityColumn();
-            builder.Property(m => m.ServerName).HasColumnName("ServerName").HasDefaultValue(string.Empty);
+            builder.Property(m => m.ServerID).UseIdentityColumn();
+            builder.Property(m => m.ServerName).HasDefaultValue(string.Empty);
         }
     }
 }

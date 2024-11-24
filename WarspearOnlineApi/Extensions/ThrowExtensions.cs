@@ -20,7 +20,7 @@
                 throw new Exception(message);
             }
 
-            return obj;
+            return obj!;
         }
 
         /// <summary>

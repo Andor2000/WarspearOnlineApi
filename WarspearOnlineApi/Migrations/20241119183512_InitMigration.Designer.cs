@@ -124,7 +124,7 @@ namespace WarspearOnlineApi.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("FractionName");
 
                     b.HasKey("FractionID");
@@ -145,7 +145,7 @@ namespace WarspearOnlineApi.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("GroupName");
 
                     b.Property<int>("rf_FractionID")
@@ -212,7 +212,7 @@ namespace WarspearOnlineApi.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("GuildName");
 
                     b.Property<int>("rf_FractionID")
@@ -249,14 +249,14 @@ namespace WarspearOnlineApi.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("Image");
 
                     b.Property<string>("ObjectName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("ObjectName");
 
                     b.Property<int>("rf_ObjectTypeID")
@@ -285,7 +285,7 @@ namespace WarspearOnlineApi.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("ObjectTypeName");
 
                     b.HasKey("ObjectTypeID");
@@ -306,7 +306,7 @@ namespace WarspearOnlineApi.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("Nick");
 
                     b.Property<int>("rf_FractionID")
@@ -343,7 +343,7 @@ namespace WarspearOnlineApi.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("")
+                        .HasDefaultValue(string.Empty)
                         .HasColumnName("ServerName");
 
                     b.HasKey("ServerID");

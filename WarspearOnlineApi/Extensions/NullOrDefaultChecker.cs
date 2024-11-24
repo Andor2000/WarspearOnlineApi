@@ -16,13 +16,23 @@
         }
 
         /// <summary>
-        /// Получение признака пустой даты или null для структур.
+        /// Получение признака пустой даты или null.
         /// </summary>
         /// <param name="date">Дата.</param>
         /// <returns>Признак пустой даты.</returns>
         public static bool IsNullOrDefault(this DateTime? date)
         {
             return date == null || date.Value.IsNullOrDefault();
+        }
+
+        /// <summary>
+        /// Получение признака пустой строки.
+        /// </summary>
+        /// <param name="str">Строка.</param>
+        /// <returns>Признак пустой строки.</returns>
+        public static bool IsNullOrDefault(this string str)
+        {
+            return string.IsNullOrWhiteSpace(str);
         }
 
         /// <summary>

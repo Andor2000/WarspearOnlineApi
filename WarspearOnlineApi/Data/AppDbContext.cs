@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WarspearOnlineApi.Extensions;
 using WarspearOnlineApi.Models.Entity;
 
 namespace WarspearOnlineApi.Data
@@ -81,6 +82,10 @@ namespace WarspearOnlineApi.Data
                     if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
                     {
                         property.SetColumnType("datetime2(3)");
+                    }
+                    if (property.ClrType == typeof(string) && property.GetMaxLength().IsNullOrDefault())
+                    {
+                        property.SetColumnType("nvarchar(100)");
                     }
                 }
             }

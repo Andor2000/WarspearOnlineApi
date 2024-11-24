@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using System.Text.RegularExpressions;
+using System.Threading.RateLimiting;
 using WarspearOnlineApi.Data;
 using WarspearOnlineApi.Extensions;
 using WarspearOnlineApi.Models.Dto;
+using WarspearOnlineApi.Models.Entity;
 using WarspearOnlineApi.Services.Base;
 
 namespace WarspearOnlineApi.Services
@@ -58,9 +62,7 @@ namespace WarspearOnlineApi.Services
                 .Select(x => new { DropId = x.Key, CountPlayer = x.Count() })
                 .ToArrayAsync();
 
-            return result
-                .Select(x => (x.DropId, x.CountPlayer))
-                .ToArray();
+            return result.Select(x => (x.DropId, x.CountPlayer)).ToArray();
         }
 
         /// <summary>
@@ -72,12 +74,72 @@ namespace WarspearOnlineApi.Services
         {
             dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
 
-            var players = await this._context.wo_DropPlayer
+            return await this._context.wo_DropPlayer
                 .Where(x => x.rf_DropID == dropId)
                 .ProjectTo<PlayerDto>(this._mapper.ConfigurationProvider)
                 .ToArrayAsync();
+        }
 
-            return players;
+
+        /// <summary>
+        ///  Добавить игрока в список дропа.
+        /// </summary>
+        /// <param name="dto">Игрок.</param>
+        /// <returns>Модель игрока.</returns>
+        public async Task<PlayerDto> AddPlayerInDrop(PlayerDto dto, int dropId)
+        {
+            var drop = await this._context.wo_Drop
+                .Where(x => x.DropID == dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа."))
+                .Select(x => new
+                {
+                    x.DropID,
+                    x.rf_ServerID,
+                    x.rf_Group.rf_FractionID,
+                }).FirstOrDefaultAsync()
+                .ThrowNotFoundAsync(x => (x?.DropID).IsNullOrDefault(), "Дроп")
+                .ThrowOnConditionAsync(x => x.rf_ServerID.IsNullOrDefault(), "У дропа не указан сервер")
+                .ThrowOnConditionAsync(x => x.rf_FractionID.IsNullOrDefault(), "У дропа не указана фракция (или группа)"); 
+            
+            var player = dto.Id.IsNullOrDefault()
+                ? await this.CreatePlayer(dto, drop!.rf_ServerID, drop!.rf_FractionID)
+                : await this._context.wo_Player
+                    .FirstOrDefaultAsync(x => x.PlayerID == dto.Id)
+                    .ThrowIfNullAsync($"Игрок с идентификатором: {dto.Id}")
+                    .ThrowOnConditionAsync(x => x.rf_ServerID != drop!.rf_ServerID, "Указаный игрок относится к другому серверу")
+                    .ThrowOnConditionAsync(x => x.rf_FractionID != drop!.rf_FractionID, "Указанный игрок находится в противоположной фракции");
+
+
+
+            return null;
+        }
+
+        /// <summary>
+        /// Создать модель игрока.
+        /// </summary>
+        /// <param name="dto">Dto-модель игрока.</param>
+        /// <param name="serverId">Идентификатор сервера.</param>
+        /// <param name="fractionId">Идентификатор фракция.</param>
+        /// <returns>Идентификатор игрока.</returns>
+        private async Task<wo_Player> CreatePlayer(PlayerDto dto, int serverId, int fractionId)
+        {
+            dto.Nick = dto.Nick?.Trim() ?? string.Empty;
+            dto.ThrowOnCondition(x => x.Nick.IsNullOrDefault(), "Не указан ник игрока")
+                .ThrowOnCondition(x => x.Nick.Length < 3 || x.Nick.Length > 10, "Неверный размер ника игрока")
+                .ThrowOnCondition(x => !Regex.IsMatch(x.Nick, @"^[a-zA-Z]+$"), "Ник должен содержать только английские буквы")
+                .ThrowOnCondition(x => (x?.Class?.Id).IsNullOrDefault(), "Не указан класс игрока");
+
+            var entity = new wo_Player
+            {
+                Nick = dto.Nick,
+                rf_ClassID = dto.Class.Id,
+                rf_FractionID = fractionId,
+                rf_ServerID = serverId,
+            };
+
+            this._context.wo_Player.Add(entity);
+            await this._context.SaveChangesAsync();
+
+            return entity;
         }
     }
 }

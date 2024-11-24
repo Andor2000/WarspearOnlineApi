@@ -14,13 +14,13 @@ namespace WarspearOnlineApi.Configurations
             builder.ToTable("wo_Group");
             builder.HasKey(m => m.GroupID);
 
-            builder.Property(m => m.GroupID).HasColumnName("GroupID").UseIdentityColumn();
-            builder.Property(m => m.GroupName).HasColumnName("GroupName").HasDefaultValue(string.Empty);
+            builder.Property(m => m.GroupID).UseIdentityColumn();
+            builder.Property(m => m.GroupName).HasDefaultValue(string.Empty);
 
-            builder.Property(m => m.rf_ServerID).HasColumnName("rf_ServerID").HasDefaultValue(0);
+            builder.Property(m => m.rf_ServerID).HasDefaultValue(0);
             builder.HasOne(x => x.rf_Server).WithMany(x => x.Groups).HasForeignKey(x => x.rf_ServerID).OnDelete(DeleteBehavior.NoAction);
 
-            builder.Property(m => m.rf_FractionID).HasColumnName("rf_FractionID").HasDefaultValue(0);
+            builder.Property(m => m.rf_FractionID).HasDefaultValue(0);
             builder.HasOne(x => x.rf_Fraction).WithMany(x => x.Groups).HasForeignKey(x => x.rf_FractionID).OnDelete(DeleteBehavior.NoAction);
         }
     }

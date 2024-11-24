@@ -17,7 +17,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     FractionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FractionName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "")
+                    FractionName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ObjectTypeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ObjectTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "")
+                    ObjectTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty)
                 },
                 constraints: table =>
                 {
@@ -43,7 +43,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ServerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServerName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "")
+                    ServerName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty)
                 },
                 constraints: table =>
                 {
@@ -56,8 +56,8 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ObjectID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ObjectName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
+                    ObjectName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
                     rf_ObjectTypeID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
@@ -76,7 +76,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     GroupID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
+                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
@@ -101,7 +101,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     GuildID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GuildName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
+                    GuildName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
@@ -126,7 +126,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     PlayerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nick = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
+                    Nick = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
