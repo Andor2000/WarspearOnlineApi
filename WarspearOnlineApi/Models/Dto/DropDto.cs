@@ -1,17 +1,13 @@
 ﻿using WarspearOnlineApi.Enums;
+using WarspearOnlineApi.Models.BaseModels;
 
 namespace WarspearOnlineApi.Models.Dto
 {
     /// <summary>
     /// Dto-модель дропа.
     /// </summary>
-    public class DropDto
+    public class DropDto : BaseModel
     {
-        /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Дата дропа.
         /// </summary>
@@ -47,5 +43,9 @@ namespace WarspearOnlineApi.Models.Dto
         /// </summary>
         public ServerDto Server { get; set; } = new ServerDto();
 
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public FractionDto Fraction { get; set; } = new FractionDto();
     }
 }

@@ -3,9 +3,9 @@
 namespace WarspearOnlineApi.Models.Dto
 {
     /// <summary>
-    /// Dto-модель типа объекта.
+    /// Dto-модель фракции.
     /// </summary>
-    public class ObjectTypeDto : NameBaseModel
+    public class FractionDto : NameBaseModel
     {
     }
 }

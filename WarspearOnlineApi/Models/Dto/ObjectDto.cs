@@ -1,20 +1,12 @@
-﻿namespace WarspearOnlineApi.Models.Dto
+﻿using WarspearOnlineApi.Models.BaseModels;
+
+namespace WarspearOnlineApi.Models.Dto
 {
     /// <summary>
     /// Dto-модель объекта.
     /// </summary>
-    public class ObjectDto
+    public class ObjectDto : NameBaseModel
     {
-        /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Название объекта.
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
-
         /// <summary>
         /// Изображение объекта.
         /// </summary>

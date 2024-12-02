@@ -1,15 +1,12 @@
-﻿namespace WarspearOnlineApi.Models.Dto
+﻿using WarspearOnlineApi.Models.BaseModels;
+
+namespace WarspearOnlineApi.Models.Dto
 {
     /// <summary>
     /// Dto-модель связи дропа с игроком.
     /// </summary>
-    public class DropPlayerDto
+    public class DropPlayerDto : BaseModel
     {
-        /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Доля.
         /// </summary>

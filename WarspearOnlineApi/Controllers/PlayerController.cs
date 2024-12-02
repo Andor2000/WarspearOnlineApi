@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WarspearOnlineApi.Models.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Services;
 
 namespace WarspearOnlineApi.Controllers
@@ -24,29 +22,6 @@ namespace WarspearOnlineApi.Controllers
         public PlayerController(PlayerService playerService)
         {
             _playerService = playerService;
-        }
-
-        /// <summary>
-        /// Получить список игроков по дропу.
-        /// </summary>
-        /// <param name="dropId">Идентификатор дропа.</param>
-        /// <returns>Список игроков.</returns>
-        [HttpGet("byDrop/{dropId}")]
-        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayerByDropId(int dropId)
-        {
-            return Ok(await this._playerService.GetPlayerByDropId(dropId));
-        }
-
-        /// <summary>
-        ///  Добавить игрока в список дропа.
-        /// </summary>
-        /// <param name="dto">Игрок.</param>
-        /// <returns>Модель игрока.</returns>
-        [Authorize]
-        [HttpPost("InDrop")]
-        public async Task<ActionResult<PlayerDto>> AddPlayerInDrop([FromBody] PlayerDto dto, int dropId)
-        {
-            return Ok(await this._playerService.AddPlayerInDrop(dto, dropId));
         }
     }
 }

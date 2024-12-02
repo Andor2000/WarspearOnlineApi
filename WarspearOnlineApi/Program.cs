@@ -4,8 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WarspearOnlineApi.Data;
 using WarspearOnlineApi.Models;
-using System.Reflection;
-using WarspearOnlineApi.Services.Base;
 using WarspearOnlineApi.Services.Journals;
 using WarspearOnlineApi.Controllers;
 using WarspearOnlineApi.Services;
@@ -39,9 +37,15 @@ static void ConfigureServices(WebApplicationBuilder builder)
 
     builder.Services.AddSingleton<JwtTokenService>();
     builder.Services.AddSingleton<AuthController>();
+
     builder.Services.AddScoped<JournalDropService>();
-    builder.Services.AddScoped<PlayerService>();
+    builder.Services.AddScoped<JournalPlayerService>();
+
     builder.Services.AddScoped<DropService>();
+    builder.Services.AddScoped<DropPlayerService>();
+    builder.Services.AddScoped<PlayerService>();
+
+    builder.Services.AddScoped<GenericService>();
 
     builder.Services.AddAuthorization();
     builder.Services.AddControllers();

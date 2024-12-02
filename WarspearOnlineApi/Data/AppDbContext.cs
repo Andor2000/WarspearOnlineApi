@@ -16,14 +16,19 @@ namespace WarspearOnlineApi.Data
         }
 
         /// <summary>
+        /// Набор данных серверов.
+        /// </summary>
+        public DbSet<wo_Server> wo_Server { get; set; }
+
+        /// <summary>
         /// Набор данных фракций.
         /// </summary>
         public DbSet<wo_Fraction> wo_Fraction { get; set; }
 
         /// <summary>
-        /// Набор данных серверов.
+        /// Набор данных класса.
         /// </summary>
-        public DbSet<wo_Server> wo_Server { get; set; }
+        public DbSet<wo_Class> wo_Class { get; set; }
 
         /// <summary>
         /// Набор данных гильдий.

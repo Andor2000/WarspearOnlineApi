@@ -5,55 +5,83 @@ using WarspearOnlineApi.Services;
 
 namespace WarspearOnlineApi.Controllers
 {
-    public class DropPlayerController : ControllerBase
+    /// <summary>
+    /// Контроллер для работы с интерсекцией дропа и игрока.
+    /// </summary>
+    public class DropPlayerController : Controller
     {
         /// <summary>
-        /// Сервис для работы с дропом.
+        /// Сервис для работы с интерсекцией дропа и игрока.
         /// </summary>
         private readonly DropPlayerService _dropPlayerService;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="dropService">Сервис для работы с дропом.</param>
+        /// <param name="dropPlayerService">Сервис для работы с интерсекцией дропа и игрока.</param>
         public DropPlayerController(DropPlayerService dropPlayerService)
         {
             this._dropPlayerService = dropPlayerService;
         }
 
         /// <summary>
-        /// Получение информации о дропе.
+        /// Получить список игроков по дропу.
         /// </summary>
         /// <param name="dropId">Идентификатор дропа.</param>
-        /// <returns>Дроп.</returns>
-        [HttpGet("{dropId}")]
-        public async Task<ActionResult<DropDto>> GetDrop(int dropId)
+        /// <returns>Список игроков.</returns>
+        [HttpGet("List/{dropId}")]
+        public async Task<ActionResult<DropPlayerDto[]>> GetPlayerByDropId(int dropId)
         {
-            return Ok(await this._dropPlayerService.GetDrop(dropId));
+            return Ok(await this._dropPlayerService.GetPlayerByDropId(dropId));
         }
 
         /// <summary>
-        /// Создание новой записи дропа.
+        /// Получить количество игроков по дропу.
         /// </summary>
-        /// <param name="dto">Dto-модель дропа.</param>
-        /// <returns>Дроп.</returns>
+        /// <param name="dropId">Идентификатор дропа.</param>
+        /// <returns>Количество игроков.</returns>
+        [HttpGet("List/Count/{dropId}")]
+        public async Task<ActionResult<int>> GetCountPlayerByDropId(int dropId)
+        {
+            return Ok(await this._dropPlayerService.GetCountPlayerByDropId(dropId));
+        }
+
+        /// <summary>
+        /// Добавить игрока в список дропа.
+        /// </summary>
+        /// <param name="dto">Dto-модель игрока.</param>
+        /// <param name="dropId">Идентификатор дропа.</param>
+        /// <returns>Модель игрока.</returns>
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<DropDto>> AddDrop(DropDto dto)
+        public async Task<ActionResult<DropPlayerDto>> Add([FromBody] DropPlayerDto dto, int dropId)
         {
-            return Ok(await this._dropService.AddDrop(dto));
+            return Ok(await this._dropPlayerService.Add(dto, dropId));
         }
 
         /// <summary>
-        /// Редактирование дропа.
+        /// Обновить игрока в списке дропа.
         /// </summary>
-        /// <param name="dto">Dto-модель дропа.</param>
-        /// <returns>Дроп.</returns>
+        /// <param name="dto">Dto-модель игрока.</param>
+        /// <param name="dropId">Идентификатор дропа.</param>
+        /// <returns>Модель игрока.</returns>
         [Authorize]
         [HttpPut]
-        public async Task<ActionResult<DropDto>> EditDrop(DropDto dto)
+        public async Task<ActionResult<DropPlayerDto>> Update([FromBody] DropPlayerDto dto, [FromQuery] int dropId)
         {
-            return Ok(await this._dropService.EditDrop(dto));
+            return Ok(await this._dropPlayerService.Update(dto, dropId));
+        }
+
+        /// <summary>
+        /// Удалить связь игрока с дропом.
+        /// </summary>
+        /// <param name="dropPlayerId">Идентификатор связи игрока с дропом.</param>
+        /// <returns>Сообщение.</returns>
+        [Authorize]
+        [HttpDelete("{dropPlayerId}")]
+        public async Task<ActionResult<string>> Delete(int dropPlayerId)
+        {
+            return Ok(await this._dropPlayerService.Delete(dropPlayerId));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Models.Dto;
 using WarspearOnlineApi.Models.Filters;
 using WarspearOnlineApi.Services.Journals;
@@ -9,7 +8,6 @@ namespace WarspearOnlineApi.Controllers.Journals
     /// <summary>
     /// Контроллер для работы с журналом дропа.
     /// </summary>
-    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class JournalDropController : ControllerBase
@@ -33,7 +31,7 @@ namespace WarspearOnlineApi.Controllers.Journals
         /// <param name="filter">Фильтр.</param>
         /// <returns>Журнал дропа.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DropDto>>> GetJournalDrop(DropFilter filter)
+        public async Task<ActionResult<DropDto[]>> GetJournalDrop(DropFilter filter)
         {
             return Ok(await this.journalDropService.GetJournalDrop(filter));
         }

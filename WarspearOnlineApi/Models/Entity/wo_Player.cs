@@ -1,8 +1,12 @@
-﻿namespace WarspearOnlineApi.Models.Entity
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Models.Entity
 {
     /// <summary>
     /// Entity-модель игрока.
     /// </summary>
+    [Index(nameof(Nick), IsUnique = false)] // Создаём индекс на поле Nick
     public class wo_Player
     {
         /// <summary>
@@ -13,6 +17,7 @@
         /// <summary>
         /// Ник игрока.
         /// </summary>
+        [MaxLength(20)]
         public string Nick { get; set; }
 
         /// <summary>

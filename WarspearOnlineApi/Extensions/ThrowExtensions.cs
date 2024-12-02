@@ -72,7 +72,7 @@
         /// <param name="obj">Объект.</param>
         /// <param name="name">Наименование объекта.</param>
         /// <returns>Сам объект.</returns>
-        public static T ThrowIfNull<T>(this T obj, string name)
+        public static T ThrowIfNull<T>(this T? obj, string name)
             where T : class
         {
             return obj.ThrowNotFound(x => x == null, name);

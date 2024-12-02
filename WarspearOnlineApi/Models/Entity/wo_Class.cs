@@ -13,7 +13,7 @@
         /// <summary>
         /// Наименование.
         /// </summary>
-        public string Name { get; set; } = string.Empty;
+        public string ClassName { get; set; } = string.Empty;
 
         /// <summary>
         /// Интерсекция класса и фракции.

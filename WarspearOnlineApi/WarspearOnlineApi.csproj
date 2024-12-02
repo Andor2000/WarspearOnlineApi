@@ -1,5 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿
+<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
@@ -8,6 +8,10 @@
 		<UserSecretsId>e9c773c4-504f-470b-ba43-0fb31662c441</UserSecretsId>
 		<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
 		<InvariantGlobalization>false</InvariantGlobalization>
+		<NoWarn>$(NoWarn);CS8600</NoWarn> <!-- null = _context.First() -->
+		<NoWarn>$(NoWarn);CS8602</NoWarn> <!-- Убирается подчеркивание null.Id -->
+		<NoWarn>$(NoWarn);CS8603</NoWarn> <!-- При получении объекта .FirstOrDefaut() убирается подчеркивание -->
+		<NoWarn>$(NoWarn);CS8604</NoWarn> <!-- Убирается подчеркивание возможного пустого объекта (null) -->
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,6 +25,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+		<PackageReference Include="NPoco" Version="5.7.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
 	</ItemGroup>

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using WarspearOnlineApi.Data;
 using WarspearOnlineApi.Extensions;
 using WarspearOnlineApi.Models.Dto;
@@ -44,10 +43,8 @@ namespace WarspearOnlineApi.Services
         /// <returns>Дроп.</returns>
         public async Task<DropDto> GetDrop(int dropId)
         {
-            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
-
             var drop = await this._context.wo_Drop
-                .Where(x => x.DropID == dropId)
+                .Where(x => x.DropID == dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа."))
                 .ProjectTo<DropDto>(this._mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Дроп");
@@ -83,8 +80,7 @@ namespace WarspearOnlineApi.Services
             // добавить проверку пользователя
             dto.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
 
-            var entity = await this._context.wo_Drop
-                .FirstOrDefaultAsync(x => x.DropID == dto.Id)
+            var entity = await this._context.wo_Drop.FirstOrDefaultAsync(x => x.DropID == dto.Id)
                 .ThrowIfNullAsync("Дроп");
 
             await this.MapToEntity(entity, dto);
@@ -116,6 +112,25 @@ namespace WarspearOnlineApi.Services
         }
 
         /// <summary>
+        /// Удаление дропа по идентификатору.
+        /// </summary>
+        /// <param name="dropId">Идентификатор дропа.</param>
+        /// <returns>Строка.</returns>
+        public async Task<string> Delete(int dropId)
+        {
+            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
+            var entityId = await this._context.wo_Drop
+                .Where(x => x.DropID == dropId)
+                .Select(x => x.DropID)
+                .FirstOrDefaultAsync()
+                .ThrowOnConditionAsync(x => x.IsNullOrDefault(), "Дроп");
+
+            this._context.wo_Drop.Remove(new wo_Drop{ DropID = entityId });
+            await this._context.SaveChangesAsync();
+            return "Дроп удален.";
+        }
+
+        /// <summary>
         /// Создание entity-модели.
         /// </summary>
         /// <param name="dto">Dto-модель.</param>
@@ -123,7 +138,7 @@ namespace WarspearOnlineApi.Services
         private async Task<wo_Drop> CreateDropEntity(DropDto dto)
         {
             var entity = new wo_Drop();
-            (dto.Server?.Id).GetValueOrDefault().ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
+            (dto.Server?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
             entity.rf_ServerID = await this._context.wo_Server
                 .Where(x => x.ServerID == dto.Server.Id)
                 .Select(x => x.ServerID)

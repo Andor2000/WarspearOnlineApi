@@ -60,5 +60,17 @@ namespace WarspearOnlineApi.Controllers
         {
             return Ok(await this._dropService.EditDrop(dto));
         }
+
+        /// <summary>
+        /// Удаление дропа.
+        /// </summary>
+        /// <param name="dropId">Идентификатор дропа.</param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpDelete]
+        public async Task<ActionResult<string>> Delete(int dropId)
+        {
+            return Ok(await this._dropService.Delete(dropId));
+        }
     }
 }

@@ -1,23 +1,20 @@
-﻿namespace WarspearOnlineApi.Models.Dto
+﻿using WarspearOnlineApi.Models.BaseModels;
+
+namespace WarspearOnlineApi.Models.Dto
 {
     /// <summary>
     /// Dto-модель группы.
     /// </summary>
-    public class GroupDto
+    public class GroupDto : NameBaseModel
     {
-        /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Название группы.
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
-
         /// <summary>
         /// Сервер.
         /// </summary>
         public ServerDto Server { get; set; } = new ServerDto();
+
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public FractionDto Fraction { get; set; } = new FractionDto();
     }
 }

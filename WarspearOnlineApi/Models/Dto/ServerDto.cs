@@ -1,18 +1,11 @@
-﻿namespace WarspearOnlineApi.Models.Dto
+﻿using WarspearOnlineApi.Models.BaseModels;
+
+namespace WarspearOnlineApi.Models.Dto
 {
     /// <summary>
     /// Dto-модель сервера.
     /// </summary>
-    public class ServerDto
+    public class ServerDto : NameBaseModel
     {
-        /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Название сервера.
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
     }
 }
