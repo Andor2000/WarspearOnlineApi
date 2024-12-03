@@ -25,7 +25,7 @@ namespace WarspearOnlineApi.Services
         /// <param name="mapper">Маппер.</param>
         public GenericService(AppDbContext context, IMapper mapper) : base(context)
         {
-            this._mapper = mapper;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace WarspearOnlineApi.Services
         public async Task<ServerDto> GetServer(int serverId)
         {
             serverId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
-            return await this._context.wo_Server
+            return await _context.wo_Server
                 .Where(x => x.ServerID == serverId)
-                .ProjectTo<ServerDto>(this._mapper.ConfigurationProvider)
+                .ProjectTo<ServerDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Сервер");
         }
@@ -50,9 +50,9 @@ namespace WarspearOnlineApi.Services
         /// <returns>Список серверов.</returns>
         public async Task<ServerDto[]> GetServerList(string search)
         {
-            return await this._context.wo_Server
+            return await _context.wo_Server
                 .Where(x => x.ServerID > 0)
-                .ProjectTo<ServerDto>(this._mapper.ConfigurationProvider)
+                .ProjectTo<ServerDto>(_mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
                 .SortByName()
                 .ToArrayAsync();
@@ -66,9 +66,9 @@ namespace WarspearOnlineApi.Services
         public async Task<FractionDto> GetFraction(int fractionId)
         {
             fractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции");
-            return await this._context.wo_Fraction
+            return await _context.wo_Fraction
                 .Where(x => x.FractionID == fractionId)
-                .ProjectTo<FractionDto>(this._mapper.ConfigurationProvider)
+                .ProjectTo<FractionDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Фракция");
         }
@@ -80,9 +80,9 @@ namespace WarspearOnlineApi.Services
         /// <returns>Список фракций.</returns>
         public async Task<FractionDto[]> GetFractionList(string search)
         {
-            return await this._context.wo_Fraction
+            return await _context.wo_Fraction
                 .Where(x => x.FractionID > 0)
-                .ProjectTo<FractionDto>(this._mapper.ConfigurationProvider)
+                .ProjectTo<FractionDto>(_mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
                 .SortByName()
                 .ToArrayAsync();
@@ -96,9 +96,9 @@ namespace WarspearOnlineApi.Services
         public async Task<ClassDto> GetClass(int classId)
         {
             classId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор класса");
-            return await this._context.wo_Class
+            return await _context.wo_Class
                 .Where(x => x.ClassID == classId)
-                .ProjectTo<ClassDto>(this._mapper.ConfigurationProvider)
+                .ProjectTo<ClassDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Класс");
         }
@@ -110,9 +110,9 @@ namespace WarspearOnlineApi.Services
         /// <returns>Список классов.</returns>
         public async Task<ClassDto[]> GetClassList(string search)
         {
-            return await this._context.wo_Class
+            return await _context.wo_Class
                 .Where(x => x.ClassID > 0)
-                .ProjectTo<ClassDto>(this._mapper.ConfigurationProvider)
+                .ProjectTo<ClassDto>(_mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
                 .SortByName()
                 .ToArrayAsync();

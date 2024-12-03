@@ -32,8 +32,8 @@ namespace WarspearOnlineApi.Services
             PlayerService playerService,
             IMapper mapper) : base(context)
         {
-            this._playerService = playerService;
-            this._mapper = mapper;
+            _playerService = playerService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace WarspearOnlineApi.Services
         {
             var drop = await this._context.wo_Drop
                 .Where(x => x.DropID == dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа."))
-                .ProjectTo<DropDto>(this._mapper.ConfigurationProvider)
+                .ProjectTo<DropDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Дроп");
 
@@ -67,7 +67,7 @@ namespace WarspearOnlineApi.Services
             this._context.wo_Drop.Add(entity);
             await this._context.SaveChangesAsync();
 
-            return await this.GetDrop(entity.DropID);
+            return await GetDrop(entity.DropID);
         }
 
         /// <summary>
@@ -101,13 +101,15 @@ namespace WarspearOnlineApi.Services
             }
 
             var dropIds = drops.Select(x => x.Id).Where(x => x > 0);
-            var dropPlayers = await _playerService.GetCountPlayerByDropIds(dropIds);
+            var dropPlayers = await this._playerService.GetCountPlayerByDropIds(dropIds);
 
             foreach (var dropPlayer in dropPlayers)
             {
                 var drop = drops.First(x => x.Id == dropPlayer.DropId);
                 drop.PlayersCount = dropPlayer.CountPlayer;
-                drop.Part = drop.PlayersCount > 0 ? drop.Price / drop.PlayersCount : 0;
+                drop.Part = drop.PlayersCount > 0
+                    ? drop.Price / drop.PlayersCount
+                    : 0;
             }
         }
 
@@ -125,7 +127,7 @@ namespace WarspearOnlineApi.Services
                 .FirstOrDefaultAsync()
                 .ThrowOnConditionAsync(x => x.IsNullOrDefault(), "Дроп");
 
-            this._context.wo_Drop.Remove(new wo_Drop{ DropID = entityId });
+            this._context.wo_Drop.Remove(new wo_Drop { DropID = entityId });
             await this._context.SaveChangesAsync();
             return "Дроп удален.";
         }
@@ -139,11 +141,19 @@ namespace WarspearOnlineApi.Services
         {
             var entity = new wo_Drop();
             (dto.Server?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
+            (dto.Fraction?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции");
+
             entity.rf_ServerID = await this._context.wo_Server
                 .Where(x => x.ServerID == dto.Server.Id)
                 .Select(x => x.ServerID)
                 .FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Сервер");
+
+            entity.rf_FractionID = await this._context.wo_Fraction
+                .Where(x => x.FractionID == dto.Fraction.Id)
+                .Select(x => x.FractionID)
+                .FirstOrDefaultAsync()
+                .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Фракция");
 
             return entity;
         }
@@ -176,19 +186,17 @@ namespace WarspearOnlineApi.Services
         /// <summary>
         /// Валидация.
         /// </summary>
+        /// <param name="entity">Entity-модель.</param>
         /// <param name="dto">Dto-модель.</param>
         private async Task ValidateSaving(wo_Drop entity, DropDto dto)
         {
-            (dto.Object?.Id).GetValueOrDefault().ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор объекта");
-            (dto.Group?.Id).GetValueOrDefault().ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор группы");
-            (dto.Group?.Server.Id).GetValueOrDefault()
-                .ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера")
-                .ThrowOnCondition(x => x != entity.rf_ServerID, "Попытка изменить сервер у дропа.");
+            (dto.Object?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор объекта");
 
-            var serverId = await this._context.wo_Group
-                .Where(x => x.GroupID == dto.Group.Id)
-                .Select(x => x.rf_Server.ServerID)
-                .FirstOrDefaultAsync()
+            dto.Group.ThrowOnCondition(x => (x.Id).IsNullOrDefault(), "Не указан идентификатор группы")
+                .Server.ThrowOnCondition(x => (x?.Id).IsNullOrDefault(), "Не указан идентификатор сервера")
+                .Id.ThrowOnCondition(x => x != entity.rf_ServerID, "Попытка изменить сервер у дропа.");
+
+            await this._context.wo_Group.Where(x => x.GroupID == dto.Group.Id).Select(x => x.rf_ServerID).FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Группа")
                 .ThrowOnConditionAsync(x => x != dto.Group.Server.Id, "Группа не относится к указанному серверу");
         }

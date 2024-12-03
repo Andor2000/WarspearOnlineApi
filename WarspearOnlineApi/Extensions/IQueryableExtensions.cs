@@ -1,4 +1,6 @@
-﻿using WarspearOnlineApi.Interfaces.Base;
+﻿using System.Linq;
+using WarspearOnlineApi.Interfaces.Base;
+using WarspearOnlineApi.Models.Filters;
 
 namespace WarspearOnlineApi.Extensions
 {
@@ -29,6 +31,24 @@ namespace WarspearOnlineApi.Extensions
         public static IQueryable<T> SortByName<T>(this IQueryable<T> queryable) where T : IName
         {
             return queryable.OrderBy(x => x.Name);
+        }
+
+        /// <summary>
+        /// Применяет пагинацию (Skip и Take) к запросу.
+        /// </summary>
+        /// <typeparam name="T">Тип элементов в запросе.</typeparam>
+        /// <param name="query">Исходный запрос.</param>
+        /// <param name="filter">Объект фильтра, содержащий параметры Skip и Take.</param>
+        /// <param name="defaultTake">Значение по умолчанию для Take, если оно не задано в фильтре или задано как 0. По умолчанию равно 20.</param>
+        /// <returns>Запрос с примененными Skip и Take.</returns>
+        public static IQueryable<T> SkipTake<T>(this IQueryable<T> query, BaseFilterDto filter, int defaultTake = 50)
+        {
+            filter.ThrowIfNull("Фильтр не может быть null.");
+
+            var take = filter.Take > 0 ? filter.Take : defaultTake;
+            var skip = filter.Skip < 0 ? 0 : filter.Skip;
+
+            return query.Skip(skip).Take(take);
         }
     }
 }

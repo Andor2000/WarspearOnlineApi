@@ -31,20 +31,20 @@ namespace WarspearOnlineApi.Controllers.Journals
         /// <param name="filter">Фильтр.</param>
         /// <returns>Журнал дропа.</returns>
         [HttpGet]
-        public async Task<ActionResult<DropDto[]>> GetJournalDrop(DropFilter filter)
+        public async Task<ActionResult<DropDto[]>> GetJournalDrop(JournalDropFilter filter)
         {
-            return Ok(await this.journalDropService.GetJournalDrop(filter));
+            return Ok(await journalDropService.GetJournalDrop(filter));
         }
 
         /// <summary>
         /// Получить журнал дропа.
         /// </summary>
         /// <param name="filter">Фильтр.</param>
-        /// <returns>Журнал дропа.</returns>
+        /// <returns>Количество дропа.</returns>
         [HttpGet("Count")]
-        public async Task<ActionResult<int>> GetJournalDropCount(DropFilter filter)
+        public async Task<ActionResult<int>> GetJournalDropCount(JournalDropFilter filter)
         {
-            return Ok(await this.journalDropService.GetJournalDropCount(filter));
+            return Ok(await journalDropService.GetJournalDropCount(filter));
         }
     }
 }

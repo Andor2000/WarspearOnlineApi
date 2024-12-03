@@ -16,10 +16,10 @@ namespace WarspearOnlineApi.Services
 
         public JwtTokenService(IConfiguration configuration)
         {
-            this.jwtSetting.SecretKey = configuration["JwtSetting:SecretKey"];
-            this.jwtSetting.Issuer = configuration["JwtSetting:Issuer"];
-            this.jwtSetting.Audience = configuration["JwtSetting:Audience"];
-            this.jwtSetting.ExpirationTimes = int.Parse(configuration["JwtSetting:ExpirationInTimes"]);
+            jwtSetting.SecretKey = configuration["JwtSetting:SecretKey"];
+            jwtSetting.Issuer = configuration["JwtSetting:Issuer"];
+            jwtSetting.Audience = configuration["JwtSetting:Audience"];
+            jwtSetting.ExpirationTimes = int.Parse(configuration["JwtSetting:ExpirationInTimes"]);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace WarspearOnlineApi.Services
         /// <returns>Токен.</returns>
         public string GenerateToken(string username)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.jwtSetting.SecretKey));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -38,9 +38,9 @@ namespace WarspearOnlineApi.Services
                 {
                     new Claim(ClaimTypes.Name, username)
                 }),
-                Issuer = this.jwtSetting.Issuer,
-                Audience = this.jwtSetting.Audience,
-                Expires = DateTime.UtcNow.AddDays(this.jwtSetting.ExpirationTimes),
+                Issuer = jwtSetting.Issuer,
+                Audience = jwtSetting.Audience,
+                Expires = DateTime.UtcNow.AddDays(jwtSetting.ExpirationTimes),
                 SigningCredentials = credentials
             };
 

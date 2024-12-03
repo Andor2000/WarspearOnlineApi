@@ -24,7 +24,7 @@ namespace WarspearOnlineApi.Services
         /// <param name="context">Контекст данных.</param>
         /// <param name="mapper">Маппер.</param>
         public PlayerService(AppDbContext context, IMapper mapper) : base(context)
-        { 
+        {
             this._mapper = mapper;
         }
 
@@ -40,7 +40,7 @@ namespace WarspearOnlineApi.Services
                 return Array.Empty<(int DropId, int CountPlayer)>();
             }
 
-            var result = await this._context.wo_DropPlayer
+            var result = await _context.wo_DropPlayer
                 .Where(x => dropIds.Contains(x.rf_DropID))
                 .GroupBy(x => x.rf_DropID)
                 .Select(x => new { DropId = x.Key, CountPlayer = x.Count() })
@@ -62,7 +62,7 @@ namespace WarspearOnlineApi.Services
             serverId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан сервер");
             fractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указана фракция");
 
-            var playerId = await this._context.wo_Player
+            var playerId = await _context.wo_Player
                 .Where(x => x.Nick == dto.Nick && x.rf_ServerID == serverId && x.rf_FractionID == fractionId)
                 .Select(x => x.PlayerID)
                 .FirstOrDefaultAsync();
@@ -77,8 +77,8 @@ namespace WarspearOnlineApi.Services
                     rf_ServerID = serverId,
                 };
 
-                this._context.wo_Player.Add(entity);
-                await this._context.SaveChangesAsync();
+                _context.wo_Player.Add(entity);
+                await _context.SaveChangesAsync();
                 playerId = entity.PlayerID;
             }
 

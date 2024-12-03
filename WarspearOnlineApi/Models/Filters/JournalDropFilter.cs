@@ -1,19 +1,16 @@
-﻿namespace WarspearOnlineApi.Models.Filters
+﻿using WarspearOnlineApi.Enums;
+
+namespace WarspearOnlineApi.Models.Filters
 {
     /// <summary>
     /// Фильтр для получения журнала дропа.
     /// </summary>
-    public class DropFilter
+    public class JournalDropFilter : BaseFilterDto
     {
         /// <summary>
-        /// Идентификатор сервера.
+        /// Идентификатор группы.
         /// </summary>
-        public int ServerId { get; set; }
-
-        /// <summary>
-        /// Идентификатор фракции.
-        /// </summary>
-        public int FractionId { get; set; }
+        public int GroupId { get; set; }
 
         /// <summary>
         /// Идентификатор объекта.
@@ -26,13 +23,13 @@
         public int ObjectTypeId { get; set; }
 
         /// <summary>
-        /// Количесво записей.
+        /// Идентификатор игрока.
         /// </summary>
-        public int Take { get; set; } = 20;
+        public int PlayerId { get; set; }
 
         /// <summary>
-        /// Смещение.
+        /// Статус выплаты игроку.
         /// </summary>
-        public int Skip { get; set; }
+        public DropPaymentStatus DropPaymentStatusPlayer { get; set; } = DropPaymentStatus.All;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using WarspearOnlineApi.Models.Dto;
+using WarspearOnlineApi.Models.Dto.Journals;
 using WarspearOnlineApi.Models.Entity;
 
 namespace WarspearOnlineApi.Mapper
@@ -60,6 +61,11 @@ namespace WarspearOnlineApi.Mapper
                 .ForMember(x => x.Class, opt => opt.MapFrom(s => s.rf_Class))
                 .ForMember(x => x.Fraction, opt => opt.MapFrom(s => s.rf_Fraction))
                 .ForMember(x => x.Server, opt => opt.MapFrom(s => s.rf_Server));
+
+            CreateMap<wo_Player, JournalPlayerDto>()
+                .ForMember(x => x.Player, opt => opt.MapFrom(s => s))
+                .ForMember(x => x.PaidOut, opt => opt.Ignore())
+                .ForMember(x => x.NotPaid, opt => opt.Ignore());
 
             CreateMap<wo_DropPlayer, DropPlayerDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.DropPlayerID))

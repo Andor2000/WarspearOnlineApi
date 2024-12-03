@@ -80,20 +80,19 @@ namespace WarspearOnlineApi.Services
         /// </summary>
         /// <param name="dropIds">Список идентификаторов дропа.</param>
         /// <returns>Картеж количетсва игроков.</returns>
-        public async Task<(int DropId, int CountPlayer)[]> GetCountPlayerByDropIds(IEnumerable<int> dropIds)
+        public async Task<IEnumerable<(int DropId, int CountPlayer)>> GetCountPlayerByDropIds(IEnumerable<int> dropIds)
         {
             if (dropIds.IsNullOrDefault())
             {
                 return Array.Empty<(int DropId, int CountPlayer)>();
             }
 
-            var result = await this._context.wo_DropPlayer
+            return (await this._context.wo_DropPlayer
                 .Where(x => dropIds.Contains(x.rf_DropID))
                 .GroupBy(x => x.rf_DropID)
                 .Select(x => new { DropId = x.Key, CountPlayer = x.Count() })
-                .ToArrayAsync();
-
-            return result.Select(x => (x.DropId, x.CountPlayer)).ToArray();
+                .ToArrayAsync())
+                .Select(x => (x.DropId, x.CountPlayer));
         }
 
         /// <summary>
@@ -106,9 +105,13 @@ namespace WarspearOnlineApi.Services
         {
             var entity = await this.MapToEntity(dto, dropId)
                 .ThrowOnConditionAsync(x => x.DropPlayerID > 0, "Игрок уже находится в списоке");
+
             await this._context.wo_DropPlayer.AddAsync(entity);
             await this._context.SaveChangesAsync();
-            return (await this.GetPlayersByPredicate(x => x.DropPlayerID == entity.DropPlayerID)).FirstOrDefault();
+
+            return (await this.GetPlayersByPredicate(x => x.DropPlayerID == entity.DropPlayerID))
+                .FirstOrDefault()
+                .ThrowIfNull("Связь игрока с дропом");
         }
 
         /// <summary>
@@ -121,8 +124,10 @@ namespace WarspearOnlineApi.Services
         {
             dto.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор связи игрока и дропа");
             var entity = await this.MapToEntity(dto, dropId);
+
             this._context.wo_DropPlayer.Update(entity);
             await this._context.SaveChangesAsync();
+
             return await this.GetDropPlayerById(entity.DropPlayerID);
         }
 
@@ -138,7 +143,7 @@ namespace WarspearOnlineApi.Services
                 .Where(x => x.DropPlayerID == dropPlayerId)
                 .Select(x => x.DropPlayerID)
                 .FirstOrDefaultAsync()
-                .ThrowOnConditionAsync(x => x.IsNullOrDefault(), "Связь игрока с дропом");
+                .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Связь игрока с дропом");
 
             this._context.wo_DropPlayer.Remove(new wo_DropPlayer { DropPlayerID = entityId });
             await this._context.SaveChangesAsync();

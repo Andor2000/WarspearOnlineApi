@@ -18,7 +18,7 @@ namespace WarspearOnlineApi.Services.Base
         /// <param name="context">Контекст данных.</param>
         protected BaseService(AppDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
     }
 }

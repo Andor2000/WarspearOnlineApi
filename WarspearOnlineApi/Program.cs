@@ -4,10 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WarspearOnlineApi.Data;
 using WarspearOnlineApi.Models;
-using WarspearOnlineApi.Services.Journals;
+using WarspearOnlineApi.Mapper;
 using WarspearOnlineApi.Controllers;
 using WarspearOnlineApi.Services;
-using WarspearOnlineApi.Mapper;
+using WarspearOnlineApi.Services.Journals;
 
 
 // Добавить миграцию: add-migration InitMigration
