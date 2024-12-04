@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WarspearOnlineApi.Api.Services;
 using WarspearOnlineApi.Models.Dto;
+using WarspearOnlineApi.Services;
 
 namespace WarspearOnlineApi.Controllers
 {

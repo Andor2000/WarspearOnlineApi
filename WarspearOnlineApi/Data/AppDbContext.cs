@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Extensions;
 using WarspearOnlineApi.Models.Entity;
+using WarspearOnlineApi.Models.Entity.Users;
 
 namespace WarspearOnlineApi.Data
 {
@@ -14,6 +15,8 @@ namespace WarspearOnlineApi.Data
             : base(options)
         {
         }
+
+        /* Общие */
 
         /// <summary>
         /// Набор данных серверов.
@@ -29,6 +32,8 @@ namespace WarspearOnlineApi.Data
         /// Набор данных класса.
         /// </summary>
         public DbSet<wo_Class> wo_Class { get; set; }
+
+        /* Интерфейс */
 
         /// <summary>
         /// Набор данных гильдий.
@@ -69,6 +74,23 @@ namespace WarspearOnlineApi.Data
         /// Набор данных для связи журнала выпадений и игроков.
         /// </summary>
         public DbSet<wo_DropPlayer> wo_DropPlayer { get; set; }
+
+        /* Пользователь */
+
+        /// <summary>
+        /// Набор данных уровней доступа.
+        /// </summary>
+        public DbSet<wo_AccessLevel> wo_AccessLevel { get; set; }
+
+        /// <summary>
+        /// Набор данных интерсекции моделей уровня доступа и роли.
+        /// </summary>
+        public DbSet<wo_AccessLevelRole> wo_AccessLevelRole { get; set; }
+
+        /// <summary>
+        /// Набор данных ролей.
+        /// </summary>
+        public DbSet<wo_Role> wo_Role { get; set; }
 
         /// <summary>
         /// Настройка конфигураций моделей при создании модели.

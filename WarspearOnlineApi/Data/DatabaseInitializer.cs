@@ -52,5 +52,10 @@ end
             var resQuery = queries.ToString();
             this._сontext.Database.GetDbConnection().Execute(resQuery);
         }
+
+        public void CreateBaseRecords()
+        {
+
+        }
     }
 }
