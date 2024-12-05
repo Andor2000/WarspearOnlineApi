@@ -11,9 +11,14 @@
         public int ClassID { get; set; }
 
         /// <summary>
+        /// Код.
+        /// </summary>
+        public string ClassCode{ get; set; }
+
+        /// <summary>
         /// Наименование.
         /// </summary>
-        public string ClassName { get; set; } = string.Empty;
+        public string ClassName { get; set; }
 
         /// <summary>
         /// Интерсекция класса и фракции.

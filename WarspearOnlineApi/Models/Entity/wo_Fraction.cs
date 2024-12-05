@@ -11,6 +11,11 @@
         public int FractionID { get; set; }
 
         /// <summary>
+        /// Код фракции.
+        /// </summary>
+        public string FractionCode { get; set; }
+
+        /// <summary>
         /// Название фракции.
         /// </summary>
         public string FractionName { get; set; }

@@ -12,6 +12,7 @@ namespace WarspearOnlineApi.Configurations
             builder.HasKey(m => m.ClassID);
 
             builder.Property(m => m.ClassID).UseIdentityColumn();
+            builder.Property(m => m.ClassCode).HasDefaultValue(string.Empty);
             builder.Property(m => m.ClassName).HasDefaultValue(string.Empty);
         }
     }

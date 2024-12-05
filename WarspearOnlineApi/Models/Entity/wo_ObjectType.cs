@@ -11,6 +11,11 @@
         public int ObjectTypeID { get; set; }
 
         /// <summary>
+        /// Код типа объекта.
+        /// </summary>
+        public string ObjectTypeCode { get; set; }
+
+        /// <summary>
         /// Название типа объекта.
         /// </summary>
         public string ObjectTypeName { get; set; }

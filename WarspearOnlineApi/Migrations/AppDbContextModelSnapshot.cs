@@ -253,7 +253,7 @@ namespace WarspearOnlineApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FractionID"));
 
-                    b.Property<string>("FractionName")
+                    b.Property<string>("FractionCode")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .IsUnicode(true)
@@ -466,7 +466,7 @@ namespace WarspearOnlineApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServerID"));
 
-                    b.Property<string>("ServerName")
+                    b.Property<string>("ServerCode")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .IsUnicode(true)

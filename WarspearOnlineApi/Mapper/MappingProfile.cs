@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WarspearOnlineApi.Models.BaseModels;
 using WarspearOnlineApi.Models.Dto;
 using WarspearOnlineApi.Models.Dto.Journals;
 using WarspearOnlineApi.Models.Entity;
@@ -18,20 +19,24 @@ namespace WarspearOnlineApi.Mapper
             // Общие.
             CreateMap<wo_Server, ServerDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ServerID))
-                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ServerName));
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ServerCode));
 
-            CreateMap<wo_Fraction, FractionDto>()
+            CreateMap<wo_Fraction, CodeNameBaseModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.FractionID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.FractionCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.FractionName));
 
-            CreateMap<wo_Class, ClassDto>()
+            CreateMap<wo_Class, CodeNameBaseModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ClassID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ClassCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ClassName));
 
-            CreateMap<wo_ObjectType, ObjectTypeDto>()
+            CreateMap<wo_ObjectType, CodeNameBaseModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ObjectTypeID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ObjectTypeCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ObjectTypeName));
 
+            // Добавляемые.
             CreateMap<wo_Object, ObjectDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ObjectID))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ObjectName))

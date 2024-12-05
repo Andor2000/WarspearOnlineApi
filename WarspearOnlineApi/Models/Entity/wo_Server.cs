@@ -13,7 +13,7 @@
         /// <summary>
         /// Название сервера.
         /// </summary>
-        public string ServerName { get; set; }
+        public string ServerCode { get; set; }
 
         /// <summary>
         /// Гильдии.

@@ -13,7 +13,7 @@
         /// <summary>
         /// Название.
         /// </summary>
-        public string GuildName { get; set; } = string.Empty;
+        public string GuildName { get; set; }
 
         /// <summary>
         /// Идентификатор сервера.
