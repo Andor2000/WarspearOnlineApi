@@ -8,9 +8,11 @@ using WarspearOnlineApi.Mapper;
 using WarspearOnlineApi.Controllers;
 using WarspearOnlineApi.Services;
 using WarspearOnlineApi.Services.Journals;
+using System;
 
 
 // Добавить миграцию: add-migration InitMigration
+// dotnet ef migrations add InitMigration --project "F:\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
 var builder = WebApplication.CreateBuilder(args);
 
 // Настройка сервисов
@@ -62,7 +64,7 @@ void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Database.Migrate(); // Применяет все миграции, которые еще не были применены
-
+        dbContext.Database.ExecuteSqlRaw("ALTER DATABASE WarspearOnlineApi COLLATE Cyrillic_General_CI_AS;"); // Разрешает русские символы
         // Инициализация пустых записей
         var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
         initializer.AddEmptyRecords(); // Вставка пустых записей

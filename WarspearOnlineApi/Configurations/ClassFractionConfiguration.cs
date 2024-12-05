@@ -8,7 +8,7 @@ namespace WarspearOnlineApi.Configurations
     {
         public void Configure(EntityTypeBuilder<wo_ClassFraction> builder)
         {
-            builder.ToTable("wo_Drop");
+            builder.ToTable("wo_ClassFraction");
             builder.HasKey(m => m.ClassFractionID);
 
             builder.Property(m => m.ClassFractionID).UseIdentityColumn();

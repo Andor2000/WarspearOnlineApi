@@ -26,7 +26,8 @@ namespace WarspearOnlineApi.Data
         public void AddEmptyRecords()
         {
             var entityTypes = this._сontext.Model.GetEntityTypes();
-            var queries= new StringBuilder();
+            var queries = new StringBuilder();
+
             foreach (var entityType in entityTypes)
             {
                 var tableName = entityType.GetTableName();

@@ -12,12 +12,45 @@ namespace WarspearOnlineApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "wo_AccessLevel",
+                columns: table => new
+                {
+                    AccessLevelID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccessLevelCode = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    AccessLevelName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    rf_ParentAccessLevelID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_wo_AccessLevel", x => x.AccessLevelID);
+                    table.ForeignKey(
+                        name: "FK_wo_AccessLevel_wo_AccessLevel_rf_ParentAccessLevelID",
+                        column: x => x.rf_ParentAccessLevelID,
+                        principalTable: "wo_AccessLevel",
+                        principalColumn: "AccessLevelID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "wo_Class",
+                columns: table => new
+                {
+                    ClassID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClassName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_wo_Class", x => x.ClassID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "wo_Fraction",
                 columns: table => new
                 {
                     FractionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FractionName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty)
+                    FractionName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
@@ -30,11 +63,25 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ObjectTypeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ObjectTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty)
+                    ObjectTypeName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_wo_ObjectType", x => x.ObjectTypeID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "wo_Role",
+                columns: table => new
+                {
+                    RoleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleCode = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    RoleName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_wo_Role", x => x.RoleID);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,11 +90,35 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ServerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServerName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty)
+                    ServerName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_wo_Server", x => x.ServerID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "wo_ClassFraction",
+                columns: table => new
+                {
+                    ClassFractionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rf_ClassID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_wo_ClassFraction", x => x.ClassFractionID);
+                    table.ForeignKey(
+                        name: "FK_wo_ClassFraction_wo_Class_rf_ClassID",
+                        column: x => x.rf_ClassID,
+                        principalTable: "wo_Class",
+                        principalColumn: "ClassID");
+                    table.ForeignKey(
+                        name: "FK_wo_ClassFraction_wo_Fraction_rf_FractionID",
+                        column: x => x.rf_FractionID,
+                        principalTable: "wo_Fraction",
+                        principalColumn: "FractionID");
                 });
 
             migrationBuilder.CreateTable(
@@ -56,8 +127,8 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ObjectID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ObjectName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
+                    ObjectName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    Image = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
                     rf_ObjectTypeID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
@@ -71,12 +142,36 @@ namespace WarspearOnlineApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "wo_AccessLevelRole",
+                columns: table => new
+                {
+                    AccessLevelRoleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    rf_AccessLevelID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_RoleID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_wo_AccessLevelRole", x => x.AccessLevelRoleID);
+                    table.ForeignKey(
+                        name: "FK_wo_AccessLevelRole_wo_AccessLevel_rf_AccessLevelID",
+                        column: x => x.rf_AccessLevelID,
+                        principalTable: "wo_AccessLevel",
+                        principalColumn: "AccessLevelID");
+                    table.ForeignKey(
+                        name: "FK_wo_AccessLevelRole_wo_Role_rf_RoleID",
+                        column: x => x.rf_RoleID,
+                        principalTable: "wo_Role",
+                        principalColumn: "RoleID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "wo_Group",
                 columns: table => new
                 {
                     GroupID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
+                    GroupName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
@@ -101,7 +196,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     GuildID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GuildName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
+                    GuildName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
@@ -126,13 +221,19 @@ namespace WarspearOnlineApi.Migrations
                 {
                     PlayerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nick = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: string.Empty),
+                    Nick = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_ClassID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_wo_Player", x => x.PlayerID);
+                    table.ForeignKey(
+                        name: "FK_wo_Player_wo_Class_rf_ClassID",
+                        column: x => x.rf_ClassID,
+                        principalTable: "wo_Class",
+                        principalColumn: "ClassID");
                     table.ForeignKey(
                         name: "FK_wo_Player_wo_Fraction_rf_FractionID",
                         column: x => x.rf_FractionID,
@@ -155,11 +256,17 @@ namespace WarspearOnlineApi.Migrations
                     Price = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_ObjectID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_GroupID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_wo_Drop", x => x.DropID);
+                    table.ForeignKey(
+                        name: "FK_wo_Drop_wo_Fraction_rf_FractionID",
+                        column: x => x.rf_FractionID,
+                        principalTable: "wo_Fraction",
+                        principalColumn: "FractionID");
                     table.ForeignKey(
                         name: "FK_wo_Drop_wo_Group_rf_GroupID",
                         column: x => x.rf_GroupID,
@@ -208,6 +315,7 @@ namespace WarspearOnlineApi.Migrations
                     DropPlayerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Part = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     rf_DropID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_PlayerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
@@ -225,6 +333,36 @@ namespace WarspearOnlineApi.Migrations
                         principalTable: "wo_Player",
                         principalColumn: "PlayerID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_AccessLevel_rf_ParentAccessLevelID",
+                table: "wo_AccessLevel",
+                column: "rf_ParentAccessLevelID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_AccessLevelRole_rf_AccessLevelID",
+                table: "wo_AccessLevelRole",
+                column: "rf_AccessLevelID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_AccessLevelRole_rf_RoleID",
+                table: "wo_AccessLevelRole",
+                column: "rf_RoleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_ClassFraction_rf_ClassID",
+                table: "wo_ClassFraction",
+                column: "rf_ClassID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_ClassFraction_rf_FractionID",
+                table: "wo_ClassFraction",
+                column: "rf_FractionID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_Drop_rf_FractionID",
+                table: "wo_Drop",
+                column: "rf_FractionID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_wo_Drop_rf_GroupID",
@@ -287,6 +425,16 @@ namespace WarspearOnlineApi.Migrations
                 column: "rf_ObjectTypeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_wo_Player_Nick",
+                table: "wo_Player",
+                column: "Nick");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_Player_rf_ClassID",
+                table: "wo_Player",
+                column: "rf_ClassID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_wo_Player_rf_FractionID",
                 table: "wo_Player",
                 column: "rf_FractionID");
@@ -301,10 +449,22 @@ namespace WarspearOnlineApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "wo_AccessLevelRole");
+
+            migrationBuilder.DropTable(
+                name: "wo_ClassFraction");
+
+            migrationBuilder.DropTable(
                 name: "wo_DropPlayer");
 
             migrationBuilder.DropTable(
                 name: "wo_GroupGuild");
+
+            migrationBuilder.DropTable(
+                name: "wo_AccessLevel");
+
+            migrationBuilder.DropTable(
+                name: "wo_Role");
 
             migrationBuilder.DropTable(
                 name: "wo_Drop");
@@ -320,6 +480,9 @@ namespace WarspearOnlineApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "wo_Object");
+
+            migrationBuilder.DropTable(
+                name: "wo_Class");
 
             migrationBuilder.DropTable(
                 name: "wo_Fraction");

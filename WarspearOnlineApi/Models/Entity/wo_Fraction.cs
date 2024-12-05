@@ -34,5 +34,10 @@
         /// Интерсекция класса и фракции.
         /// </summary>
         public ICollection<wo_ClassFraction> ClassFractions { get; set; } = new List<wo_ClassFraction>();
+
+        /// <summary>
+        /// Список дропа.
+        /// </summary>
+        public ICollection<wo_Drop> Drops { get; set; } = new List<wo_Drop>();
     }
 }

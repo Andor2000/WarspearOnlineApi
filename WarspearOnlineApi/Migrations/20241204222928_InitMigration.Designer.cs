@@ -12,8 +12,8 @@ using WarspearOnlineApi.Data;
 namespace WarspearOnlineApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241119193646_Migration2")]
-    partial class Migration2
+    [Migration("20241204222928_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,46 +25,182 @@ namespace WarspearOnlineApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.Users.wo_AccessLevel", b =>
+                {
+                    b.Property<int>("AccessLevelID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccessLevelID"));
+
+                    b.Property<string>("AccessLevelCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("AccessLevelName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<int>("rf_ParentAccessLevelID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("AccessLevelID");
+
+                    b.HasIndex("rf_ParentAccessLevelID");
+
+                    b.ToTable("wo_AccessLevel", (string)null);
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.Users.wo_AccessLevelRole", b =>
+                {
+                    b.Property<int>("AccessLevelRoleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccessLevelRoleID"));
+
+                    b.Property<int>("rf_AccessLevelID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("rf_RoleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("AccessLevelRoleID");
+
+                    b.HasIndex("rf_AccessLevelID");
+
+                    b.HasIndex("rf_RoleID");
+
+                    b.ToTable("wo_AccessLevelRole", (string)null);
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.Users.wo_Role", b =>
+                {
+                    b.Property<int>("RoleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleID"));
+
+                    b.Property<string>("RoleCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.HasKey("RoleID");
+
+                    b.ToTable("wo_Role", (string)null);
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Class", b =>
+                {
+                    b.Property<int>("ClassID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassID"));
+
+                    b.Property<string>("ClassName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
+
+                    b.HasKey("ClassID");
+
+                    b.ToTable("wo_Class", (string)null);
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_ClassFraction", b =>
+                {
+                    b.Property<int>("ClassFractionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassFractionID"));
+
+                    b.Property<int>("rf_ClassID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("rf_FractionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("ClassFractionID");
+
+                    b.HasIndex("rf_ClassID");
+
+                    b.HasIndex("rf_FractionID");
+
+                    b.ToTable("wo_ClassFraction", (string)null);
+                });
+
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Drop", b =>
                 {
                     b.Property<int>("DropID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("DropID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DropID"));
 
                     b.Property<DateTime>("Drop_Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2(3)")
-                        .HasDefaultValue(new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
-                        .HasColumnName("Drop_Date");
+                        .HasDefaultValue(new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
                     b.Property<int>("Price")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("Price");
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("rf_FractionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_GroupID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_GroupID");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_ObjectID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_ObjectID");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_ServerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_ServerID");
+                        .HasDefaultValue(0);
 
                     b.HasKey("DropID");
+
+                    b.HasIndex("rf_FractionID");
 
                     b.HasIndex("rf_GroupID");
 
@@ -79,31 +215,29 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("DropPlayerID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("DropPlayerID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DropPlayerID"));
 
                     b.Property<bool>("IsPaid")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("Part")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("Part");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_DropID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_DropID");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_PlayerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_PlayerID");
+                        .HasDefaultValue(0);
 
                     b.HasKey("DropPlayerID");
 
@@ -118,17 +252,16 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("FractionID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("FractionID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FractionID"));
 
                     b.Property<string>("FractionName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("FractionName");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
 
                     b.HasKey("FractionID");
 
@@ -139,29 +272,26 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("GroupID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("GroupID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupID"));
 
                     b.Property<string>("GroupName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("GroupName");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
 
                     b.Property<int>("rf_FractionID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_FractionID");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_ServerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_ServerID");
+                        .HasDefaultValue(0);
 
                     b.HasKey("GroupID");
 
@@ -176,22 +306,19 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("GroupGuildID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("GroupGuildID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupGuildID"));
 
                     b.Property<int>("rf_GroupID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_GroupID");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_GuildID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_GuildID");
+                        .HasDefaultValue(0);
 
                     b.HasKey("GroupGuildID");
 
@@ -206,29 +333,26 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("GuildID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("GuildID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuildID"));
 
                     b.Property<string>("GuildName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("GuildName");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
 
                     b.Property<int>("rf_FractionID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_FractionID");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_ServerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_ServerID");
+                        .HasDefaultValue(0);
 
                     b.HasKey("GuildID");
 
@@ -243,30 +367,28 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("ObjectID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ObjectID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ObjectID"));
 
                     b.Property<string>("Image")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("Image");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("ObjectName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("ObjectName");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
 
                     b.Property<int>("rf_ObjectTypeID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_ObjectTypeID");
+                        .HasDefaultValue(0);
 
                     b.HasKey("ObjectID");
 
@@ -279,17 +401,16 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("ObjectTypeID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ObjectTypeID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ObjectTypeID"));
 
                     b.Property<string>("ObjectTypeName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("ObjectTypeName");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
 
                     b.HasKey("ObjectTypeID");
 
@@ -300,31 +421,38 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("PlayerID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("PlayerID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerID"));
 
                     b.Property<string>("Nick")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("Nick");
+                        .HasMaxLength(20)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<int>("rf_ClassID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_FractionID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_FractionID");
+                        .HasDefaultValue(0);
 
                     b.Property<int>("rf_ServerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("rf_ServerID");
+                        .HasDefaultValue(0);
 
                     b.HasKey("PlayerID");
+
+                    b.HasIndex("Nick");
+
+                    b.HasIndex("rf_ClassID");
 
                     b.HasIndex("rf_FractionID");
 
@@ -337,25 +465,79 @@ namespace WarspearOnlineApi.Migrations
                 {
                     b.Property<int>("ServerID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ServerID");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServerID"));
 
                     b.Property<string>("ServerName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue(string.Empty)
-                        .HasColumnName("ServerName");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)")
+                        .HasDefaultValue("");
 
                     b.HasKey("ServerID");
 
                     b.ToTable("wo_Server", (string)null);
                 });
 
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.Users.wo_AccessLevel", b =>
+                {
+                    b.HasOne("WarspearOnlineApi.Models.Entity.Users.wo_AccessLevel", "rf_ParentAccessLevel")
+                        .WithMany("ChildAccessLevels")
+                        .HasForeignKey("rf_ParentAccessLevelID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("rf_ParentAccessLevel");
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.Users.wo_AccessLevelRole", b =>
+                {
+                    b.HasOne("WarspearOnlineApi.Models.Entity.Users.wo_AccessLevel", "rf_AccessLevel")
+                        .WithMany("AccessLevelRoles")
+                        .HasForeignKey("rf_AccessLevelID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WarspearOnlineApi.Models.Entity.Users.wo_Role", "rf_Role")
+                        .WithMany("AccessLevelRoles")
+                        .HasForeignKey("rf_RoleID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("rf_AccessLevel");
+
+                    b.Navigation("rf_Role");
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_ClassFraction", b =>
+                {
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Class", "rf_Class")
+                        .WithMany("ClassFractions")
+                        .HasForeignKey("rf_ClassID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
+                        .WithMany("ClassFractions")
+                        .HasForeignKey("rf_FractionID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("rf_Class");
+
+                    b.Navigation("rf_Fraction");
+                });
+
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Drop", b =>
                 {
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
+                        .WithMany("Drops")
+                        .HasForeignKey("rf_FractionID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Group", "rf_Group")
                         .WithMany("Drops")
                         .HasForeignKey("rf_GroupID")
@@ -373,6 +555,8 @@ namespace WarspearOnlineApi.Migrations
                         .HasForeignKey("rf_ServerID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("rf_Fraction");
 
                     b.Navigation("rf_Group");
 
@@ -470,6 +654,12 @@ namespace WarspearOnlineApi.Migrations
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Player", b =>
                 {
+                    b.HasOne("WarspearOnlineApi.Models.Entity.wo_Class", "rf_Class")
+                        .WithMany("Players")
+                        .HasForeignKey("rf_ClassID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("WarspearOnlineApi.Models.Entity.wo_Fraction", "rf_Fraction")
                         .WithMany("Players")
                         .HasForeignKey("rf_FractionID")
@@ -482,9 +672,30 @@ namespace WarspearOnlineApi.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.Navigation("rf_Class");
+
                     b.Navigation("rf_Fraction");
 
                     b.Navigation("rf_Server");
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.Users.wo_AccessLevel", b =>
+                {
+                    b.Navigation("AccessLevelRoles");
+
+                    b.Navigation("ChildAccessLevels");
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.Users.wo_Role", b =>
+                {
+                    b.Navigation("AccessLevelRoles");
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Class", b =>
+                {
+                    b.Navigation("ClassFractions");
+
+                    b.Navigation("Players");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Drop", b =>
@@ -494,6 +705,10 @@ namespace WarspearOnlineApi.Migrations
 
             modelBuilder.Entity("WarspearOnlineApi.Models.Entity.wo_Fraction", b =>
                 {
+                    b.Navigation("ClassFractions");
+
+                    b.Navigation("Drops");
+
                     b.Navigation("Groups");
 
                     b.Navigation("Guilds");

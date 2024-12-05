@@ -110,9 +110,13 @@ namespace WarspearOnlineApi.Data
                     {
                         property.SetColumnType("datetime2(3)");
                     }
-                    if (property.ClrType == typeof(string) && property.GetMaxLength().IsNullOrDefault())
+                    if (property.ClrType == typeof(string))
                     {
-                        property.SetColumnType("nvarchar(100)");
+                        property.SetIsUnicode(true); // Включаем поддержку Unicode
+                        if (property.GetMaxLength().IsNullOrDefault())
+                        {
+                            property.SetColumnType("nvarchar(100)");
+                        }
                     }
                 }
             }
