@@ -18,7 +18,7 @@
         /// <summary>
         /// Изображение объекта.
         /// </summary>
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
 
         /// <summary>
         /// Идентификатор типа объекта.

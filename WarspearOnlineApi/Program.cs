@@ -68,6 +68,7 @@ void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
         // Инициализация пустых записей
         var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
         initializer.AddEmptyRecords(); // Вставка пустых записей
+        initializer.AddBaseRecords();
     }
 
     // Настройка маршрутов

@@ -54,9 +54,12 @@ end
             this._сontext.Database.GetDbConnection().Execute(resQuery);
         }
 
-        public void CreateBaseRecords()
+        /// <summary>
+        /// Добавление базовых записей в бд.
+        /// </summary>
+        public void AddBaseRecords()
         {
-
+            this._сontext.Database.GetDbConnection().Execute(SqlQueriesInitializer.CreateBaseRecords);
         }
     }
 }

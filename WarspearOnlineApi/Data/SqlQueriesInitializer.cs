@@ -1,4 +1,5 @@
 ﻿using WarspearOnlineApi.Enums.BaseRecordDB;
+using WarspearOnlineApi.Models.Entity;
 using WarspearOnlineApi.Models.Entity.Users;
 
 namespace WarspearOnlineApi.Data
@@ -88,19 +89,19 @@ WHEN NOT MATCHED THEN
 
 
 
-MERGE wo_Server AS TARGET
+MERGE {nameof(wo_Server)} AS TARGET
 USING (
     VALUES
-        ('RU-Topaz')
-       ,('RU-Amber')
-       ,('RU-Ruby')
-) AS source (ServerCode)
-ON TARGET.ServerCode = source.ServerCode        
+        ('{nameof(ServerEnums.RU_Topaz)}')
+       ,('{nameof(ServerEnums.RU_Amber)}')
+       ,('{nameof(ServerEnums.RU_Ruby)}')
+) AS source ({nameof(wo_Server.ServerCode)})
+ON TARGET.{nameof(wo_Server.ServerCode)} = source.{nameof(wo_Server.ServerCode)}        
 WHEN NOT MATCHED THEN
-    INSERT (ServerCode)
-    VALUES (source.ServerCode);
+    INSERT ({nameof(wo_Server.ServerCode)})
+    VALUES (source.{nameof(wo_Server.ServerCode)});
 
-MERGE wo_Class AS TARGET
+MERGE {nameof(wo_Class)} AS TARGET
 USING (
     VALUES
         ('{nameof(ClassEnums.Druid)}', '{nameof(ClassEnums.Druid)}')
@@ -123,38 +124,38 @@ USING (
        ,('{nameof(ClassEnums.DeathKnight)}', '{nameof(ClassEnums.DeathKnight)}')
        ,('{nameof(ClassEnums.Spellcaster)}', '{nameof(ClassEnums.Spellcaster)}')
        ,('{nameof(ClassEnums.Reaper)}', '{nameof(ClassEnums.Reaper)}')
-) AS source (ClassCode, ClassName)
-ON TARGET.ClassCode = source.ClassCode
+) AS source ({nameof(wo_Class.ClassCode)}, {nameof(wo_Class.ClassName)})
+ON TARGET.{nameof(wo_Class.ClassCode)} = source.{nameof(wo_Class.ClassCode)}
 WHEN MATCHED and
-   (TARGET.ClassName != source.ClassName)
+   (TARGET.{nameof(wo_Class.ClassName)} != source.{nameof(wo_Class.ClassName)})
 THEN
     UPDATE SET
-        TARGET.ClassName = source.ClassName
+        TARGET.{nameof(wo_Class.ClassName)} = source.{nameof(wo_Class.ClassName)}
 WHEN NOT MATCHED THEN
-    INSERT (ClassCode, ClassName)
-    VALUES (source.ClassCode, source.ClassName);
+    INSERT ({nameof(wo_Class.ClassCode)}, {nameof(wo_Class.ClassName)})
+    VALUES (source.{nameof(wo_Class.ClassCode)}, source.{nameof(wo_Class.ClassName)});
 
-MERGE wo_Fraction AS TARGET
+MERGE {nameof(wo_Fraction)} AS TARGET
 USING (
     VALUES
         ('{nameof(FractionEnums.Guardian)}', '{nameof(FractionEnums.Guardian)}')
        ,('{nameof(FractionEnums.Legion)}', '{nameof(FractionEnums.Legion)}')
-) AS source (FractionCode, FractionName)
-ON TARGET.FractionCode = source.FractionCode
+) AS source ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Fraction.FractionName)})
+ON TARGET.{nameof(wo_Fraction.FractionCode)} = source.{nameof(wo_Fraction.FractionCode)}
 WHEN MATCHED and
-   (TARGET.FractionName != source.FractionName)
+   (TARGET.{nameof(wo_Fraction.FractionName)} != source.{nameof(wo_Fraction.FractionName)})
 THEN
     UPDATE SET
-        TARGET.FractionName = source.FractionName
+        TARGET.{nameof(wo_Fraction.FractionName)} = source.{nameof(wo_Fraction.FractionName)}
 WHEN NOT MATCHED THEN
-    INSERT (FractionCode, FractionName)
-    VALUES (source.FractionCode, source.FractionName);
+    INSERT ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Fraction.FractionName)})
+    VALUES (source.{nameof(wo_Fraction.FractionCode)}, source.{nameof(wo_Fraction.FractionName)});
 
-MERGE wo_ClassFraction AS TARGET
+MERGE {nameof(wo_ClassFraction)} AS TARGET
 USING (
 	select
-	class.ClassID,
-	fraction.FractionID
+	class.{nameof(wo_Class.ClassID)},
+	fraction.{nameof(wo_Fraction.FractionID)}
 	from (
 		VALUES
 		    ('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Druid)}')
@@ -177,17 +178,35 @@ USING (
            ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.DeathKnight)}')
            ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Spellcaster)}')
            ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Reaper)}')
-	) as source (FractionCode, ClassCode)
-	join wo_Fraction as fractoin on source.FractionCode = fractoin.FractionCode
-	join wo_Class as class on source.ClassCode = class.ClassCode
-) AS source (rf_ClassID, rf_FractionID)
-ON TARGET.rf_FractionID = source.rf_FractionID and TARGET.rf_ClassID = source.rf_ClassID
+	) as source ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Class.ClassCode)})
+	join {nameof(wo_Fraction)} as fractoin on source.{nameof(wo_Fraction.FractionCode)} = fractoin.{nameof(wo_Fraction.FractionCode)}
+	join {nameof(wo_Class)} as class on source.{nameof(wo_Class.ClassCode)} = class.{nameof(wo_Class.ClassCode)}
+) AS source ({nameof(wo_ClassFraction.rf_ClassID)}, {nameof(wo_ClassFraction.rf_FractionID)})
+ON TARGET.{nameof(wo_ClassFraction.rf_FractionID)} = source.{nameof(wo_ClassFraction.rf_FractionID)} and TARGET.{nameof(wo_ClassFraction.rf_ClassID)} = source.{nameof(wo_ClassFraction.rf_ClassID)}
 WHEN NOT MATCHED THEN
-    INSERT (rf_FractionID, rf_ClassID)
-    VALUES (source.rf_FractionID, source.rf_ClassID);
+    INSERT ({nameof(wo_ClassFraction.rf_FractionID)}, {nameof(wo_ClassFraction.rf_ClassID)})
+    VALUES (source.{nameof(wo_ClassFraction.rf_FractionID)}, source.{nameof(wo_ClassFraction.rf_ClassID)});
 
 
-wo_ObjectType
-wo_Object";
+MERGE {nameof(wo_ObjectType)} AS TARGET
+USING (
+    VALUES
+        ('{nameof(ObjectTypeEnums.Book)}', '{ObjectTypeEnums.Book}')
+       ,('{nameof(ObjectTypeEnums.Costume)}', '{ObjectTypeEnums.Costume}')
+) AS source ({nameof(wo_ObjectType.ObjectTypeCode)}, {nameof(wo_ObjectType.ObjectTypeName)})
+ON TARGET.{nameof(wo_ObjectType.ObjectTypeCode)} = source.{nameof(wo_ObjectType.ObjectTypeCode)}
+WHEN MATCHED and
+   (TARGET.{nameof(wo_ObjectType.ObjectTypeName)} != source.{nameof(wo_ObjectType.ObjectTypeName)})
+THEN
+    UPDATE SET
+        TARGET.{nameof(wo_ObjectType.ObjectTypeName)} = source.{nameof(wo_ObjectType.ObjectTypeName)}
+WHEN NOT MATCHED THEN
+    INSERT ({nameof(wo_ObjectType.ObjectTypeCode)}, {nameof(wo_ObjectType.ObjectTypeName)})
+    VALUES (source.{nameof(wo_ObjectType.ObjectTypeCode)}, source.{nameof(wo_ObjectType.ObjectTypeName)});
+
+
+wo_Object
+
+";
     }
 }
