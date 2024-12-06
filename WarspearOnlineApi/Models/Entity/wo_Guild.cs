@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Models.Entity
 {
     /// <summary>
     /// Entity-модель гильдии.
@@ -13,6 +15,7 @@
         /// <summary>
         /// Название.
         /// </summary>
+        [MaxLength(10)]
         public string GuildName { get; set; }
 
         /// <summary>

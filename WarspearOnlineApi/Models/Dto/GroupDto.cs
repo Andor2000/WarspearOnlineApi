@@ -15,6 +15,6 @@ namespace WarspearOnlineApi.Models.Dto
         /// <summary>
         /// Фракция.
         /// </summary>
-        public FractionDto Fraction { get; set; } = new FractionDto();
+        public CodeNameBaseModel Fraction { get; set; } = new CodeNameBaseModel();
     }
 }

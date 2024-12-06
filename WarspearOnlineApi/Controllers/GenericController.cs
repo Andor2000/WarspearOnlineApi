@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WarspearOnlineApi.Models.BaseModels;
 using WarspearOnlineApi.Models.Dto;
 using WarspearOnlineApi.Services;
 
@@ -53,7 +54,7 @@ namespace WarspearOnlineApi.Controllers
         /// <param name="fractionId">Идентификатор фракции.</param>
         /// <returns>Фракция.</returns>
         [HttpGet("Fraction/{fractionId}")]
-        public async Task<ActionResult<FractionDto>> GetFraction(int fractionId)
+        public async Task<ActionResult<CodeNameBaseModel>> GetFraction(int fractionId)
         {
             return Ok(await _genericService.GetFraction(fractionId));
         }
@@ -64,7 +65,7 @@ namespace WarspearOnlineApi.Controllers
         /// <param name="search">Строка поиска.</param>
         /// <returns>Список фракций.</returns>
         [HttpGet("Fraction/List")]
-        public async Task<ActionResult<FractionDto[]>> GetFractionList(string search)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetFractionList(string search)
         {
             return Ok(await _genericService.GetFractionList(search));
         }
@@ -75,7 +76,7 @@ namespace WarspearOnlineApi.Controllers
         /// <param name="fractionId">Идентификатор фракции.</param>
         /// <returns>Класс.</returns>
         [HttpGet("Class/{fractionId}")]
-        public async Task<ActionResult<ClassDto>> GetClass(int classId)
+        public async Task<ActionResult<CodeNameBaseModel>> GetClass(int classId)
         {
             return Ok(await _genericService.GetFraction(classId));
         }
@@ -86,7 +87,7 @@ namespace WarspearOnlineApi.Controllers
         /// <param name="search">Строка поиска.</param>
         /// <returns>Список классов.</returns>
         [HttpGet("Class/List")]
-        public async Task<ActionResult<ClassDto[]>> GetClassList(string search)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search)
         {
             return Ok(await _genericService.GetClassList(search));
         }

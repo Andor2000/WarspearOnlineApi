@@ -3,7 +3,7 @@
     /// <summary>
     /// Серверы.
     /// </summary>
-    public static class ServerEnums
+    public static class ServerEnum
     {
         /// <summary>
         /// Топаз.

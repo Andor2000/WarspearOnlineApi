@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Models.Entity
 {
     /// <summary>
     /// Entity-модель группы.
@@ -13,6 +15,7 @@
         /// <summary>
         /// Название группы.
         /// </summary>
+        [MaxLength(50)]
         public string GroupName { get; set; }
 
         /// <summary>

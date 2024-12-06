@@ -3,7 +3,7 @@
     /// <summary>
     /// Классы.
     /// </summary>
-    public class ClassEnums
+    public class ClassEnum
     {
         /// <summary>
         /// Друид.

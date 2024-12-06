@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Models.Entity
 {
     /// <summary>
     /// Entity-модель типа объекта.
@@ -13,11 +15,13 @@
         /// <summary>
         /// Код типа объекта.
         /// </summary>
+        [MaxLength(50)]
         public string ObjectTypeCode { get; set; }
 
         /// <summary>
         /// Название типа объекта.
         /// </summary>
+        [MaxLength(50)]
         public string ObjectTypeName { get; set; }
 
         /// <summary>

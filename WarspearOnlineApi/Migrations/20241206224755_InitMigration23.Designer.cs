@@ -12,8 +12,8 @@ using WarspearOnlineApi.Data;
 namespace WarspearOnlineApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241204222928_InitMigration")]
-    partial class InitMigration
+    [Migration("20241206224755_InitMigration23")]
+    partial class InitMigration23
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,11 +121,20 @@ namespace WarspearOnlineApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassID"));
 
+                    b.Property<string>("ClassCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("ClassName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("");
 
                     b.HasKey("ClassID");
@@ -259,8 +268,17 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("FractionCode")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("FractionName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("");
 
                     b.HasKey("FractionID");
@@ -279,8 +297,9 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("GroupName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(50)")
                         .HasDefaultValue("");
 
                     b.Property<int>("rf_FractionID")
@@ -340,8 +359,9 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("GuildName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(10)")
                         .HasDefaultValue("");
 
                     b.Property<int>("rf_FractionID")
@@ -374,6 +394,15 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(2147483647)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("ObjectCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(100)")
                         .HasDefaultValue("");
@@ -381,8 +410,9 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("ObjectName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(150)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(150)")
                         .HasDefaultValue("");
 
                     b.Property<int>("rf_ObjectTypeID")
@@ -405,11 +435,20 @@ namespace WarspearOnlineApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ObjectTypeID"));
 
+                    b.Property<string>("ObjectTypeCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+
                     b.Property<string>("ObjectTypeName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(50)")
                         .HasDefaultValue("");
 
                     b.HasKey("ObjectTypeID");
@@ -472,8 +511,17 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("ServerCode")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("");
+
+                    b.Property<string>("ServerName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("");
 
                     b.HasKey("ServerID");

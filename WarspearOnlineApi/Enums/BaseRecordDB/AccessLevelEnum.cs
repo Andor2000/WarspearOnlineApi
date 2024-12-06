@@ -3,7 +3,7 @@
     /// <summary>
     /// Уровень доступа.
     /// </summary>
-    public static class AccessLevelEnums
+    public static class AccessLevelEnum
     {
         /// <summary>
         /// Главный администратор.

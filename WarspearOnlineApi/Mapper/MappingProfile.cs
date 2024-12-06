@@ -19,7 +19,8 @@ namespace WarspearOnlineApi.Mapper
             // Общие.
             CreateMap<wo_Server, ServerDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ServerID))
-                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ServerCode));
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ServerCode))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ServerName));
 
             CreateMap<wo_Fraction, CodeNameBaseModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.FractionID))
@@ -39,6 +40,7 @@ namespace WarspearOnlineApi.Mapper
             // Добавляемые.
             CreateMap<wo_Object, ObjectDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ObjectID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ObjectCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ObjectName))
                 .ForMember(x => x.Image, opt => opt.MapFrom(s => s.Image))
                 .ForMember(x => x.ObjectType, opt => opt.MapFrom(s => s.rf_ObjectType));

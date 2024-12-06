@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Models.Entity
 {
     /// <summary>
     /// Entity-модель фракции.
@@ -13,11 +15,13 @@
         /// <summary>
         /// Код фракции.
         /// </summary>
+        [MaxLength(20)]
         public string FractionCode { get; set; }
 
         /// <summary>
         /// Название фракции.
         /// </summary>
+        [MaxLength(20)]
         public string FractionName { get; set; }
 
         /// <summary>

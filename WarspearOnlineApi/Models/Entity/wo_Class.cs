@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Models.Entity
 {
     /// <summary>
     /// Dto-модель класса игрока.
@@ -13,11 +15,13 @@
         /// <summary>
         /// Код.
         /// </summary>
+        [MaxLength(20)]
         public string ClassCode{ get; set; }
 
         /// <summary>
         /// Наименование.
         /// </summary>
+        [MaxLength(20)]
         public string ClassName { get; set; }
 
         /// <summary>

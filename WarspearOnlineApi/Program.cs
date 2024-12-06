@@ -8,7 +8,6 @@ using WarspearOnlineApi.Mapper;
 using WarspearOnlineApi.Controllers;
 using WarspearOnlineApi.Services;
 using WarspearOnlineApi.Services.Journals;
-using System;
 
 
 // Добавить миграцию: add-migration InitMigration

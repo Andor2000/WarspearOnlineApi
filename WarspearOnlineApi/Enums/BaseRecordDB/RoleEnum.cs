@@ -3,7 +3,7 @@
     /// <summary>
     /// Роли.
     /// </summary>
-    public class RoleEnums
+    public class RoleEnum
     {
         /// <summary>
         /// Добавление нового игрока.

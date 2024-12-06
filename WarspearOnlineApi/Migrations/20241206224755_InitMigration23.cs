@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WarspearOnlineApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration : Migration
+    public partial class InitMigration23 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,7 +37,8 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ClassID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClassName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
+                    ClassCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: ""),
+                    ClassName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
@@ -50,7 +51,8 @@ namespace WarspearOnlineApi.Migrations
                 {
                     FractionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FractionName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
+                    FractionCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: ""),
+                    FractionName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
@@ -63,7 +65,8 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ObjectTypeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ObjectTypeName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
+                    ObjectTypeCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
+                    ObjectTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
@@ -90,7 +93,8 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ServerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ServerName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: "")
+                    ServerCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: ""),
+                    ServerName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
@@ -127,8 +131,9 @@ namespace WarspearOnlineApi.Migrations
                 {
                     ObjectID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ObjectName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
-                    Image = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    ObjectCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, defaultValue: ""),
+                    ObjectName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false, defaultValue: ""),
+                    Image = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false, defaultValue: ""),
                     rf_ObjectTypeID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
@@ -171,7 +176,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     GroupID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    GroupName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
@@ -196,7 +201,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     GuildID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GuildName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    GuildName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },

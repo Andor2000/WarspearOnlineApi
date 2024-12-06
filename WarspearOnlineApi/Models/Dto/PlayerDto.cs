@@ -15,7 +15,7 @@ namespace WarspearOnlineApi.Models.Dto
         /// <summary>
         /// Класс.
         /// </summary>
-        public ClassDto Class { get; set; } = new ClassDto();
+        public CodeNameBaseModel Class { get; set; } = new CodeNameBaseModel();
 
         /// <summary>
         /// Сервер.
@@ -25,6 +25,6 @@ namespace WarspearOnlineApi.Models.Dto
         /// <summary>
         /// Фракция.
         /// </summary>
-        public FractionDto Fraction { get; set; } = new FractionDto();
+        public CodeNameBaseModel Fraction { get; set; } = new CodeNameBaseModel();
     }
 }

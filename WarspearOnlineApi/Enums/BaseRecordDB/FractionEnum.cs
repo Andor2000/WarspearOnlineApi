@@ -3,7 +3,7 @@
     /// <summary>
     /// Фракции.
     /// </summary>
-    public class FractionEnums
+    public class FractionEnum
     {
         /// <summary>
         /// Хранитель.

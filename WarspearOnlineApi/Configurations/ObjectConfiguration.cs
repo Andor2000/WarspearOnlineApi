@@ -15,6 +15,7 @@ namespace WarspearOnlineApi.Configurations
             builder.HasKey(m => m.ObjectID);
 
             builder.Property(m => m.ObjectID).UseIdentityColumn();
+            builder.Property(m => m.ObjectCode).HasDefaultValue(string.Empty);
             builder.Property(m => m.ObjectName).HasDefaultValue(string.Empty);
             builder.Property(m => m.Image).HasDefaultValue(string.Empty);
 

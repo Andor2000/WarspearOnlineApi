@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Models.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Models.Entity
 {
     /// <summary>
     /// Entity-модель сервера.
@@ -13,7 +15,14 @@
         /// <summary>
         /// Название сервера.
         /// </summary>
+        [MaxLength(20)]
         public string ServerCode { get; set; }
+
+        /// <summary>
+        /// Название сервера.
+        /// </summary>
+        [MaxLength(20)]
+        public string ServerName { get; set; }
 
         /// <summary>
         /// Гильдии.

@@ -3,7 +3,7 @@
     /// <summary>
     /// Типы объектов.
     /// </summary>
-    public static class ObjectTypeEnums
+    public static class ObjectTypeEnum
     {
         /// <summary>
         /// Книга.

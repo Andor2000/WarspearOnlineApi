@@ -5,7 +5,7 @@ namespace WarspearOnlineApi.Models.Dto
     /// <summary>
     /// Dto-модель сервера.
     /// </summary>
-    public class ServerDto : BaseModel
+    public class ServerDto : CodeNameBaseModel
     {
         /// <summary>
         /// Код.

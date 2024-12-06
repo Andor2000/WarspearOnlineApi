@@ -16,9 +16,9 @@ namespace WarspearOnlineApi.Data
 MERGE {nameof(wo_AccessLevel)} as TARGET
 USING (
 	VALUES
-	    ('{nameof(AccessLevelEnums.MainAdmin)}', '{AccessLevelEnums.MainAdmin}')
-	   ,('{nameof(AccessLevelEnums.Admin)}', '{AccessLevelEnums.Admin}')
-	   ,('{nameof(AccessLevelEnums.Moderator)}', '{AccessLevelEnums.Moderator}')
+	    ('{nameof(AccessLevelEnum.MainAdmin)}', '{AccessLevelEnum.MainAdmin}')
+	   ,('{nameof(AccessLevelEnum.Admin)}', '{AccessLevelEnum.Admin}')
+	   ,('{nameof(AccessLevelEnum.Moderator)}', '{AccessLevelEnum.Moderator}')
 ) as source ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_AccessLevel.AccessLevelName)})
 on TARGET.{nameof(wo_AccessLevel.AccessLevelCode)} = source.{nameof(wo_AccessLevel.AccessLevelName)}
 WHEN MATCHED and
@@ -32,26 +32,26 @@ WHEN NOT MATCHED THEN
 
 
 UPDATE record
-SET {nameof(wo_AccessLevel.rf_ParentAccessLevel)} = parent.{nameof(wo_AccessLevel.AccessLevelID)}
+SET {nameof(wo_AccessLevel.rf_ParentAccessLevelID)} = parent.{nameof(wo_AccessLevel.AccessLevelID)}
 FROM (
     VALUES
-        ('{nameof(AccessLevelEnums.Admin)}', '{nameof(AccessLevelEnums.MainAdmin)}'),
-        ('{nameof(AccessLevelEnums.Moderator)}', '{nameof(AccessLevelEnums.Admin)}')
-) as subquery (recordCode, parentCode)
-join {nameof(wo_AccessLevel)} as record on record.{nameof(wo_AccessLevel.AccessLevelCode)} = subquery.recordCode
-join {nameof(wo_AccessLevel)} as parent on parent.{nameof(wo_AccessLevel.AccessLevelCode)} = subquery.parentCode
-where record.{nameof(wo_AccessLevel.rf_ParentAccessLevel)} != parent.{nameof(wo_AccessLevel.AccessLevelID)}
+        ('{nameof(AccessLevelEnum.Admin)}', '{nameof(AccessLevelEnum.MainAdmin)}'),
+        ('{nameof(AccessLevelEnum.Moderator)}', '{nameof(AccessLevelEnum.Admin)}')
+) as subquery (record{nameof(wo_AccessLevel.AccessLevelCode)}, parent{nameof(wo_AccessLevel.AccessLevelCode)})
+join {nameof(wo_AccessLevel)} as record on record.{nameof(wo_AccessLevel.AccessLevelCode)} = subquery.record{nameof(wo_AccessLevel.AccessLevelCode)}
+join {nameof(wo_AccessLevel)} as parent on parent.{nameof(wo_AccessLevel.AccessLevelCode)} = subquery.parent{nameof(wo_AccessLevel.AccessLevelCode)}
+where record.{nameof(wo_AccessLevel.rf_ParentAccessLevelID)} != parent.{nameof(wo_AccessLevel.AccessLevelID)}
 
 
 MERGE {nameof(wo_Role)} AS TARGET
 USING (
     VALUES
-        ('{nameof(RoleEnums.AddPlayer)}', '{RoleEnums.AddPlayer}')
-       ,('{nameof(RoleEnums.AddDrop)}', '{RoleEnums.AddDrop}')
-       ,('{nameof(RoleEnums.AddGroup)}', '{RoleEnums.AddGroup}')
-       ,('{nameof(RoleEnums.AddGuild)}', '{RoleEnums.AddGuild}')
-       ,('{nameof(RoleEnums.AddObject)}', '{RoleEnums.AddObject}')
-       ,('{nameof(RoleEnums.AddClass)}', '{RoleEnums.AddClass}')
+        ('{nameof(RoleEnum.AddPlayer)}', '{RoleEnum.AddPlayer}')
+       ,('{nameof(RoleEnum.AddDrop)}', '{RoleEnum.AddDrop}')
+       ,('{nameof(RoleEnum.AddGroup)}', '{RoleEnum.AddGroup}')
+       ,('{nameof(RoleEnum.AddGuild)}', '{RoleEnum.AddGuild}')
+       ,('{nameof(RoleEnum.AddObject)}', '{RoleEnum.AddObject}')
+       ,('{nameof(RoleEnum.AddClass)}', '{RoleEnum.AddClass}')
 ) AS source ({nameof(wo_Role.RoleCode)}, {nameof(wo_Role.RoleName)})
 ON TARGET.{nameof(wo_Role.RoleCode)} = source.{nameof(wo_Role.RoleCode)}
 WHEN MATCHED AND
@@ -71,15 +71,15 @@ USING (
 	al.{nameof(wo_AccessLevel.AccessLevelID)}
 	from (
 		VALUES 
-			 ('{nameof(RoleEnums.AddPlayer)}', '{nameof(AccessLevelEnums.Moderator)}')
-			,('{nameof(RoleEnums.AddDrop)}', '{nameof(AccessLevelEnums.Moderator)}')
-			,('{nameof(RoleEnums.AddGuild)}', '{nameof(AccessLevelEnums.Admin)}')
-			,('{nameof(RoleEnums.AddGroup)}', '{nameof(AccessLevelEnums.MainAdmin)}')
-			,('{nameof(RoleEnums.AddObject)}', '{nameof(AccessLevelEnums.MainAdmin)}')
-			,('{nameof(RoleEnums.AddClass)}', '{nameof(AccessLevelEnums.MainAdmin)}')
-	) as source (role, accessLevel)
-	join {nameof(wo_Role)} as role on source.role = role.{nameof(wo_Role.RoleCode)}
-	join {nameof(wo_AccessLevel)} as al on source.accessLevel = al.{nameof(wo_AccessLevel.AccessLevelCode)}
+			 ('{nameof(RoleEnum.AddPlayer)}', '{nameof(AccessLevelEnum.Moderator)}')
+			,('{nameof(RoleEnum.AddDrop)}', '{nameof(AccessLevelEnum.Moderator)}')
+			,('{nameof(RoleEnum.AddGuild)}', '{nameof(AccessLevelEnum.Admin)}')
+			,('{nameof(RoleEnum.AddGroup)}', '{nameof(AccessLevelEnum.MainAdmin)}')
+			,('{nameof(RoleEnum.AddObject)}', '{nameof(AccessLevelEnum.MainAdmin)}')
+			,('{nameof(RoleEnum.AddClass)}', '{nameof(AccessLevelEnum.MainAdmin)}')
+	) as source ({nameof(wo_Role.RoleCode)}, {nameof(wo_AccessLevel.AccessLevelCode)})
+	join {nameof(wo_Role)} as role on source.{nameof(wo_Role.RoleCode)} = role.{nameof(wo_Role.RoleCode)}
+	join {nameof(wo_AccessLevel)} as al on source.{nameof(wo_AccessLevel.AccessLevelCode)} = al.{nameof(wo_AccessLevel.AccessLevelCode)}
 ) AS source ({nameof(wo_AccessLevelRole.rf_RoleID)}, {nameof(wo_AccessLevelRole.rf_AccessLevelID)})
 ON TARGET.{nameof(wo_AccessLevelRole.rf_AccessLevelID)} = source.{nameof(wo_AccessLevelRole.rf_AccessLevelID)}
 WHEN NOT MATCHED THEN
@@ -92,9 +92,9 @@ WHEN NOT MATCHED THEN
 MERGE {nameof(wo_Server)} AS TARGET
 USING (
     VALUES
-        ('{nameof(ServerEnums.RU_Topaz)}')
-       ,('{nameof(ServerEnums.RU_Amber)}')
-       ,('{nameof(ServerEnums.RU_Ruby)}')
+        ('{nameof(ServerEnum.RU_Topaz)}')
+       ,('{nameof(ServerEnum.RU_Amber)}')
+       ,('{nameof(ServerEnum.RU_Ruby)}')
 ) AS source ({nameof(wo_Server.ServerCode)})
 ON TARGET.{nameof(wo_Server.ServerCode)} = source.{nameof(wo_Server.ServerCode)}        
 WHEN NOT MATCHED THEN
@@ -104,26 +104,26 @@ WHEN NOT MATCHED THEN
 MERGE {nameof(wo_Class)} AS TARGET
 USING (
     VALUES
-        ('{nameof(ClassEnums.Druid)}', '{nameof(ClassEnums.Druid)}')
-       ,('{nameof(ClassEnums.StrikingBlade)}', '{nameof(ClassEnums.StrikingBlade)}')
-       ,('{nameof(ClassEnums.Ranger)}', '{nameof(ClassEnums.Ranger)}')
-       ,('{nameof(ClassEnums.Guardian)}', '{nameof(ClassEnums.Guardian)}')
-       ,('{nameof(ClassEnums.Hunter)}', '{nameof(ClassEnums.Hunter)}')
-       ,('{nameof(ClassEnums.Paladin)}', '{nameof(ClassEnums.Paladin)}')
-       ,('{nameof(ClassEnums.Priest)}', '{nameof(ClassEnums.Priest)}')
-       ,('{nameof(ClassEnums.Mage)}', '{nameof(ClassEnums.Mage)}')
-       ,('{nameof(ClassEnums.Seeker)}', '{nameof(ClassEnums.Seeker)}')
-       ,('{nameof(ClassEnums.Templar)}', '{nameof(ClassEnums.Templar)}')
-       ,('{nameof(ClassEnums.Barbarian)}', '{nameof(ClassEnums.Barbarian)}')
-       ,('{nameof(ClassEnums.Rogue)}', '{nameof(ClassEnums.Rogue)}')
-       ,('{nameof(ClassEnums.Shaman)}', '{nameof(ClassEnums.Shaman)}')
-       ,('{nameof(ClassEnums.Archer)}', '{nameof(ClassEnums.Archer)}')
-       ,('{nameof(ClassEnums.Chieftain)}', '{nameof(ClassEnums.Chieftain)}')
-       ,('{nameof(ClassEnums.Necromancer)}', '{nameof(ClassEnums.Necromancer)}')
-       ,('{nameof(ClassEnums.Warlock)}', '{nameof(ClassEnums.Warlock)}')
-       ,('{nameof(ClassEnums.DeathKnight)}', '{nameof(ClassEnums.DeathKnight)}')
-       ,('{nameof(ClassEnums.Spellcaster)}', '{nameof(ClassEnums.Spellcaster)}')
-       ,('{nameof(ClassEnums.Reaper)}', '{nameof(ClassEnums.Reaper)}')
+        ('{nameof(ClassEnum.Druid)}', '{ClassEnum.Druid}')
+       ,('{nameof(ClassEnum.StrikingBlade)}', '{ClassEnum.StrikingBlade}')
+       ,('{nameof(ClassEnum.Ranger)}', '{ClassEnum.Ranger}')
+       ,('{nameof(ClassEnum.Guardian)}', '{ClassEnum.Guardian}')
+       ,('{nameof(ClassEnum.Hunter)}', '{ClassEnum.Hunter}')
+       ,('{nameof(ClassEnum.Paladin)}', '{ClassEnum.Paladin}')
+       ,('{nameof(ClassEnum.Priest)}', '{ClassEnum.Priest}')
+       ,('{nameof(ClassEnum.Mage)}', '{ClassEnum.Mage}')
+       ,('{nameof(ClassEnum.Seeker)}', '{ClassEnum.Seeker}')
+       ,('{nameof(ClassEnum.Templar)}', '{ClassEnum.Templar}')
+       ,('{nameof(ClassEnum.Barbarian)}', '{ClassEnum.Barbarian}')
+       ,('{nameof(ClassEnum.Rogue)}', '{ClassEnum.Rogue}')
+       ,('{nameof(ClassEnum.Shaman)}', '{ClassEnum.Shaman}')
+       ,('{nameof(ClassEnum.Archer)}', '{ClassEnum.Archer}')
+       ,('{nameof(ClassEnum.Chieftain)}', '{ClassEnum.Chieftain}')
+       ,('{nameof(ClassEnum.Necromancer)}', '{ClassEnum.Necromancer}')
+       ,('{nameof(ClassEnum.Warlock)}', '{ClassEnum.Warlock}')
+       ,('{nameof(ClassEnum.DeathKnight)}', '{ClassEnum.DeathKnight}')
+       ,('{nameof(ClassEnum.Spellcaster)}', '{ClassEnum.Spellcaster}')
+       ,('{nameof(ClassEnum.Reaper)}', '{ClassEnum.Reaper}')
 ) AS source ({nameof(wo_Class.ClassCode)}, {nameof(wo_Class.ClassName)})
 ON TARGET.{nameof(wo_Class.ClassCode)} = source.{nameof(wo_Class.ClassCode)}
 WHEN MATCHED and
@@ -138,8 +138,8 @@ WHEN NOT MATCHED THEN
 MERGE {nameof(wo_Fraction)} AS TARGET
 USING (
     VALUES
-        ('{nameof(FractionEnums.Guardian)}', '{nameof(FractionEnums.Guardian)}')
-       ,('{nameof(FractionEnums.Legion)}', '{nameof(FractionEnums.Legion)}')
+        ('{nameof(FractionEnum.Guardian)}', '{FractionEnum.Guardian}')
+       ,('{nameof(FractionEnum.Legion)}', '{FractionEnum.Legion}')
 ) AS source ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Fraction.FractionName)})
 ON TARGET.{nameof(wo_Fraction.FractionCode)} = source.{nameof(wo_Fraction.FractionCode)}
 WHEN MATCHED and
@@ -158,28 +158,28 @@ USING (
 	fraction.{nameof(wo_Fraction.FractionID)}
 	from (
 		VALUES
-		    ('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Druid)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.StrikingBlade)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Ranger)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Guardian)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Hunter)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Paladin)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Priest)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Mage)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Seeker)}')
-           ,('{nameof(FractionEnums.Guardian)}', '{nameof(ClassEnums.Templar)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Barbarian)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Rogue)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Shaman)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Archer)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Chieftain)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Necromancer)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Warlock)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.DeathKnight)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Spellcaster)}')
-           ,('{nameof(FractionEnums.Legion)}', '{nameof(ClassEnums.Reaper)}')
+		    ('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Druid)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.StrikingBlade)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Ranger)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Guardian)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Hunter)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Paladin)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Priest)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Mage)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Seeker)}')
+           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Templar)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Barbarian)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Rogue)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Shaman)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Archer)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Chieftain)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Necromancer)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Warlock)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.DeathKnight)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Spellcaster)}')
+           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Reaper)}')
 	) as source ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Class.ClassCode)})
-	join {nameof(wo_Fraction)} as fractoin on source.{nameof(wo_Fraction.FractionCode)} = fractoin.{nameof(wo_Fraction.FractionCode)}
+	join {nameof(wo_Fraction)} as fraction on source.{nameof(wo_Fraction.FractionCode)} = fraction.{nameof(wo_Fraction.FractionCode)}
 	join {nameof(wo_Class)} as class on source.{nameof(wo_Class.ClassCode)} = class.{nameof(wo_Class.ClassCode)}
 ) AS source ({nameof(wo_ClassFraction.rf_ClassID)}, {nameof(wo_ClassFraction.rf_FractionID)})
 ON TARGET.{nameof(wo_ClassFraction.rf_FractionID)} = source.{nameof(wo_ClassFraction.rf_FractionID)} and TARGET.{nameof(wo_ClassFraction.rf_ClassID)} = source.{nameof(wo_ClassFraction.rf_ClassID)}
@@ -191,8 +191,8 @@ WHEN NOT MATCHED THEN
 MERGE {nameof(wo_ObjectType)} AS TARGET
 USING (
     VALUES
-        ('{nameof(ObjectTypeEnums.Book)}', '{ObjectTypeEnums.Book}')
-       ,('{nameof(ObjectTypeEnums.Costume)}', '{ObjectTypeEnums.Costume}')
+        ('{nameof(ObjectTypeEnum.Book)}', '{ObjectTypeEnum.Book}')
+       ,('{nameof(ObjectTypeEnum.Costume)}', '{ObjectTypeEnum.Costume}')
 ) AS source ({nameof(wo_ObjectType.ObjectTypeCode)}, {nameof(wo_ObjectType.ObjectTypeName)})
 ON TARGET.{nameof(wo_ObjectType.ObjectTypeCode)} = source.{nameof(wo_ObjectType.ObjectTypeCode)}
 WHEN MATCHED and
@@ -205,8 +205,38 @@ WHEN NOT MATCHED THEN
     VALUES (source.{nameof(wo_ObjectType.ObjectTypeCode)}, source.{nameof(wo_ObjectType.ObjectTypeName)});
 
 
-wo_Object
-
-";
+MERGE {nameof(wo_Object)} AS TARGET
+USING (
+	select
+	source.{nameof(wo_Object.ObjectCode)},
+	source.{nameof(wo_Object.ObjectName)},
+	source.{nameof(wo_Object.Image)},
+	objectType.{nameof(wo_ObjectType.ObjectTypeID)}
+	from (
+		VALUES
+        ('{nameof(DropEnum.vyaz_krit_dd)}',  '{DropEnum.vyaz_krit_dd}',  '{DropEnum.GetImage(nameof(DropEnum.vyaz_krit_dd))}',  '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.vyaz_krit_hil)}', '{DropEnum.vyaz_krit_hil}', '{DropEnum.GetImage(nameof(DropEnum.vyaz_krit_hil))}', '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.inj_fiz)}',       '{DropEnum.inj_fiz}',       '{DropEnum.GetImage(nameof(DropEnum.inj_fiz))}',       '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.inj_mag)}',       '{DropEnum.inj_mag}',       '{DropEnum.GetImage(nameof(DropEnum.inj_mag))}',       '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.ork)}',           '{DropEnum.ork}',           '{DropEnum.GetImage(nameof(DropEnum.ork))}',           '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.sprut)}',         '{DropEnum.sprut}',         '{DropEnum.GetImage(nameof(DropEnum.sprut))}',         '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.jija_db)}',       '{DropEnum.jija_db}',       '{DropEnum.GetImage(nameof(DropEnum.jija_db))}',       '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.jija_bb)}',       '{DropEnum.jija_bb}',       '{DropEnum.GetImage(nameof(DropEnum.jija_bb))}',       '{nameof(ObjectTypeEnum.Book)}')
+       ,('{nameof(DropEnum.demon)}',         '{DropEnum.demon}',         '{DropEnum.GetImage(nameof(DropEnum.demon))}',         '{nameof(ObjectTypeEnum.Book)}')
+	) as source ({nameof(wo_Object.ObjectCode)}, {nameof(wo_Object.ObjectName)}, {nameof(wo_Object.Image)}, {nameof(wo_ObjectType.ObjectTypeCode)})
+	join {nameof(wo_ObjectType)} as objectType on source.{nameof(wo_ObjectType.ObjectTypeCode)} = objectType.{nameof(wo_ObjectType.ObjectTypeCode)}
+) AS source ({nameof(wo_Object.ObjectCode)}, {nameof(wo_Object.ObjectName)}, {nameof(wo_Object.Image)}, {nameof(wo_Object.rf_ObjectTypeID)})
+ON TARGET.{nameof(wo_Object.ObjectCode)} = source.{nameof(wo_Object.ObjectCode)}
+WHEN MATCHED and
+   (TARGET.{nameof(wo_Object.ObjectName)} != source.{nameof(wo_Object.ObjectName)} or
+    TARGET.{nameof(wo_Object.rf_ObjectTypeID)}!= source.{nameof(wo_Object.rf_ObjectTypeID)})
+THEN
+    UPDATE SET
+        TARGET.{nameof(wo_Object.ObjectName)}= source.{nameof(wo_Object.ObjectName)},
+        TARGET.{nameof(wo_Object.Image)}= source.{nameof(wo_Object.Image)},
+        TARGET.{nameof(wo_Object.rf_ObjectTypeID)} = source.{nameof(wo_Object.rf_ObjectTypeID)}
+WHEN NOT MATCHED THEN
+    INSERT ({nameof(wo_Object.ObjectCode)}, {nameof(wo_Object.ObjectName)}, {nameof(wo_Object.Image)}, {nameof(wo_Object.rf_ObjectTypeID)})
+    VALUES (source.{nameof(wo_Object.ObjectCode)}, source.{nameof(wo_Object.ObjectName)}, source.{nameof(wo_Object.Image)}, source.{nameof(wo_Object.rf_ObjectTypeID)});";
     }
 }

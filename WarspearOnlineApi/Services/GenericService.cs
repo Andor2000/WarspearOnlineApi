@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Data;
 using WarspearOnlineApi.Extensions;
+using WarspearOnlineApi.Models.BaseModels;
 using WarspearOnlineApi.Models.Dto;
 using WarspearOnlineApi.Services.Base;
 
@@ -63,12 +64,12 @@ namespace WarspearOnlineApi.Services
         /// </summary>
         /// <param name="fractionId">Идентификатор фракции.</param>
         /// <returns>Фракция.</returns>
-        public async Task<FractionDto> GetFraction(int fractionId)
+        public async Task<CodeNameBaseModel> GetFraction(int fractionId)
         {
             fractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции");
             return await _context.wo_Fraction
                 .Where(x => x.FractionID == fractionId)
-                .ProjectTo<FractionDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<CodeNameBaseModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Фракция");
         }
@@ -78,11 +79,11 @@ namespace WarspearOnlineApi.Services
         /// </summary>
         /// <param name="search">Поиск.</param>
         /// <returns>Список фракций.</returns>
-        public async Task<FractionDto[]> GetFractionList(string search)
+        public async Task<CodeNameBaseModel[]> GetFractionList(string search)
         {
             return await _context.wo_Fraction
                 .Where(x => x.FractionID > 0)
-                .ProjectTo<FractionDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<CodeNameBaseModel>(_mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
                 .SortByName()
                 .ToArrayAsync();
@@ -93,12 +94,12 @@ namespace WarspearOnlineApi.Services
         /// </summary>
         /// <param name="classId">Идентификатор класса.</param>
         /// <returns>Класс.</returns>
-        public async Task<ClassDto> GetClass(int classId)
+        public async Task<CodeNameBaseModel> GetClass(int classId)
         {
             classId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор класса");
             return await _context.wo_Class
                 .Where(x => x.ClassID == classId)
-                .ProjectTo<ClassDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<CodeNameBaseModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Класс");
         }
@@ -108,11 +109,11 @@ namespace WarspearOnlineApi.Services
         /// </summary>
         /// <param name="search">Строка поиска.</param>
         /// <returns>Список классов.</returns>
-        public async Task<ClassDto[]> GetClassList(string search)
+        public async Task<CodeNameBaseModel[]> GetClassList(string search)
         {
             return await _context.wo_Class
                 .Where(x => x.ClassID > 0)
-                .ProjectTo<ClassDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<CodeNameBaseModel>(_mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
                 .SortByName()
                 .ToArrayAsync();
