@@ -54,6 +54,7 @@ USING (
        ,('{nameof(RoleEnum.AddGuild)}', '{RoleEnum.AddGuild}')
        ,('{nameof(RoleEnum.AddObject)}', '{RoleEnum.AddObject}')
        ,('{nameof(RoleEnum.AddClass)}', '{RoleEnum.AddClass}')
+       ,('{nameof(RoleEnum.AddUser)}', '{RoleEnum.AddUser}')
 ) AS source ({nameof(wo_Role.RoleCode)}, {nameof(wo_Role.RoleName)})
 ON TARGET.{nameof(wo_Role.RoleCode)} = source.{nameof(wo_Role.RoleCode)}
 WHEN MATCHED AND
@@ -69,25 +70,27 @@ WHEN NOT MATCHED THEN
 MERGE {nameof(wo_AccessLevelRole)} AS TARGET
 USING (
     select
-	role.{nameof(wo_Role.RoleID)},
-	al.{nameof(wo_AccessLevel.AccessLevelID)}
+	al.{nameof(wo_AccessLevel.AccessLevelID)},
+    role.{nameof(wo_Role.RoleID)}	
 	from (
-		VALUES 
-			 ('{nameof(RoleEnum.AddDeletePlayerInDrop)}', '{nameof(AccessLevelEnum.Moderator)}')
-			,('{nameof(RoleEnum.AddDrop)}', '{nameof(AccessLevelEnum.Moderator)}')
-			,('{nameof(RoleEnum.DeleteDrop)}', '{nameof(AccessLevelEnum.Admin)}')
-			,('{nameof(RoleEnum.AddGuild)}', '{nameof(AccessLevelEnum.Admin)}')
-			,('{nameof(RoleEnum.AddDeleteGroup)}', '{nameof(AccessLevelEnum.MainAdmin)}')
-			,('{nameof(RoleEnum.AddObject)}', '{nameof(AccessLevelEnum.MainAdmin)}')
-			,('{nameof(RoleEnum.AddClass)}', '{nameof(AccessLevelEnum.MainAdmin)}')
-	) as source ({nameof(wo_Role.RoleCode)}, {nameof(wo_AccessLevel.AccessLevelCode)})
-	join {nameof(wo_Role)} as role on source.{nameof(wo_Role.RoleCode)} = role.{nameof(wo_Role.RoleCode)}
+		VALUES
+            ,('{nameof(AccessLevelEnum.Moderator)}', '{nameof(RoleEnum.AddDeletePlayerInDrop)}')
+            ,('{nameof(AccessLevelEnum.Moderator)}', '{nameof(RoleEnum.AddDrop)}')
+            ,('{nameof(AccessLevelEnum.Admin)}', '{nameof(RoleEnum.DeleteDrop)}')
+            ,('{nameof(AccessLevelEnum.Admin)}', '{nameof(RoleEnum.AddGuild)}')
+            ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddDeleteGroup)}')
+            ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddObject)}')
+            ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddClass)}')
+            ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddUser)}')
+	) as source ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_Role.RoleCode)})
 	join {nameof(wo_AccessLevel)} as al on source.{nameof(wo_AccessLevel.AccessLevelCode)} = al.{nameof(wo_AccessLevel.AccessLevelCode)}
-) AS source ({nameof(wo_AccessLevelRole.rf_RoleID)}, {nameof(wo_AccessLevelRole.rf_AccessLevelID)})
+	join {nameof(wo_Role)} as role on source.{nameof(wo_Role.RoleCode)} = role.{nameof(wo_Role.RoleCode)}
+) AS source ({nameof(wo_AccessLevelRole.rf_AccessLevelID)}, {nameof(wo_AccessLevelRole.rf_RoleID)})
 ON TARGET.{nameof(wo_AccessLevelRole.rf_AccessLevelID)} = source.{nameof(wo_AccessLevelRole.rf_AccessLevelID)}
+    and TARGET.{nameof(wo_AccessLevelRole.rf_RoleID)} = source.{nameof(wo_AccessLevelRole.rf_RoleID)}
 WHEN NOT MATCHED THEN
-    INSERT ({nameof(wo_AccessLevelRole.rf_RoleID)}, {nameof(wo_AccessLevelRole.rf_AccessLevelID)})
-    VALUES (source.{nameof(wo_AccessLevelRole.rf_RoleID)}, source.{nameof(wo_AccessLevelRole.rf_AccessLevelID)});
+    INSERT ({nameof(wo_AccessLevelRole.rf_AccessLevelID)}, {nameof(wo_AccessLevelRole.rf_RoleID)})
+    VALUES (source.{nameof(wo_AccessLevelRole.rf_AccessLevelID)}, source.{nameof(wo_AccessLevelRole.rf_RoleID)});
 
 
 

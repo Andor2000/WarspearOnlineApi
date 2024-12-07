@@ -32,6 +32,11 @@
         /* Главный админ */
 
         /// <summary>
+        /// Добавление пользователя.
+        /// </summary>
+        public static readonly string AddUser = "Добавление пользователя";
+
+        /// <summary>
         /// Добавление групп.
         /// </summary>
         public static readonly string AddDeleteGroup = "Добавление групп";
