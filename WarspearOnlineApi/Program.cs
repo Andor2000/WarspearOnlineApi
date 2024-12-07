@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WarspearOnlineApi.Data;
-using WarspearOnlineApi.Models;
-using WarspearOnlineApi.Mapper;
-using WarspearOnlineApi.Controllers;
-using WarspearOnlineApi.Services;
-using WarspearOnlineApi.Services.Journals;
+using WarspearOnlineApi.Api.Controllers;
+using WarspearOnlineApi.Api.Services;
+using WarspearOnlineApi.Api.Services.Journals;
+using WarspearOnlineApi.Api.Services.Users;
+using WarspearOnlineApi.Api.Data;
+using WarspearOnlineApi.Api.Models;
+using WarspearOnlineApi.Api.Models.Mapper;
 
 
 // Добавить миграцию: add-migration InitMigration
@@ -25,7 +26,7 @@ builder.Services.AddTransient<DatabaseInitializer>();
 // Настройка приложения
 var app = builder.Build();
 ConfigureApplication(app, builder.Environment);
-
+//app.UseMiddleware<AccessControlMiddleware>();
 app.Run();
 
 // Метод для настройки сервисов
@@ -50,6 +51,7 @@ static void ConfigureServices(WebApplicationBuilder builder)
 
     builder.Services.AddAuthorization();
     builder.Services.AddControllers();
+    builder.Services.AddHttpContextAccessor();
 }
 
 // Метод для настройки приложения (middleware и маршруты)
