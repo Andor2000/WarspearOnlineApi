@@ -74,7 +74,7 @@ USING (
     role.{nameof(wo_Role.RoleID)}	
 	from (
 		VALUES
-            ,('{nameof(AccessLevelEnum.Moderator)}', '{nameof(RoleEnum.AddDeletePlayerInDrop)}')
+             ('{nameof(AccessLevelEnum.Moderator)}', '{nameof(RoleEnum.AddDeletePlayerInDrop)}')
             ,('{nameof(AccessLevelEnum.Moderator)}', '{nameof(RoleEnum.AddDrop)}')
             ,('{nameof(AccessLevelEnum.Admin)}', '{nameof(RoleEnum.DeleteDrop)}')
             ,('{nameof(AccessLevelEnum.Admin)}', '{nameof(RoleEnum.AddGuild)}')
