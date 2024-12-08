@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Api.Models.Entity.Users
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarspearOnlineApi.Api.Models.Entity.Users
 {
     /// <summary>
     /// Entity-модель пользователя.
@@ -11,13 +13,21 @@
         public int UserId { get; set; }
 
         /// <summary>
+        /// Имя пользователя.
+        /// </summary>
+        [MaxLength(40)]
+        public string UserName { get; set; }
+
+        /// <summary>
         /// Логин пользователя.
         /// </summary>
+        [MaxLength(40)]
         public string Login { get; set; }
 
         /// <summary>
         /// Пароль пользователя.
         /// </summary>
+        [MaxLength(50)]
         public string Password { get; set; }
 
         /// <summary>

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Api.Services.Users;
-using WarspearOnlineApi.Api.Extensions;
 
 namespace WarspearOnlineApi.Api.Controllers.Attributies
 {
-    public class RoleAuthorizeAttribute : Attribute
+    /// <summary>
+    /// Атрибут проверки роли.
+    /// </summary>
+    public class RoleAuthorizeAttribute : Attribute, IAsyncAuthorizationFilter
     {
         /// <summary>
         /// Роль.
@@ -18,18 +20,15 @@ namespace WarspearOnlineApi.Api.Controllers.Attributies
         /// <param name="requiredRole">Роль.</param>
         public RoleAuthorizeAttribute(string requiredRole)
         {
-            _requiredRole = requiredRole;
+            this._requiredRole = requiredRole;
         }
 
         /// <summary>
         /// Проверка роли.
         /// </summary>
         /// <param name="context">Контекст.</param>
-        public async Task OnAuthorization(AuthorizationFilterContext context)
+        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            var roleService = context.HttpContext.RequestServices.GetService<RoleService>();
-            var jwtTokenService = context.HttpContext.RequestServices.GetService<JwtTokenService>();
-
             var token = context.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
 
             if (string.IsNullOrEmpty(token))
@@ -38,13 +37,13 @@ namespace WarspearOnlineApi.Api.Controllers.Attributies
                 return;
             }
 
-            var username = jwtTokenService.GetUsernameFromToken()
-                .ThrowNotFound(x => x.IsNullOrDefault(), "Пользователь");
+            var roles = await context.HttpContext.RequestServices
+                .GetService<UserService>()
+                .GetRoleCodes();
 
-            var roles = await roleService.GetRoleCodes(username);
             var roleCodes = roles.Select(role => role.Code);
 
-            if (!roleCodes.Contains(_requiredRole))
+            if (!roleCodes.Contains(this._requiredRole))
             {
                 context.Result = new ForbidResult();
             }

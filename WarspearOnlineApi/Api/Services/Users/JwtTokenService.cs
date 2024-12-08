@@ -70,7 +70,7 @@ namespace WarspearOnlineApi.Api.Services.Users
         {
             try
             {
-                var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
+                var authHeader = this._httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
 
                 if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
                 {

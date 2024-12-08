@@ -2,6 +2,7 @@
 using WarspearOnlineApi.Api.Models.BaseModels;
 using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Models.Dto.Journals;
+using WarspearOnlineApi.Api.Models.Dto.Users;
 using WarspearOnlineApi.Api.Models.Entity;
 using WarspearOnlineApi.Api.Models.Entity.Users;
 
@@ -18,10 +19,27 @@ namespace WarspearOnlineApi.Api.Models.Mapper
         public MappingProfile()
         {
             // Пользовательские.
+
             CreateMap<wo_Role, CodeNameBaseModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.RoleID))
                 .ForMember(x => x.Code, opt => opt.MapFrom(s => s.RoleCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.RoleName));
+
+            CreateMap<wo_AccessLevel, CodeNameBaseModel>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.AccessLevelID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.AccessLevelCode))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.AccessLevelName));
+
+            CreateMap<wo_User, UserDto>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.UserId))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.UserName))
+                .ForMember(x => x.AccessLevel, opt => opt.MapFrom(s => s.rf_AccessLevel))
+                .ForMember(x => x.Roles, opt => opt.Ignore());
+
+            CreateMap<wo_User, UserSuccessAuthorizeDto>()
+                .ForMember(x => x.User, opt => opt.MapFrom(s => s))
+                .ForMember(x => x.Token, opt => opt.Ignore())
+                .ForMember(x => x.DateExpiresAt, opt => opt.Ignore());
 
             // Общие.
             CreateMap<wo_Server, ServerDto>()

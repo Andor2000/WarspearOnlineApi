@@ -9,6 +9,7 @@ using WarspearOnlineApi.Api.Services.Users;
 using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Models;
 using WarspearOnlineApi.Api.Models.Mapper;
+using WarspearOnlineApi.Api.Extensions;
 
 
 // Добавить миграцию: add-migration InitMigration
@@ -26,7 +27,6 @@ builder.Services.AddTransient<DatabaseInitializer>();
 // Настройка приложения
 var app = builder.Build();
 ConfigureApplication(app, builder.Environment);
-//app.UseMiddleware<AccessControlMiddleware>();
 app.Run();
 
 // Метод для настройки сервисов
@@ -37,6 +37,7 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+    builder.Services.AddScoped<UserService>();
     builder.Services.AddSingleton<JwtTokenService>();
     builder.Services.AddSingleton<AuthController>();
 
@@ -54,7 +55,8 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddHttpContextAccessor();
 }
 
-// Метод для настройки приложения (middleware и маршруты)
+
+///
 void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
 {
     // Настройка middleware
@@ -71,10 +73,6 @@ void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
         initializer.AddEmptyRecords(); // Вставка пустых записей
         initializer.AddBaseRecords();
     }
-
-    // Настройка маршрутов
-    app.UseRouting();
-    app.MapControllers();
 }
 
 // Метод для настройки аутентификации через JWT
@@ -117,7 +115,19 @@ static void UseMiddlewareConfiguration(IApplicationBuilder app, IWebHostEnvironm
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
+    app.UseMiddleware<ExceptionMiddleware>();
 
+    app.UseRouting(); // Маршрутизация должна быть до авторизации
+
+    // Аутентификация
     app.UseAuthentication();
+
+    // Авторизация
     app.UseAuthorization();
+
+    // Определение конечных точек (Endpoints)
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
 }

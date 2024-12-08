@@ -98,14 +98,19 @@ WHEN NOT MATCHED THEN
 MERGE {nameof(wo_Server)} AS TARGET
 USING (
     VALUES
-        ('{nameof(ServerEnum.RU_Topaz)}')
-       ,('{nameof(ServerEnum.RU_Amber)}')
-       ,('{nameof(ServerEnum.RU_Ruby)}')
-) AS source ({nameof(wo_Server.ServerCode)})
-ON TARGET.{nameof(wo_Server.ServerCode)} = source.{nameof(wo_Server.ServerCode)}        
+        ('{nameof(ServerEnum.RU_Topaz)}', '{ServerEnum.RU_Topaz}')
+       ,('{nameof(ServerEnum.RU_Amber)}', '{ServerEnum.RU_Amber}')
+       ,('{nameof(ServerEnum.RU_Ruby)}', '{ServerEnum.RU_Ruby}')
+) AS source ({nameof(wo_Server.ServerCode)}, {nameof(wo_Server.ServerName)})
+ON TARGET.{nameof(wo_Server.ServerCode)} = source.{nameof(wo_Server.ServerCode)}
+WHEN MATCHED and
+   (TARGET.{nameof(wo_Server.ServerName)} != source.{nameof(wo_Server.ServerName)})
+THEN
+    UPDATE SET
+        TARGET.{nameof(wo_Server.ServerName)} = source.{nameof(wo_Server.ServerName)}
 WHEN NOT MATCHED THEN
-    INSERT ({nameof(wo_Server.ServerCode)})
-    VALUES (source.{nameof(wo_Server.ServerCode)});
+    INSERT ({nameof(wo_Server.ServerCode)}, {nameof(wo_Server.ServerName)})
+    VALUES (source.{nameof(wo_Server.ServerCode)}, source.{nameof(wo_Server.ServerName)});
 
 MERGE {nameof(wo_Class)} AS TARGET
 USING (
