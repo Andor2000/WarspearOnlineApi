@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Entity;
+using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Models.Entity.Users;
 
 namespace WarspearOnlineApi.Api.Data
@@ -33,10 +34,32 @@ namespace WarspearOnlineApi.Api.Data
         /// </summary>
         public DbSet<wo_Class> wo_Class { get; set; }
 
+        /* Пользователь */
+
+        /// <summary>
+        /// Набор данных уровней доступа.
+        /// </summary>
+        public DbSet<wo_AccessLevel> wo_AccessLevel { get; set; }
+
+        /// <summary>
+        /// Набор данных интерсекции моделей уровня доступа и роли.
+        /// </summary>
+        public DbSet<wo_AccessLevelRole> wo_AccessLevelRole { get; set; }
+
+        /// <summary>
+        /// Набор данных ролей.
+        /// </summary>
+        public DbSet<wo_Role> wo_Role { get; set; }
+
         /// <summary>
         /// Набор данных пользователей.
         /// </summary>
         public DbSet<wo_User> wo_User { get; set; }
+
+        /// <summary>
+        /// Набор данных связи пользователя и сервера.
+        /// </summary>
+        public DbSet<wo_UserServer> wo_UserServer { get; set; }
 
         /* Интерфейс */
 
@@ -79,23 +102,6 @@ namespace WarspearOnlineApi.Api.Data
         /// Набор данных для связи журнала выпадений и игроков.
         /// </summary>
         public DbSet<wo_DropPlayer> wo_DropPlayer { get; set; }
-
-        /* Пользователь */
-
-        /// <summary>
-        /// Набор данных уровней доступа.
-        /// </summary>
-        public DbSet<wo_AccessLevel> wo_AccessLevel { get; set; }
-
-        /// <summary>
-        /// Набор данных интерсекции моделей уровня доступа и роли.
-        /// </summary>
-        public DbSet<wo_AccessLevelRole> wo_AccessLevelRole { get; set; }
-
-        /// <summary>
-        /// Набор данных ролей.
-        /// </summary>
-        public DbSet<wo_Role> wo_Role { get; set; }
 
         /// <summary>
         /// Настройка конфигураций моделей при создании модели.

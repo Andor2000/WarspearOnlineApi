@@ -1,5 +1,6 @@
 ﻿using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Models.Entity;
+using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Models.Entity.Users;
 
 namespace WarspearOnlineApi.Api.Data

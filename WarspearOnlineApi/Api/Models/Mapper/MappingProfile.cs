@@ -4,6 +4,7 @@ using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Models.Dto.Journals;
 using WarspearOnlineApi.Api.Models.Dto.Users;
 using WarspearOnlineApi.Api.Models.Entity;
+using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Models.Entity.Users;
 
 namespace WarspearOnlineApi.Api.Models.Mapper

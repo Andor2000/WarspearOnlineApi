@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto;
-using WarspearOnlineApi.Api.Models.Entity;
+using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Services.Base;
 
 namespace WarspearOnlineApi.Api.Services

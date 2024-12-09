@@ -8,6 +8,7 @@ using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Models.Entity;
+using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Models.Filters;
 using WarspearOnlineApi.Api.Services;
 using WarspearOnlineApi.Api.Services.Base;

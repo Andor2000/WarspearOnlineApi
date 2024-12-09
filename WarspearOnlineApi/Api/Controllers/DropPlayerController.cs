@@ -10,6 +10,8 @@ namespace WarspearOnlineApi.Api.Controllers
     /// <summary>
     /// Контроллер для работы с интерсекцией дропа и игрока.
     /// </summary>
+    [ApiController]
+    [Route("api/[controller]")]
     public class DropPlayerController : Controller
     {
         /// <summary>

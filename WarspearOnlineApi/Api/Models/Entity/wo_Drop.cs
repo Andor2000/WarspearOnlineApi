@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Api.Models.Entity
+﻿using WarspearOnlineApi.Api.Models.Entity.Intersections;
+
+namespace WarspearOnlineApi.Api.Models.Entity
 {
     /// <summary>
     /// Entity-модель выпавшего дропа.

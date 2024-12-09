@@ -1,23 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WarspearOnlineApi.Api.Models.Entity.Intersections;
+﻿using WarspearOnlineApi.Api.Models.Entity.Users;
 
-namespace WarspearOnlineApi.Api.Models.Entity
+namespace WarspearOnlineApi.Api.Models.Entity.Intersections
 {
     /// <summary>
-    /// Entity-модель гильдии.
+    /// Entity-модель связи пользователя и сервера.
     /// </summary>
-    public class wo_Guild
+    public class wo_UserServer
     {
         /// <summary>
         /// Идентификатор.
         /// </summary>
-        public int GuildID { get; set; }
+        public int UserServerID { get; set; }
 
         /// <summary>
-        /// Название.
+        /// Идентификатор пользователя.
         /// </summary>
-        [MaxLength(10)]
-        public string GuildName { get; set; }
+        public int rf_UserID { get; set; }
+
+        /// <summary>
+        /// Пользователь.
+        /// </summary>
+        public wo_User rf_User { get; set; }
 
         /// <summary>
         /// Идентификатор сервера.
@@ -30,7 +33,7 @@ namespace WarspearOnlineApi.Api.Models.Entity
         public wo_Server rf_Server { get; set; }
 
         /// <summary>
-        /// Идентификтаор фракции.
+        /// Идентификатор фракции.
         /// </summary>
         public int rf_FractionID { get; set; }
 
@@ -38,10 +41,5 @@ namespace WarspearOnlineApi.Api.Models.Entity
         /// Фракция.
         /// </summary>
         public wo_Fraction rf_Fraction { get; set; }
-
-        /// <summary>
-        /// Интерсекиция группы и гильдии.
-        /// </summary>
-        public ICollection<wo_GroupGuild> GroupGuilds { get; set; } = new List<wo_GroupGuild>();
     }
 }

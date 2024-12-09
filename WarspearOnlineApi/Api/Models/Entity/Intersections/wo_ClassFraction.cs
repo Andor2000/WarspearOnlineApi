@@ -1,4 +1,4 @@
-﻿namespace WarspearOnlineApi.Api.Models.Entity
+﻿namespace WarspearOnlineApi.Api.Models.Entity.Intersections
 {
     /// <summary>
     /// Entity-модель интерсекции класса и фракции.

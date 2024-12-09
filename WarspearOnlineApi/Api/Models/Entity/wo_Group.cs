@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WarspearOnlineApi.Api.Models.Entity.Intersections;
 
 namespace WarspearOnlineApi.Api.Models.Entity
 {

@@ -1,4 +1,4 @@
-﻿namespace WarspearOnlineApi.Api.Models.Entity
+﻿namespace WarspearOnlineApi.Api.Models.Entity.Intersections
 {
     /// <summary>
     /// Entity-модель связи группы и гильдии.
