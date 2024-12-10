@@ -41,7 +41,7 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// </summary>
         /// <param name="user">Пользователь.</param>
         /// <returns>Токен.</returns>
-        public void GenerateToken(SuccessAuthorizeDto user)
+        public void GenerateToken(UserSessionDto user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -51,7 +51,7 @@ namespace WarspearOnlineApi.Api.Services.Users
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("UserLogin", user.User.Login)
+                    new Claim("UserID", user.Id.ToString())
                 }),
                 Issuer = jwtSetting.Issuer,
                 Audience = jwtSetting.Audience,
@@ -72,7 +72,7 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// </summary>
         /// <param name="token">Токен.</param>
         /// <returns>Имя пользователя.</returns>
-        public string GetUsernameFromToken(string token)
+        public int GetUserIdFromToken(string token = default)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace WarspearOnlineApi.Api.Services.Users
                     var authHeader = this._httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
                     if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
                     {
-                        return null;
+                        return 0;
                     }
                     token = authHeader.Substring("Bearer ".Length).Trim();
                 }
@@ -89,25 +89,12 @@ namespace WarspearOnlineApi.Api.Services.Users
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
 
-                return jwtToken.Claims.FirstOrDefault(c => c.Type == "UserLogin")?.Value;
+                return int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserID").Value);
             }
             catch
             {
                 throw new Exception("Ошибка обработки токена.");
             }
-        }
-
-
-        /// <summary>
-        /// Метод для получения даты окончания токена.
-        /// </summary>
-        /// <param name="token">Токен.</param>
-        /// <returns>Дата.</returns>
-        public JwtSecurityToken GetTokenExpiration(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtToken = tokenHandler.ReadJwtToken(token);
-            return jwtToken; // Возвращаем дату истечения токена
         }
     }
 }

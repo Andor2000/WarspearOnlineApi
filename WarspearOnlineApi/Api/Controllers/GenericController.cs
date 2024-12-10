@@ -32,7 +32,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="serverId">Идентификатор сервера.</param>
         /// <returns>Сервер.</returns>
         [HttpGet("Server/{serverId}")]
-        public async Task<ActionResult<ServerDto>> GetServer(int serverId)
+        public async Task<ActionResult<CodeNameBaseModel>> GetServer(int serverId)
         {
             return Ok(await _genericService.GetServer(serverId));
         }
@@ -43,7 +43,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="search">Строка поиска.</param>
         /// <returns>Список серверов.</returns>
         [HttpGet("Server/List")]
-        public async Task<ActionResult<ServerDto[]>> GetServerList(string search)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetServerList(string search)
         {
             return Ok(await _genericService.GetServerList(search));
         }

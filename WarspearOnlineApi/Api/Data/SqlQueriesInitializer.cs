@@ -17,19 +17,22 @@ namespace WarspearOnlineApi.Api.Data
 MERGE {nameof(wo_AccessLevel)} as TARGET
 USING (
 	VALUES
-	    ('{nameof(AccessLevelEnum.Moderator)}', '{AccessLevelEnum.Moderator}')
-	   ,('{nameof(AccessLevelEnum.Admin)}', '{AccessLevelEnum.Admin}')
-	   ,('{nameof(AccessLevelEnum.MainAdmin)}', '{AccessLevelEnum.MainAdmin}')
-) as source ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_AccessLevel.AccessLevelName)})
+	    ('{nameof(AccessLevelEnum.Moderator)}', '{AccessLevelEnum.Moderator}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.Moderator))}')
+	   ,('{nameof(AccessLevelEnum.Admin)}', '{AccessLevelEnum.Admin}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.Admin))}')
+	   ,('{nameof(AccessLevelEnum.AdminServer)}', '{AccessLevelEnum.AdminServer}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.AdminServer))}')
+	   ,('{nameof(AccessLevelEnum.MainAdmin)}', '{AccessLevelEnum.MainAdmin}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.MainAdmin))}')
+) as source ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_AccessLevel.AccessLevelName)}, {nameof(wo_AccessLevel.AccessLevelInt)})
 on TARGET.{nameof(wo_AccessLevel.AccessLevelCode)} = source.{nameof(wo_AccessLevel.AccessLevelCode)}
 WHEN MATCHED and
-   (TARGET.{nameof(wo_AccessLevel.AccessLevelName)} != source.{nameof(wo_AccessLevel.AccessLevelName)})
+   (TARGET.{nameof(wo_AccessLevel.AccessLevelName)} != source.{nameof(wo_AccessLevel.AccessLevelName)} or
+    TARGET.{nameof(wo_AccessLevel.AccessLevelInt)} != source.{nameof(wo_AccessLevel.AccessLevelInt)})
 THEN
     UPDATE SET
-        TARGET.{nameof(wo_AccessLevel.AccessLevelName)} = source.{nameof(wo_AccessLevel.AccessLevelName)}
+        TARGET.{nameof(wo_AccessLevel.AccessLevelName)} = source.{nameof(wo_AccessLevel.AccessLevelName)},
+        TARGET.{nameof(wo_AccessLevel.AccessLevelInt)} = source.{nameof(wo_AccessLevel.AccessLevelInt)}
 WHEN NOT MATCHED THEN
-    INSERT ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_AccessLevel.AccessLevelName)})
-    VALUES (source.{nameof(wo_AccessLevel.AccessLevelCode)}, source.{nameof(wo_AccessLevel.AccessLevelName)});
+    INSERT ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_AccessLevel.AccessLevelName)}, {nameof(wo_AccessLevel.AccessLevelInt)})
+    VALUES (source.{nameof(wo_AccessLevel.AccessLevelCode)}, source.{nameof(wo_AccessLevel.AccessLevelName)}, source.{nameof(wo_AccessLevel.AccessLevelInt)});
 
 
 UPDATE record
@@ -37,8 +40,9 @@ SET {nameof(wo_AccessLevel.rf_ParentAccessLevelID)} = parent.{nameof(wo_AccessLe
 FROM (
     VALUES
         ('{nameof(AccessLevelEnum.Moderator)}', ''),
-        ('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(AccessLevelEnum.Admin)}'),
-        ('{nameof(AccessLevelEnum.Admin)}', '{nameof(AccessLevelEnum.Moderator)}')
+        ('{nameof(AccessLevelEnum.Admin)}', '{nameof(AccessLevelEnum.Moderator)}'),
+        ('{nameof(AccessLevelEnum.AdminServer)}', '{nameof(AccessLevelEnum.Admin)}'),
+        ('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(AccessLevelEnum.AdminServer)}')
 ) as subquery (record{nameof(wo_AccessLevel.AccessLevelCode)}, parent{nameof(wo_AccessLevel.AccessLevelCode)})
 join {nameof(wo_AccessLevel)} as record on record.{nameof(wo_AccessLevel.AccessLevelCode)} = subquery.record{nameof(wo_AccessLevel.AccessLevelCode)}
 join {nameof(wo_AccessLevel)} as parent on parent.{nameof(wo_AccessLevel.AccessLevelCode)} = subquery.parent{nameof(wo_AccessLevel.AccessLevelCode)}
@@ -77,12 +81,16 @@ USING (
 		VALUES
              ('{nameof(AccessLevelEnum.Moderator)}', '{nameof(RoleEnum.AddDeletePlayerInDrop)}')
             ,('{nameof(AccessLevelEnum.Moderator)}', '{nameof(RoleEnum.AddDrop)}')
+
+            ,('{nameof(AccessLevelEnum.Admin)}', '{nameof(RoleEnum.AddUser)}')
             ,('{nameof(AccessLevelEnum.Admin)}', '{nameof(RoleEnum.DeleteDrop)}')
-            ,('{nameof(AccessLevelEnum.Admin)}', '{nameof(RoleEnum.AddGuild)}')
-            ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddDeleteGroup)}')
+
+            ,('{nameof(AccessLevelEnum.AdminServer)}', '{nameof(RoleEnum.AddGuild)}')
+            ,('{nameof(AccessLevelEnum.AdminServer)}', '{nameof(RoleEnum.AddDeleteGroup)}')
+
             ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddObject)}')
             ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddClass)}')
-            ,('{nameof(AccessLevelEnum.MainAdmin)}', '{nameof(RoleEnum.AddUser)}')
+
 	) as source ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_Role.RoleCode)})
 	join {nameof(wo_AccessLevel)} as al on source.{nameof(wo_AccessLevel.AccessLevelCode)} = al.{nameof(wo_AccessLevel.AccessLevelCode)}
 	join {nameof(wo_Role)} as role on source.{nameof(wo_Role.RoleCode)} = role.{nameof(wo_Role.RoleCode)}

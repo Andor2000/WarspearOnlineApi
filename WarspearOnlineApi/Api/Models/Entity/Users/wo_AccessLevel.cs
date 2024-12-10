@@ -21,6 +21,11 @@
         public string AccessLevelName { get; set; }
 
         /// <summary>
+        /// Приоритет уровня доступа.
+        /// </summary>
+        public int AccessLevelInt { get; set; }
+
+        /// <summary>
         /// Идентификатор родительского уровня доступа.
         /// </summary>
         public int rf_ParentAccessLevelID { get; set; }

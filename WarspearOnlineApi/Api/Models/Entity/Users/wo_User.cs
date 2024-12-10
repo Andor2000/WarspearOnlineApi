@@ -45,5 +45,15 @@ namespace WarspearOnlineApi.Api.Models.Entity.Users
         /// Уровень доступа.
         /// </summary>
         public wo_AccessLevel rf_AccessLevel { get; set; }
+
+        /// <summary>
+        /// Идентификатор сервера.
+        /// </summary>
+        public int rf_ServerID { get; set; }
+
+        /// <summary>
+        /// Сервер.
+        /// </summary>
+        public wo_Server rf_Server { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using WarspearOnlineApi.Api.Models.BaseModels;
+﻿using WarspearOnlineApi.Api.Models.BaseModels;
 
 namespace WarspearOnlineApi.Api.Models.Dto.Users
 {
@@ -9,19 +8,18 @@ namespace WarspearOnlineApi.Api.Models.Dto.Users
     public class UserDto : NameBaseModel
     {
         /// <summary>
-        /// Уровень доступа.
+        /// Ранг уровня доступа.
         /// </summary>
-        public CodeNameBaseModel AccessLevel { get; set; } = new CodeNameBaseModel();
+        public int RangeAccessLevel { get; set; }
 
         /// <summary>
-        /// Роли.
+        /// Dto-модель уровня доступа.
         /// </summary>
-        public CodeNameBaseModel[] Roles { get; set; } = Array.Empty<CodeNameBaseModel>();
+        public AccessLevelDto AccessLevel { get; set; } = new AccessLevelDto();
 
         /// <summary>
-        /// Логин.
+        /// Сервер.
         /// </summary>
-        [JsonIgnore]
-        public string Login { get; set; } = string.Empty;
+        public NameBaseModel Server { get; set; } = new NameBaseModel();
     }
 }

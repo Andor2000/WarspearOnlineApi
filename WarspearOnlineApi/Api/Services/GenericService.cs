@@ -34,12 +34,12 @@ namespace WarspearOnlineApi.Api.Services
         /// </summary>
         /// <param name="serverId">Идентификатор сервера.</param>
         /// <returns>Сервер.</returns>
-        public async Task<ServerDto> GetServer(int serverId)
+        public async Task<CodeNameBaseModel> GetServer(int serverId)
         {
             serverId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
             return await _context.wo_Server
                 .Where(x => x.ServerID == serverId)
-                .ProjectTo<ServerDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<CodeNameBaseModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Сервер");
         }
@@ -49,11 +49,11 @@ namespace WarspearOnlineApi.Api.Services
         /// </summary>
         /// <param name="search">Поиск.</param>
         /// <returns>Список серверов.</returns>
-        public async Task<ServerDto[]> GetServerList(string search)
+        public async Task<CodeNameBaseModel[]> GetServerList(string search)
         {
             return await _context.wo_Server
                 .Where(x => x.ServerID > 0)
-                .ProjectTo<ServerDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<CodeNameBaseModel>(_mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
                 .SortByName()
                 .ToArrayAsync();

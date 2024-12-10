@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Data;
+using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto.Users;
 using WarspearOnlineApi.Api.Services.Base;
@@ -52,7 +53,7 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// <returns>Признак существования логина.</returns>
         public async Task<bool> CheckExistLoginAndFilledPassword(AuthorizeDto dto)
         {
-            dto.ValidateUserAuthorize();
+            dto.Login = dto.Login.ValidateUserLogin();
 
             var user = await this._context.wo_User
                 .Where(x => x.UserId > 0)
@@ -69,31 +70,53 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// </summary>
         /// <param name="dto">Dto-модель для авторизации.</param>
         /// <returns>Модель авотризированного пользователя.</returns>
-        public async Task<SuccessAuthorizeDto> SignIn(AuthorizeDto dto)
+        public async Task<UserSessionDto> SignIn(AuthorizeDto dto)
         {
-            dto.ValidateUserAuthorize(true);
+            dto.Login = dto.Login.ValidateUserLogin();
+            dto.Password = dto.Password.ValidateUserPassword();
+            return await this.GetUserByLoginAndPassword(dto.Login, dto.Password);
+        }
 
+        /// <summary>
+        /// Регистрация пользователя.
+        /// </summary>
+        /// <param name="dto">Модель регистрации.</param>
+        /// <returns>Модель зарегистрированного пользователя.</returns>
+        public async Task<UserSessionDto> Registration(AuthorizeDto dto)
+        {
+            dto.Login = dto.Login.ValidateUserLogin();
+            dto.Password = dto.Password.ValidateUserPassword();
+            dto.Name = dto.Name.ValidateUserName();
+
+            var userDb = await this._context.wo_User.FirstOrDefaultAsync(x => x.Login == dto.Login)
+                .ThrowIfNullAsync("Пользователь")
+                .ThrowOnConditionAsync(x => x.Password.IsNullOrDefault(), "Пользователь уже зарегистрирован");
+
+            userDb.UserName = dto.Name;
+            userDb.Password = dto.Password;
+            await this._context.SaveChangesAsync();
+
+            return await this.GetUserByLoginAndPassword(dto.Login, dto.Password);
+        }
+
+        /// <summary>
+        /// Получить пользователя по логину и паролю.
+        /// </summary>
+        /// <param name="login">Логин.</param>
+        /// <param name="password">Пароль.</param>
+        /// <returns>Пользователь.</returns>
+        private async Task<UserSessionDto> GetUserByLoginAndPassword(string login, string password)
+        {
             var user = await this._context.wo_User
-                .Where(x => x.Login == dto.Login && x.Password == dto.Password)
-                .ProjectTo<SuccessAuthorizeDto>(this._mapper.ConfigurationProvider)
+                .Where(x => x.Login == login && x.Password == password)
+                .ProjectTo<UserSessionDto>(this._mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Пользователь");
 
             this._jwtTokenService.GenerateToken(user);
-            user.User.Roles = await this._roleService.GetRoleCodes(user.Token);
+            user.Roles = await this._roleService.GetRoleCodes(user.Token);
 
             return user;
-        }
-
-        public async Task<SuccessAuthorizeDto> Registration(AuthorizeDto dto)
-        {
-            dto.ValidateUserAuthorize(true);
-
-            var user = await this._context.wo_User
-                .Where(x => x.Login == dto.Login && x.Password == dto.Password)
-                .ProjectTo<SuccessAuthorizeDto>(this._mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync()
-                .ThrowOnConditionAsync(x => x == null, "Указан неверный логин или пароль");
         }
     }
 }

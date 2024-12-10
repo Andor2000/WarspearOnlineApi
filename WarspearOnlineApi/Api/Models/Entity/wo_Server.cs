@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WarspearOnlineApi.Api.Models.Entity.Users;
 
 namespace WarspearOnlineApi.Api.Models.Entity
 {
@@ -43,5 +44,10 @@ namespace WarspearOnlineApi.Api.Models.Entity
         /// Список дропа.
         /// </summary>
         public ICollection<wo_Drop> Drops { get; set; } = new List<wo_Drop>();
+
+        /// <summary>
+        /// Пользователи.
+        /// </summary>
+        public ICollection<wo_User> Users { get; set; } = new List<wo_User>();
     }
 }

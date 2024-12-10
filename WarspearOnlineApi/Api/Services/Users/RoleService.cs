@@ -47,7 +47,7 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// <returns>Список ролей пользователя.</returns>
         public async Task<CodeNameBaseModel[]> GetRoleCodes(string token = "")
         {
-            var username = this._jwtTokenService.GetUsernameFromToken(token)
+            var username = this._jwtTokenService.GetUserIdFromToken(token)
                 .ThrowOnCondition(x => x.IsNullOrDefault(), "В токене не указан пользователь");
 
             var user = await this._context.wo_User

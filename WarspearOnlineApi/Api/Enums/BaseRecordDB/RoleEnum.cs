@@ -17,29 +17,31 @@
         /// </summary>
         public static readonly string AddDrop = "Добавление дропа";
 
+        /* Админ */
+
         /// <summary>
         /// Удаление дропа.
         /// </summary>
         public static readonly string DeleteDrop = "Удаление дропа";
-
-        /* Админка */
-
-        /// <summary>
-        /// Добавление гильдий.
-        /// </summary>
-        public static readonly string AddGuild = "Добавление гильдий";
-
-        /* Главный админ */
 
         /// <summary>
         /// Добавление пользователя.
         /// </summary>
         public static readonly string AddUser = "Добавление пользователя";
 
+        /* Админ сервера */
+
+        /// <summary>
+        /// Добавление гильдий.
+        /// </summary>
+        public static readonly string AddGuild = "Добавление гильдий";
+
         /// <summary>
         /// Добавление групп.
         /// </summary>
         public static readonly string AddDeleteGroup = "Добавление групп";
+
+        /* Главный админ */
 
         /// <summary>
         /// Добавление объектов.

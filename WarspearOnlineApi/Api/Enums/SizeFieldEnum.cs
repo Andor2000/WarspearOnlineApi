@@ -18,6 +18,6 @@
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        public const int UserName = 40;
+        public const int UserName = 20;
     }
 }

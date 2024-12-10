@@ -19,37 +19,8 @@ namespace WarspearOnlineApi.Api.Models.Mapper
         /// </summary>
         public MappingProfile()
         {
-            // Пользовательские.
-
-            CreateMap<wo_Role, CodeNameBaseModel>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.RoleID))
-                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.RoleCode))
-                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.RoleName));
-
-            CreateMap<wo_AccessLevel, CodeNameBaseModel>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.AccessLevelID))
-                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.AccessLevelCode))
-                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.AccessLevelName));
-
-            CreateMap<wo_User, AuthorizeDto>()
-                .ForMember(x => x.Login, opt => opt.MapFrom(s => s.Login))
-                .ForMember(x => x.Password, opt => opt.MapFrom(s => s.Password))
-                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.UserName));
-
-            CreateMap<wo_User, UserDto>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.UserId))
-                .ForMember(x => x.Login, opt => opt.MapFrom(s => s.Login))
-                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.UserName))
-                .ForMember(x => x.AccessLevel, opt => opt.MapFrom(s => s.rf_AccessLevel))
-                .ForMember(x => x.Roles, opt => opt.Ignore());
-
-            CreateMap<wo_User, SuccessAuthorizeDto>()
-                .ForMember(x => x.User, opt => opt.MapFrom(s => s))
-                .ForMember(x => x.Token, opt => opt.Ignore())
-                .ForMember(x => x.DateExpiresAt, opt => opt.Ignore());
-
             // Общие.
-            CreateMap<wo_Server, ServerDto>()
+            CreateMap<wo_Server, CodeNameBaseModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ServerID))
                 .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ServerCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ServerName));
@@ -68,6 +39,37 @@ namespace WarspearOnlineApi.Api.Models.Mapper
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.ObjectTypeID))
                 .ForMember(x => x.Code, opt => opt.MapFrom(s => s.ObjectTypeCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.ObjectTypeName));
+
+            // Пользовательские.
+
+            CreateMap<wo_Role, CodeNameBaseModel>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.RoleID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.RoleCode))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.RoleName));
+
+            CreateMap<wo_AccessLevel, AccessLevelDto>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.AccessLevelID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.AccessLevelCode))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.AccessLevelName))
+                .ForMember(x => x.Level, opt => opt.MapFrom(s => s.AccessLevelInt));
+
+            CreateMap<wo_User, AuthorizeDto>()
+                .ForMember(x => x.Login, opt => opt.MapFrom(s => s.Login))
+                .ForMember(x => x.Password, opt => opt.MapFrom(s => s.Password))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.UserName));
+
+            CreateMap<wo_User, UserDto>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.UserId))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.UserName))
+                .ForMember(x => x.RangeAccessLevel, opt => opt.MapFrom(s => s.RangeAccessLevel))
+                .ForMember(x => x.AccessLevel, opt => opt.MapFrom(s => s.rf_AccessLevel))
+                .ForMember(x => x.Server, opt => opt.MapFrom(s => s.rf_Server));
+
+            CreateMap<wo_User, UserSessionDto>()
+                .ForMember(x => x.Token, opt => opt.Ignore())
+                .ForMember(x => x.DateExpiresAt, opt => opt.Ignore())
+                .ForMember(x => x.AccessLevel, opt => opt.MapFrom(s => s.rf_AccessLevel))
+                .ForMember(x => x.Roles, opt => opt.Ignore());
 
             // Добавляемые.
             CreateMap<wo_Object, ObjectDto>()

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WarspearOnlineApi.Api.Controllers;
 using WarspearOnlineApi.Api.Services;
 using WarspearOnlineApi.Api.Services.Journals;
 using WarspearOnlineApi.Api.Services.Users;
@@ -10,6 +9,7 @@ using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Models;
 using WarspearOnlineApi.Api.Models.Mapper;
 using WarspearOnlineApi.Api.Extensions;
+using WarspearOnlineApi.Api.Controllers.Users;
 
 
 // Добавить миграцию: add-migration InitMigration

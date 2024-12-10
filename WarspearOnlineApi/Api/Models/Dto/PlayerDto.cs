@@ -20,7 +20,7 @@ namespace WarspearOnlineApi.Api.Models.Dto
         /// <summary>
         /// Сервер.
         /// </summary>
-        public ServerDto Server { get; set; } = new ServerDto();
+        public CodeNameBaseModel Server { get; set; } = new CodeNameBaseModel();
 
         /// <summary>
         /// Фракция.

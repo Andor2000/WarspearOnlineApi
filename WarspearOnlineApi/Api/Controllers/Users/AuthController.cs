@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Api.Services.Users;
 
-namespace WarspearOnlineApi.Api.Controllers
+namespace WarspearOnlineApi.Api.Controllers.Users
 {
     /// <summary>
     /// Контроллер для работы с токенами.
@@ -45,7 +45,7 @@ namespace WarspearOnlineApi.Api.Controllers
         //[HttpGet("get-username")]
         //public IActionResult Logout()
         //{
-        //    return Ok(new { Username = _jwtTokenService.GetUsernameFromToken() });
+        //    return Ok(new { Username = _jwtTokenService.GetUserIdFromToken() });
         //}
 
         //[HttpGet("token-expiration")]

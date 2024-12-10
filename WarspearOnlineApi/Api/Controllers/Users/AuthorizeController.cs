@@ -42,7 +42,7 @@ namespace WarspearOnlineApi.Api.Controllers.Users
         /// <param name="dto">Dto-модель для авторизации.</param>
         /// <returns>Модель авотризированного пользователя.</returns>
         [HttpPost("SignIn")]
-        public async Task<ActionResult<SuccessAuthorizeDto>> SignIn([FromBody] AuthorizeDto dto)
+        public async Task<ActionResult<UserSessionDto>> SignIn([FromBody] AuthorizeDto dto)
         {
             return Ok(await this._AuthorizeService.SignIn(dto));
         }
@@ -53,7 +53,7 @@ namespace WarspearOnlineApi.Api.Controllers.Users
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("Registration")]
-        public async Task<ActionResult<SuccessAuthorizeDto>> Registration([FromBody] AuthorizeDto dto)
+        public async Task<ActionResult<UserSessionDto>> Registration([FromBody] AuthorizeDto dto)
         {
             return Ok(await this._AuthorizeService.Registration(dto));
         }

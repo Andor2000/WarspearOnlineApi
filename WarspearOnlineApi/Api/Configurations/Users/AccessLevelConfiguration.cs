@@ -14,6 +14,7 @@ namespace WarspearOnlineApi.Api.Configurations.Users
             builder.Property(m => m.AccessLevelID).UseIdentityColumn();
             builder.Property(m => m.AccessLevelCode).HasDefaultValue(string.Empty);
             builder.Property(m => m.AccessLevelName).HasDefaultValue(string.Empty);
+            builder.Property(m => m.AccessLevelInt).HasDefaultValue(0);
 
             builder.Property(m => m.rf_ParentAccessLevelID).HasDefaultValue(0);
             builder.HasOne(x => x.rf_ParentAccessLevel).WithMany(x => x.ChildAccessLevels).HasForeignKey(x => x.rf_ParentAccessLevelID).OnDelete(DeleteBehavior.NoAction);
