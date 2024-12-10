@@ -57,11 +57,8 @@ namespace WarspearOnlineApi.Api.Services.Users
             var user = await this._context.wo_User
                 .Where(x => x.UserId > 0)
                 .Where(x => x.Login == dto.Login)
-                .Select(x => new AuthorizeDto
-                {
-                    Login = x.Login,
-                    Password = x.Password,
-                }).FirstOrDefaultAsync()
+                .ProjectTo<AuthorizeDto>(this._mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => (x?.Login).IsNullOrDefault(), "Пользователь");
 
             return !user.Password.IsNullOrDefault();
@@ -91,6 +88,12 @@ namespace WarspearOnlineApi.Api.Services.Users
         public async Task<SuccessAuthorizeDto> Registration(AuthorizeDto dto)
         {
             dto.ValidateUserAuthorize(true);
+
+            var user = await this._context.wo_User
+                .Where(x => x.Login == dto.Login && x.Password == dto.Password)
+                .ProjectTo<SuccessAuthorizeDto>(this._mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync()
+                .ThrowOnConditionAsync(x => x == null, "Указан неверный логин или пароль");
         }
     }
 }

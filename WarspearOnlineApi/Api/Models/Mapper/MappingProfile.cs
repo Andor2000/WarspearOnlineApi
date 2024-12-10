@@ -31,6 +31,11 @@ namespace WarspearOnlineApi.Api.Models.Mapper
                 .ForMember(x => x.Code, opt => opt.MapFrom(s => s.AccessLevelCode))
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.AccessLevelName));
 
+            CreateMap<wo_User, AuthorizeDto>()
+                .ForMember(x => x.Login, opt => opt.MapFrom(s => s.Login))
+                .ForMember(x => x.Password, opt => opt.MapFrom(s => s.Password))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.UserName));
+
             CreateMap<wo_User, UserDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.UserId))
                 .ForMember(x => x.Login, opt => opt.MapFrom(s => s.Login))
