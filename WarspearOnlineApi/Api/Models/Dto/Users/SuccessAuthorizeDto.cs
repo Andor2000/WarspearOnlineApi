@@ -3,7 +3,7 @@
     /// <summary>
     /// Dto-модель для успешной авторизации.
     /// </summary>
-    public class UserSuccessAuthorizeDto
+    public class SuccessAuthorizeDto
     {
         /// <summary>
         /// Токен.

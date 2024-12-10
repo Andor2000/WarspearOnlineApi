@@ -24,9 +24,9 @@ with RecursiveAccessLevel as (
     -- Рекурсивно находим родителей
     select
 	al.{nameof(wo_AccessLevel.AccessLevelID)},
-	al.{nameof(wo_AccessLevel.rf_ParentAccessLevel)}
+	al.{nameof(wo_AccessLevel.rf_ParentAccessLevelID)}
     from {nameof(wo_AccessLevel)} as al
-    join RecursiveAccessLevel as ral on al.{nameof(wo_AccessLevel.AccessLevelID)} = ral.{nameof(wo_AccessLevel.rf_ParentAccessLevel)}
+    join RecursiveAccessLevel as ral on al.{nameof(wo_AccessLevel.AccessLevelID)} = ral.{nameof(wo_AccessLevel.rf_ParentAccessLevelID)}
 	where al.{nameof(wo_AccessLevel.AccessLevelID)} > 0
 )
 

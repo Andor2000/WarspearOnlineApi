@@ -30,32 +30,32 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="username">Логин.</param>
         /// <param name="password">Пароль.</param>
         /// <returns></returns>
-        [HttpPost("login")]
-        public IActionResult Login(string username, string password)
-        {
-            // В реальном приложении тут будет логика для проверки учетных данных.
-            if (username == "test" && password == "password") // Пример
-            {
-                return Ok(_jwtTokenService.GenerateToken(username));
-            }
+        //[HttpPost("login")]
+        //public IActionResult UserLogin(string username, string password)
+        //{
+        //    // В реальном приложении тут будет логика для проверки учетных данных.
+        //    if (username == "test" && password == "password") // Пример
+        //    {
+        //        return Ok(_jwtTokenService.GenerateToken(username));
+        //    }
 
-            return Unauthorized();
-        }
+        //    return Unauthorized();
+        //}
 
-        [HttpGet("get-username")]
-        public IActionResult Logout()
-        {
-            return Ok(new { Username = _jwtTokenService.GetUsernameFromToken() });
-        }
+        //[HttpGet("get-username")]
+        //public IActionResult Logout()
+        //{
+        //    return Ok(new { Username = _jwtTokenService.GetUsernameFromToken() });
+        //}
 
-        [HttpGet("token-expiration")]
-        public IActionResult GetTokenExpiration(string token)
-        {
-            return Ok(new
-            {
-                Now_______Date = DateTime.UtcNow,
-                ExpirationDate = _jwtTokenService.GetTokenExpiration(token)
-            });
-        }
+        //[HttpGet("token-expiration")]
+        //public IActionResult GetTokenExpiration(string token)
+        //{
+        //    return Ok(new
+        //    {
+        //        Now_______Date = DateTime.UtcNow,
+        //        ExpirationDate = _jwtTokenService.GetTokenExpiration(token)
+        //    });
+        //}
     }
 }

@@ -3,21 +3,21 @@
     /// <summary>
     /// Dto-модель для авторизации.
     /// </summary>
-    public class UserAuthorizeDto
+    public class AuthorizeDto
     {
         /// <summary>
         /// Логин.
         /// </summary>
-        public string Login { get;set; }
+        public string Login { get;set; } = string.Empty;
 
         /// <summary>
         /// Пароль.
         /// </summary>
-        public string Password { get;set; }
+        public string Password { get; set; } = string.Empty;
 
         /// <summary>
         /// Имя.
         /// </summary>
-        public string Name { get;set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

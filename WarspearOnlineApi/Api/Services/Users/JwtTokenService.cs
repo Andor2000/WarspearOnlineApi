@@ -2,7 +2,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models;
+using WarspearOnlineApi.Api.Models.Dto.Users;
 
 namespace WarspearOnlineApi.Api.Services.Users
 {
@@ -37,51 +39,57 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// <summary>
         /// Генерация токена.
         /// </summary>
-        /// <param name="username">Имя пользователя.</param>
+        /// <param name="user">Пользователь.</param>
         /// <returns>Токен.</returns>
-        public string GenerateToken(string username)
+        public void GenerateToken(SuccessAuthorizeDto user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var dateExpiresAt = DateTime.UtcNow.AddDays(jwtSetting.ExpirationTimes);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("Login", username)
+                    new Claim("UserLogin", user.User.Login)
                 }),
                 Issuer = jwtSetting.Issuer,
                 Audience = jwtSetting.Audience,
-                Expires = DateTime.UtcNow.AddDays(jwtSetting.ExpirationTimes),
+                Expires = dateExpiresAt,
                 SigningCredentials = credentials
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+
+            user.DateExpiresAt = dateExpiresAt;
+            user.Token = tokenHandler.WriteToken(token);
         }
 
 
         /// <summary>
         /// Извлечение имени пользователя из токена, полученного из HTTP контекста.
         /// </summary>
+        /// <param name="token">Токен.</param>
         /// <returns>Имя пользователя.</returns>
-        public string GetUsernameFromToken()
+        public string GetUsernameFromToken(string token)
         {
             try
             {
-                var authHeader = this._httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
-
-                if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                if (token.IsNullOrDefault())
                 {
-                    return null;
+                    var authHeader = this._httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
+                    if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                    {
+                        return null;
+                    }
+                    token = authHeader.Substring("Bearer ".Length).Trim();
                 }
 
-                var token = authHeader.Substring("Bearer ".Length).Trim();
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
 
-                return jwtToken.Claims.FirstOrDefault(c => c.Type == "Login")?.Value;
+                return jwtToken.Claims.FirstOrDefault(c => c.Type == "UserLogin")?.Value;
             }
             catch
             {

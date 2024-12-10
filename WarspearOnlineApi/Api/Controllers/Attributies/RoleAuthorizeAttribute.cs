@@ -37,10 +37,7 @@ namespace WarspearOnlineApi.Api.Controllers.Attributies
                 return;
             }
 
-            var roles = await context.HttpContext.RequestServices
-                .GetService<UserService>()
-                .GetRoleCodes();
-
+            var roles = await context.HttpContext.RequestServices.GetService<RoleService>().GetRoleCodes();
             var roleCodes = roles.Select(role => role.Code);
 
             if (!roleCodes.Contains(this._requiredRole))

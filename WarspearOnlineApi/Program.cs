@@ -13,7 +13,7 @@ using WarspearOnlineApi.Api.Extensions;
 
 
 // Добавить миграцию: add-migration InitMigration
-// dotnet ef migrations add InitMigration --project "F:\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
+// dotnet ef migrations add InitMigration --project "D:\Project\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
 var builder = WebApplication.CreateBuilder(args);
 
 // Настройка сервисов
@@ -37,7 +37,8 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    builder.Services.AddScoped<UserService>();
+    builder.Services.AddScoped<AuthorizeService>();
+    builder.Services.AddScoped<RoleService>();
     builder.Services.AddSingleton<JwtTokenService>();
     builder.Services.AddSingleton<AuthController>();
 
@@ -55,7 +56,6 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddHttpContextAccessor();
 }
 
-
 ///
 void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
 {
@@ -67,7 +67,8 @@ void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Database.Migrate(); // Применяет все миграции, которые еще не были применены
-        dbContext.Database.ExecuteSqlRaw("ALTER DATABASE WarspearOnlineApi COLLATE Cyrillic_General_CI_AS;"); // Разрешает русские символы
+        dbContext.Database.ExecuteSqlRaw("ALTER DATABASE WarspearOnlineApi COLLATE Cyrillic_General_CI_AS;");
+
         // Инициализация пустых записей
         var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
         initializer.AddEmptyRecords(); // Вставка пустых записей

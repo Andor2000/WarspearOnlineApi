@@ -58,7 +58,7 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Идентификатор игрока.</returns>
         public async Task<int> CreatePlayer(PlayerDto dto, int serverId, int fractionId)
         {
-            dto.Validate();
+            dto.ValidatePlayer();
             serverId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан сервер");
             fractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указана фракция");
 

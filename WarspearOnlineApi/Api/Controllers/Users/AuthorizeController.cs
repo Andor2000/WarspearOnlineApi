@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WarspearOnlineApi.Api.Controllers.Attributies;
-using WarspearOnlineApi.Api.Enums.BaseRecordDB;
+﻿using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Api.Models.Dto.Users;
 using WarspearOnlineApi.Api.Services.Users;
 
@@ -12,20 +9,20 @@ namespace WarspearOnlineApi.Api.Controllers.Users
     /// </summary>
     [ApiController]
     [Route("api/user/authorize")]
-    public class UserAuthorizeController : ControllerBase
+    public class AuthorizeController : ControllerBase
     {
         /// <summary>
         /// Сервис для работы с авторизацией пользователей.
         /// </summary>
-        private readonly UserAuthorizeService _userAuthorizeService;
+        private readonly AuthorizeService _AuthorizeService;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="userAuthorizeService">Сервис для работы с авторизацией пользователей.</param>
-        public UserAuthorizeController(UserAuthorizeService userAuthorizeService)
+        public AuthorizeController(AuthorizeService userAuthorizeService)
         {
-            this._userAuthorizeService = userAuthorizeService;
+            this._AuthorizeService = userAuthorizeService;
         }
 
         /// <summary>
@@ -34,9 +31,9 @@ namespace WarspearOnlineApi.Api.Controllers.Users
         /// <param name="dto">Dto-модель для авторизации.</param>
         /// <returns>Признак существования логина.</returns>
         [HttpPost("CheckExistLoginAndFilledPassword")]
-        public async Task<ActionResult<bool>> CheckExistLoginAndFilledPassword([FromBody] UserAuthorizeDto dto)
+        public async Task<ActionResult<bool>> CheckExistLoginAndFilledPassword([FromBody] AuthorizeDto dto)
         {
-            return Ok(await this._userAuthorizeService.CheckExistLoginAndFilledPassword(dto));
+            return Ok(await this._AuthorizeService.CheckExistLoginAndFilledPassword(dto));
         }
 
         /// <summary>
@@ -45,9 +42,20 @@ namespace WarspearOnlineApi.Api.Controllers.Users
         /// <param name="dto">Dto-модель для авторизации.</param>
         /// <returns>Модель авотризированного пользователя.</returns>
         [HttpPost("SignIn")]
-        public async Task<ActionResult<UserSuccessAuthorizeDto>> SignIn([FromBody] UserAuthorizeDto dto)
+        public async Task<ActionResult<SuccessAuthorizeDto>> SignIn([FromBody] AuthorizeDto dto)
         {
-            return Ok(await this._userAuthorizeService.SignIn(dto)); 
+            return Ok(await this._AuthorizeService.SignIn(dto));
+        }
+
+        /// <summary>
+        /// Добавление нового пользователя.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("Registration")]
+        public async Task<ActionResult<SuccessAuthorizeDto>> Registration([FromBody] AuthorizeDto dto)
+        {
+            return Ok(await this._AuthorizeService.Registration(dto));
         }
     }
 }

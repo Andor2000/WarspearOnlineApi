@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WarspearOnlineApi.Api.Enums;
 
 namespace WarspearOnlineApi.Api.Models.Entity.Users
 {
@@ -15,19 +16,19 @@ namespace WarspearOnlineApi.Api.Models.Entity.Users
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        [MaxLength(40)]
+        [MaxLength(SizeFieldEnum.UserName)]
         public string UserName { get; set; }
 
         /// <summary>
         /// Логин пользователя.
         /// </summary>
-        [MaxLength(40)]
+        [MaxLength(SizeFieldEnum.UserLogin)]
         public string Login { get; set; }
 
         /// <summary>
         /// Пароль пользователя.
         /// </summary>
-        [MaxLength(50)]
+        [MaxLength(SizeFieldEnum.UserPassword)]
         public string Password { get; set; }
 
         /// <summary>

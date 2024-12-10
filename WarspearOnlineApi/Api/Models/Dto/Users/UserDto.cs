@@ -1,4 +1,5 @@
-﻿using WarspearOnlineApi.Api.Models.BaseModels;
+﻿using System.Text.Json.Serialization;
+using WarspearOnlineApi.Api.Models.BaseModels;
 
 namespace WarspearOnlineApi.Api.Models.Dto.Users
 {
@@ -16,5 +17,11 @@ namespace WarspearOnlineApi.Api.Models.Dto.Users
         /// Роли.
         /// </summary>
         public CodeNameBaseModel[] Roles { get; set; } = Array.Empty<CodeNameBaseModel>();
+
+        /// <summary>
+        /// Логин.
+        /// </summary>
+        [JsonIgnore]
+        public string Login { get; set; } = string.Empty;
     }
 }
