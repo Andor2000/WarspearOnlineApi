@@ -89,7 +89,8 @@ namespace WarspearOnlineApi.Api.Services.Users
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
 
-                return int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserID").Value);
+                return int.Parse(jwtToken.Claims.FirstOrDefault(c => c.Type == "UserID").Value)
+                    .ThrowOnCondition(x => x.IsNullOrDefault(), "В токене не указан идентификатор пользователя");
             }
             catch
             {

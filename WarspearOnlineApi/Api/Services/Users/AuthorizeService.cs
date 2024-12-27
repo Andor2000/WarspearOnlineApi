@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Data;
-using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto.Users;
 using WarspearOnlineApi.Api.Services.Base;

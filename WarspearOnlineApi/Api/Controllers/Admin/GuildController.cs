@@ -11,6 +11,7 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
     /// Контроллер для работы с гильдиями.
     /// </summary>
     [Authorize]
+    [RoleAuthorize(nameof(RoleEnum.AddGuild))]
     [ApiController]
     [Route("api/admin/[controller]")]
     public class GuildController : Controller
@@ -35,7 +36,6 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         /// <param name="serverId">Идентификатор сервера.</param>
         /// <param name="fractionId">Идентификатор фракции.</param>
         /// <returns>Список гильдий.</returns>
-        [RoleAuthorize(nameof(RoleEnum.AddGuild))]
         [HttpGet("List")]
         public async Task<ActionResult<CodeNameBaseModel>> GetGuilds(int serverId, int fractionId)
         {

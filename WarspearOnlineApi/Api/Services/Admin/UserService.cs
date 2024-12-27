@@ -47,38 +47,38 @@ namespace WarspearOnlineApi.Api.Services.Admin
         /// <returns>Сообщение о успешном добавлении пользователя.</returns>
         public async Task<UserDto> AddUser(SavingUserDto dto)
         {
+            dto.AccessLevelId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор уровня доступа");
             dto.Login = dto.Login.ValidateUserLogin();
+
             await this._context.wo_User.AnyAsync(x => x.UserId > 0 && x.Login == dto.Login)
                 .ThrowOnConditionAsync(x => x, "Пользователь с таким логином уже существует");
 
-            dto.AccessLevelId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан уровень доступа");
             var accessLevel = await this._context.wo_AccessLevel
                 .Where(x => x.AccessLevelID == dto.AccessLevelId)
                 .Select(x => x.AccessLevelInt)
                 .FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Уровень доступа");
 
-            var userId = this._jwtTokenService.GetUserIdFromToken()
-                .ThrowOnCondition(x => x.IsNullOrDefault(), "В токене не указан пользователь");
-
+            var userId = this._jwtTokenService.GetUserIdFromToken();
             var user = await this._context.wo_User
                 .Where(x => x.UserId == userId)
                 .Select(x => new
                 {
                     x.UserId,
-                    x.rf_ServerID,
                     x.RangeAccessLevel,
+                    x.rf_ServerID,
+                    x.rf_FractionID,
                     x.rf_AccessLevel.AccessLevelInt
                 }).FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Пользователь")
-                .ThrowOnConditionAsync(x => x.rf_ServerID != dto.ServerId, "У вас нет прав на добавление пользователя на указанный сервер")
                 .ThrowOnConditionAsync(x => x.AccessLevelInt < accessLevel, "Вы не можете дать право доступа выше собственного");
 
             var newUser = new wo_User()
             {
                 Login = dto.Login,
-                RangeAccessLevel = user.RangeAccessLevel + 1,
-                rf_ServerID = dto.ServerId,
+                RangeAccessLevel = user.RangeAccessLevel + 1, // как-то поумному нужно делать
+                rf_ServerID = user.rf_ServerID,
+                rf_FractionID = user.rf_FractionID,
                 rf_AccessLevelID = dto.AccessLevelId,
             };
 
@@ -98,29 +98,22 @@ namespace WarspearOnlineApi.Api.Services.Admin
                 .Where(x => x.AccessLevelID == dto.AccessLevelId)
                 .Select(x => new { x.AccessLevelInt })
                 .FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => x == null, "Уровень доступа"))
+                .ThrowIfNull("Уровень доступа"))
                 .AccessLevelInt;
 
             var userHeaderId = this._jwtTokenService.GetUserIdFromToken();
-            var userHeader = await this._context.wo_User.AsNoTracking()
-                .Where(x => x.UserId == userHeaderId)
-                .Select(x => new
-                {
-                    x.UserId,
-                    x.rf_ServerID,
-                    x.rf_AccessLevel.AccessLevelInt,
-                    x.RangeAccessLevel,
-                })
-                .FirstOrDefaultAsync()
+            var userHeader = await this._context.wo_User
+                .FirstOrDefaultAsync(x => x.UserId == userHeaderId)
                 .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Пользователь")
-                .ThrowOnConditionAsync(x => x.AccessLevelInt < accessLevelInt, "Вы не можете дать право доступа выше собственного");
+                .ThrowOnConditionAsync(x => x.rf_AccessLevel.AccessLevelInt < accessLevelInt, "Вы не можете дать право доступа выше собственного");
 
             dto.UserId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор пользователя");
             var user = await this._context.wo_User
                 .FirstOrDefaultAsync(x => x.UserId == dto.UserId)
                 .ThrowIfNull("Пользователь")
                 .ThrowOnConditionAsync(x => x.rf_ServerID != userHeader.rf_ServerID, "У вас нет прав на обновление пользователя на указанный сервер")
-                .ThrowOnConditionAsync(x => x.RangeAccessLevel > userHeader.RangeAccessLevel, "Ваш ранг меньше чем у редактируемого пользователя. У вас нет прав на обновление пользователя");
+                .ThrowOnConditionAsync(x => x.rf_FractionID != userHeader.rf_FractionID, "У вас нет прав на обновление пользователя в указанной фракции")
+                .ThrowOnConditionAsync(x => x.RangeAccessLevel >= userHeader.RangeAccessLevel, "Ваш ранг меньше чем у редактируемого пользователя. У вас нет прав на обновление пользователя");
 
             user.rf_AccessLevelID = dto.AccessLevelId;
             user.RangeAccessLevel = userHeader.RangeAccessLevel + 1;

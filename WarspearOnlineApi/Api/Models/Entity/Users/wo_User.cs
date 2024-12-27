@@ -55,5 +55,15 @@ namespace WarspearOnlineApi.Api.Models.Entity.Users
         /// Сервер.
         /// </summary>
         public wo_Server rf_Server { get; set; }
+
+        /// <summary>
+        /// Идентификатор фракции.
+        /// </summary>
+        public int rf_FractionID { get; set; }
+
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public wo_Fraction rf_Fraction { get; set; }
     }
 }

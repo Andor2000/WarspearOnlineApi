@@ -16,11 +16,6 @@
         public string Login { get; set; } = string.Empty;
 
         /// <summary>
-        /// Идентификатор сервера.
-        /// </summary>
-        public int ServerId { get; set; }
-
-        /// <summary>
         /// Идентификатор уровня доступа.
         /// </summary>
         public int AccessLevelId { get; set; }

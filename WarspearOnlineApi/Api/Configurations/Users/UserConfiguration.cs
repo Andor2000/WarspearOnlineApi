@@ -20,7 +20,10 @@ namespace WarspearOnlineApi.Api.Configurations.Users
             builder.HasOne(x => x.rf_AccessLevel).WithMany(x => x.Users).HasForeignKey(x => x.rf_AccessLevelID).OnDelete(DeleteBehavior.NoAction);
 
             builder.Property(m => m.rf_ServerID).HasDefaultValue(0);
-            builder.HasOne(x => x.rf_Server).WithMany(x => x.Users).HasForeignKey(x => x.rf_ServerID).OnDelete(DeleteBehavior.NoAction)
+            builder.HasOne(x => x.rf_Server).WithMany(x => x.Users).HasForeignKey(x => x.rf_ServerID).OnDelete(DeleteBehavior.NoAction);
+
+            builder.Property(m => m.rf_FractionID).HasDefaultValue(0);
+            builder.HasOne(x => x.rf_Fraction).WithMany(x => x.Users).HasForeignKey(x => x.rf_FractionID).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

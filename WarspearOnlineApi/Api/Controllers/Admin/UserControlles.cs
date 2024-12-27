@@ -11,6 +11,7 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
     /// Контроллер для работы с пользователями.
     /// </summary>
     [Authorize]
+    [RoleAuthorize(nameof(RoleEnum.AddUser))]
     [ApiController]
     [Route("api/admin/[controller]")]
     public class UserControlles : Controller
@@ -34,7 +35,6 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         /// </summary>
         /// <param name="dto">Dto-модель для создания пользователя.</param>
         /// <returns>Сообщение о успешном добавлении пользователя.</returns>
-        [RoleAuthorize(nameof(RoleEnum.AddUser))]
         [HttpPost]
         public async Task<ActionResult<UserDto>> AddUser(SavingUserDto dto)
         {
@@ -47,7 +47,6 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         /// <param name="userId">Идентификатор пользователя.</param>
         /// <param name="accessLevelId">Уровень доступа.</param>
         /// <returns></returns>
-        [RoleAuthorize(nameof(RoleEnum.AddUser))]
         [HttpPut("AccessLevel/{userId}")]
         public async Task<ActionResult<UserDto>> UpdateAccessLevel(SavingUserDto dto)
         {

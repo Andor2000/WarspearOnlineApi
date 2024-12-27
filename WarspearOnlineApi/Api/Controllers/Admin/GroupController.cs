@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Api.Controllers.Attributies;
 using WarspearOnlineApi.Api.Enums.BaseRecordDB;
+using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Services.Admin;
 
 namespace WarspearOnlineApi.Api.Controllers.Admin
@@ -10,6 +11,7 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
     /// Контроллер для работы с группами.
     /// </summary>
     [Authorize]
+    [RoleAuthorize(nameof(RoleEnum.AddDeleteGroup))]
     [ApiController]
     [Route("api/admin/[controller]")]
     public class GroupController : Controller
@@ -28,14 +30,24 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
             this._groupService = groupService;
         }
 
+
+        /// <summary>
+        /// Получение списка групп.
+        /// </summary>
+        /// <returns>Список групп</returns>
+        [HttpGet]
+        public async Task<ActionResult<GroupDto[]>> GetGroups()
+        {
+            return Ok(await this._groupService.GetGroups());
+        }
+
         /// <summary>
         /// Добавление группы.
         /// </summary>
-        [RoleAuthorize(nameof(RoleEnum.AddDeleteGroup))]
         [HttpPost]
-        public async Task<ActionResult> AddGroup()
+        public async Task<ActionResult<GroupDto>> AddGroup(int serverId, int fractionId, string groupName)
         {
-            return Ok(await this._groupService.AddGroup());
+            return Ok(await this._groupService.AddGroup(serverId, fractionId, groupName);
         }
     }
 }

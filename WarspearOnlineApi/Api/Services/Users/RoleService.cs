@@ -47,11 +47,9 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// <returns>Список ролей пользователя.</returns>
         public async Task<CodeNameBaseModel[]> GetRoleCodes(string token = "")
         {
-            var username = this._jwtTokenService.GetUserIdFromToken(token)
-                .ThrowOnCondition(x => x.IsNullOrDefault(), "В токене не указан пользователь");
-
+            var userId = this._jwtTokenService.GetUserIdFromToken(token);
             var user = await this._context.wo_User
-                .Where(u => u.Login == username)
+                .Where(u => u.UserId == userId)
                 .Select(x => new
                 {
                     x.UserId,
@@ -60,8 +58,7 @@ namespace WarspearOnlineApi.Api.Services.Users
                 .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Пользователь");
 
             var roleIds = await this._context.Database.GetDbConnection()
-                .QueryAsync<int>(SqlRole.GetRolesByAccessLevel, new { accessLevelId = user.rf_AccessLevelID })
-                .ThrowOnConditionAsync(x => x.Count() == 0, "Пользователь существует, но у него нет доступных ролей");
+                .QueryAsync<int>(SqlRole.GetRolesByAccessLevel, new { AccessLevelId = user.rf_AccessLevelID });
 
             return await this._context.wo_Role
                 .Where(x => roleIds.Contains(x.RoleID))
