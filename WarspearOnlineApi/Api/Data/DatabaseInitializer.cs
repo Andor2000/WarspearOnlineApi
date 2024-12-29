@@ -17,7 +17,7 @@ namespace WarspearOnlineApi.Api.Data
         /// <param name="dbContext">Контекст данных.</param>
         public DatabaseInitializer(AppDbContext dbContext)
         {
-            _сontext = dbContext;
+            this._сontext = dbContext;
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace WarspearOnlineApi.Api.Data
         /// </summary>
         public void AddEmptyRecords()
         {
-            var entityTypes = _сontext.Model.GetEntityTypes();
+            var entityTypes = this._сontext.Model.GetEntityTypes();
             var queries = new StringBuilder();
 
             foreach (var entityType in entityTypes)
@@ -51,7 +51,7 @@ end
             }
 
             var resQuery = queries.ToString();
-            _сontext.Database.GetDbConnection().Execute(resQuery);
+            this._сontext.Database.GetDbConnection().Execute(resQuery);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ end
         /// </summary>
         public void AddBaseRecords()
         {
-            _сontext.Database.GetDbConnection().Execute(SqlQueriesInitializer.CreateBaseRecords);
+            this._сontext.Database.GetDbConnection().Execute(SqlQueriesInitializer.CreateBaseRecords);
         }
     }
 }

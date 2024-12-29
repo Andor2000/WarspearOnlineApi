@@ -10,6 +10,8 @@ using WarspearOnlineApi.Api.Models;
 using WarspearOnlineApi.Api.Models.Mapper;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Controllers.Users;
+using WarspearOnlineApi.Api.Services.Base;
+using System.Reflection;
 
 
 // Добавить миграцию: add-migration InitMigration
@@ -26,7 +28,7 @@ builder.Services.AddTransient<DatabaseInitializer>();
 
 // Настройка приложения
 var app = builder.Build();
-ConfigureApplication(app, builder.Environment);
+this.ConfigureApplication(app, builder.Environment);
 app.Run();
 
 // Метод для настройки сервисов
@@ -37,19 +39,19 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    builder.Services.AddScoped<AuthorizeService>();
-    builder.Services.AddScoped<RoleService>();
-    builder.Services.AddSingleton<JwtTokenService>();
+    /* Сервисы наследуются от базового сервиса. Теперь не нужно каждый сервис отдельно прописывать */
+    var baseServiceType = typeof(BaseService);
+    var assembly = Assembly.GetExecutingAssembly();
+
+    var serviceTypes = assembly.GetTypes().Where(x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(baseServiceType));
+    foreach (var serviceType in serviceTypes)
+    {
+        builder.Services.AddScoped(serviceType);
+    }
+    /* Конец */
+
     builder.Services.AddSingleton<AuthController>();
-
-    builder.Services.AddScoped<JournalDropService>();
-    builder.Services.AddScoped<JournalPlayerService>();
-
-    builder.Services.AddScoped<DropService>();
-    builder.Services.AddScoped<DropPlayerService>();
-    builder.Services.AddScoped<PlayerService>();
-
-    builder.Services.AddScoped<GenericService>();
+    builder.Services.AddSingleton<JwtTokenService>();
 
     builder.Services.AddAuthorization();
     builder.Services.AddControllers();

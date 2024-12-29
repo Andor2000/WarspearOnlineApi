@@ -27,19 +27,17 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         /// <param name="guildService">Сервис для работы с гильдиями.</param>
         public GuildController(GuildService guildService)
         {
-            _guildService = guildService;
+            this._guildService = guildService;
         }
 
         /// <summary>
         /// Получение списка гильдий.
         /// </summary>
-        /// <param name="serverId">Идентификатор сервера.</param>
-        /// <param name="fractionId">Идентификатор фракции.</param>
         /// <returns>Список гильдий.</returns>
         [HttpGet("List")]
-        public async Task<ActionResult<CodeNameBaseModel>> GetGuilds(int serverId, int fractionId)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetGuilds()
         {
-            return Ok(await this._guildService.GetGuilds(serverId, fractionId));
+            return Ok(await this._guildService.GetGuilds());
         }
     }
 }

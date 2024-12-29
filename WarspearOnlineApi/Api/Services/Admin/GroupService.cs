@@ -13,7 +13,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
     /// <summary>
     /// Сервис для работы с группами.
     /// </summary>
-    public class GroupService : BaseService
+    public class GroupService : AdminBaseService
     {
         /// <summary>
         /// Маппер.
@@ -21,23 +21,17 @@ namespace WarspearOnlineApi.Api.Services.Admin
         private readonly IMapper _mapper;
 
         /// <summary>
-        /// Сервис для работы с токенами.
-        /// </summary>
-        private readonly JwtTokenService _jwtTokenService;
-
-        /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст данных.</param>
-        /// <param name="mapper">Маппер.</param>
         /// <param name="jwtTokenService">Сервис для работы с токенами.</param>
+        /// <param name="mapper">Маппер.</param>
         public GroupService(
             AppDbContext context,
             IMapper mapper,
-            JwtTokenService jwtTokenService) : base(context)
+            JwtTokenService jwtTokenService) : base(context, jwtTokenService)
         {
             this._mapper = mapper;
-            this._jwtTokenService = jwtTokenService;
         }
 
         /// <summary>
@@ -46,19 +40,10 @@ namespace WarspearOnlineApi.Api.Services.Admin
         /// <returns>Список групп</returns>
         public async Task<GroupDto[]> GetGroups()
         {
-            var userId = this._jwtTokenService.GetUserIdFromToken();
-            var user = await this._context.wo_User
-                .Where(x => x.UserId == userId)
-                .Select(x => new
-                {
-                    x.UserId,
-                    x.rf_ServerID,
-                    x.rf_FractionID,
-                }).FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Пользователь");
+            var user = await this.GetAdminUserModel();
 
             return await this._context.wo_Group
-                .Where(x => x.rf_ServerID == user.rf_ServerID && x.rf_FractionID == user.rf_FractionID)
+                .Where(x => x.rf_ServerID == user.ServerId && x.rf_FractionID == user.FractionId)
                 .ProjectTo<GroupDto>(this._mapper.ConfigurationProvider)
                 .ToArrayAsync();
         }
@@ -80,7 +65,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
                 {
                     x.UserId,
                     x.rf_ServerID,
-                    x.rf_AccessLevel.AccessLevelCode 
+                    x.rf_AccessLevel.AccessLevelCode,
                 }).FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Пользователь")
                 .ThrowOnConditionAsync(x => x.rf_ServerID != serverId, "Вы не являетесь администратором сервера");

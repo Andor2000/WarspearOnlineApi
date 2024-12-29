@@ -21,7 +21,7 @@ namespace WarspearOnlineApi.Api.Controllers.Users
         /// <param name="jwtTokenService">Сервис для работы с токенами.</param>
         public AuthController(JwtTokenService jwtTokenService)
         {
-            _jwtTokenService = jwtTokenService;
+            this._jwtTokenService = jwtTokenService;
         }
 
         /// <summary>

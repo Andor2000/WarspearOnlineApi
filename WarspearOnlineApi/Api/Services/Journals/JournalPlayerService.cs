@@ -27,7 +27,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <param name="mapper">Маппер.</param>
         public JournalPlayerService(AppDbContext context, IMapper mapper) : base(context)
         {
-            _mapper = mapper;
+            this._mapper = mapper;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <returns>Количество игроков.</returns>
         public async Task<int> GetJournalPlayersCount(JournalPlayerFilterDto filter)
         {
-            return await BuildFilter(filter).CountAsync();
+            return await this.BuildFilter(filter).CountAsync();
         }
 
         /// <summary>

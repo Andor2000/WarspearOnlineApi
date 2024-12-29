@@ -25,7 +25,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="dropService">Сервис для работы с дропом.</param>
         public DropController(DropService dropService)
         {
-            _dropService = dropService;
+            this._dropService = dropService;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("{dropId}")]
         public async Task<ActionResult<DropDto>> GetDrop(int dropId)
         {
-            return Ok(await _dropService.GetDrop(dropId));
+            return Ok(await this._dropService.GetDrop(dropId));
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DropDto>> AddDrop(DropDto dto)
         {
-            return Ok(await _dropService.AddDrop(dto));
+            return Ok(await this._dropService.AddDrop(dto));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpPut]
         public async Task<ActionResult<DropDto>> EditDrop(DropDto dto)
         {
-            return Ok(await _dropService.EditDrop(dto));
+            return Ok(await this._dropService.EditDrop(dto));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpDelete]
         public async Task<ActionResult<string>> Delete(int dropId)
         {
-            return Ok(await _dropService.Delete(dropId));
+            return Ok(await this._dropService.Delete(dropId));
         }
     }
 }

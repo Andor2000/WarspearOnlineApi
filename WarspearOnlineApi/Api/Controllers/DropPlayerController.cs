@@ -25,7 +25,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="dropPlayerService">Сервис для работы с интерсекцией дропа и игрока.</param>
         public DropPlayerController(DropPlayerService dropPlayerService)
         {
-            _dropPlayerService = dropPlayerService;
+            this._dropPlayerService = dropPlayerService;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("List/{dropId}")]
         public async Task<ActionResult<DropPlayerDto[]>> GetPlayerByDropId(int dropId)
         {
-            return Ok(await _dropPlayerService.GetPlayerByDropId(dropId));
+            return Ok(await this._dropPlayerService.GetPlayerByDropId(dropId));
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("List/Count/{dropId}")]
         public async Task<ActionResult<int>> GetCountPlayerByDropId(int dropId)
         {
-            return Ok(await _dropPlayerService.GetCountPlayerByDropId(dropId));
+            return Ok(await this._dropPlayerService.GetCountPlayerByDropId(dropId));
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DropPlayerDto>> Add([FromBody] DropPlayerDto dto, int dropId)
         {
-            return Ok(await _dropPlayerService.Add(dto, dropId));
+            return Ok(await this._dropPlayerService.Add(dto, dropId));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpPut]
         public async Task<ActionResult<DropPlayerDto>> Update([FromBody] DropPlayerDto dto, [FromQuery] int dropId)
         {
-            return Ok(await _dropPlayerService.Update(dto, dropId));
+            return Ok(await this._dropPlayerService.Update(dto, dropId));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpDelete("{dropPlayerId}")]
         public async Task<ActionResult<string>> Delete(int dropPlayerId)
         {
-            return Ok(await _dropPlayerService.Delete(dropPlayerId));
+            return Ok(await this._dropPlayerService.Delete(dropPlayerId));
         }
     }
 }

@@ -23,7 +23,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="genericService">Сервис для получения общих данных.</param>
         public GenericController(GenericService genericService)
         {
-            _genericService = genericService;
+            this._genericService = genericService;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("Server/{serverId}")]
         public async Task<ActionResult<CodeNameBaseModel>> GetServer(int serverId)
         {
-            return Ok(await _genericService.GetServer(serverId));
+            return Ok(await this._genericService.GetServer(serverId));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("Server/List")]
         public async Task<ActionResult<CodeNameBaseModel[]>> GetServerList(string search)
         {
-            return Ok(await _genericService.GetServerList(search));
+            return Ok(await this._genericService.GetServerList(search));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("Fraction/{fractionId}")]
         public async Task<ActionResult<CodeNameBaseModel>> GetFraction(int fractionId)
         {
-            return Ok(await _genericService.GetFraction(fractionId));
+            return Ok(await this._genericService.GetFraction(fractionId));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("Fraction/List")]
         public async Task<ActionResult<CodeNameBaseModel[]>> GetFractionList(string search)
         {
-            return Ok(await _genericService.GetFractionList(search));
+            return Ok(await this._genericService.GetFractionList(search));
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("Class/{fractionId}")]
         public async Task<ActionResult<CodeNameBaseModel>> GetClass(int classId)
         {
-            return Ok(await _genericService.GetFraction(classId));
+            return Ok(await this._genericService.GetFraction(classId));
         }
 
         /// <summary>

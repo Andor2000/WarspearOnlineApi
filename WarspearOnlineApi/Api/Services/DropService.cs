@@ -32,8 +32,8 @@ namespace WarspearOnlineApi.Api.Services
             PlayerService playerService,
             IMapper mapper) : base(context)
         {
-            _playerService = playerService;
-            _mapper = mapper;
+            this._playerService = playerService;
+            this._mapper = mapper;
         }
 
         /// <summary>
@@ -43,13 +43,13 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Дроп.</returns>
         public async Task<DropDto> GetDrop(int dropId)
         {
-            var drop = await _context.wo_Drop
+            var drop = await this._context.wo_Drop
                 .Where(x => x.DropID == dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа."))
                 .ProjectTo<DropDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Дроп");
 
-            await SetPlayerCountAndPart(drop);
+            await this.SetPlayerCountAndPart(drop);
             return drop;
         }
 
@@ -60,13 +60,13 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Дроп.</returns>
         public async Task<DropDto> AddDrop(DropDto dto)
         {
-            var entity = await CreateDropEntity(dto);
-            await MapToEntity(entity, dto);
+            var entity = await this.CreateDropEntity(dto);
+            await this.MapToEntity(entity, dto);
 
-            _context.wo_Drop.Add(entity);
-            await _context.SaveChangesAsync();
+            this._context.wo_Drop.Add(entity);
+            await this._context.SaveChangesAsync();
 
-            return await GetDrop(entity.DropID);
+            return await this.GetDrop(entity.DropID);
         }
 
         /// <summary>
@@ -78,13 +78,13 @@ namespace WarspearOnlineApi.Api.Services
         {
             dto.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
 
-            var entity = await _context.wo_Drop.FirstOrDefaultAsync(x => x.DropID == dto.Id)
+            var entity = await this._context.wo_Drop.FirstOrDefaultAsync(x => x.DropID == dto.Id)
                 .ThrowIfNullAsync("Дроп");
 
-            await MapToEntity(entity, dto);
-            await _context.SaveChangesAsync();
+            await this.MapToEntity(entity, dto);
+            await this._context.SaveChangesAsync();
 
-            return await GetDrop(entity.DropID);
+            return await this.GetDrop(entity.DropID);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace WarspearOnlineApi.Api.Services
             }
 
             var dropIds = drops.Select(x => x.Id).Where(x => x > 0);
-            var dropPlayers = await _playerService.GetCountPlayerByDropIds(dropIds);
+            var dropPlayers = await this._playerService.GetCountPlayerByDropIds(dropIds);
 
             foreach (var dropPlayer in dropPlayers)
             {
@@ -119,14 +119,14 @@ namespace WarspearOnlineApi.Api.Services
         public async Task<string> Delete(int dropId)
         {
             dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
-            var entityId = await _context.wo_Drop
+            var entityId = await this._context.wo_Drop
                 .Where(x => x.DropID == dropId)
                 .Select(x => x.DropID)
                 .FirstOrDefaultAsync()
                 .ThrowOnConditionAsync(x => x.IsNullOrDefault(), "Дроп");
 
-            _context.wo_Drop.Remove(new wo_Drop { DropID = entityId });
-            await _context.SaveChangesAsync();
+            this._context.wo_Drop.Remove(new wo_Drop { DropID = entityId });
+            await this._context.SaveChangesAsync();
             return "Дроп удален.";
         }
 
@@ -141,13 +141,13 @@ namespace WarspearOnlineApi.Api.Services
             (dto.Server?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
             (dto.Fraction?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции");
 
-            entity.rf_ServerID = await _context.wo_Server
+            entity.rf_ServerID = await this._context.wo_Server
                 .Where(x => x.ServerID == dto.Server.Id)
                 .Select(x => x.ServerID)
                 .FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Сервер");
 
-            entity.rf_FractionID = await _context.wo_Fraction
+            entity.rf_FractionID = await this._context.wo_Fraction
                 .Where(x => x.FractionID == dto.Fraction.Id)
                 .Select(x => x.FractionID)
                 .FirstOrDefaultAsync()
@@ -163,18 +163,18 @@ namespace WarspearOnlineApi.Api.Services
         /// <param name="dto">Dto-модель</param>
         private async Task MapToEntity(wo_Drop entity, DropDto dto)
         {
-            await ValidateSaving(entity, dto);
+            await this.ValidateSaving(entity, dto);
 
             entity.Drop_Date = dto.Date;
             entity.Price = dto.Price;
 
-            entity.rf_GroupID = await _context.wo_Group
+            entity.rf_GroupID = await this._context.wo_Group
                 .Where(x => x.GroupID == dto.Group.Id)
                 .Select(x => x.GroupID)
                 .FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Группа");
 
-            entity.rf_ObjectID = await _context.wo_Object
+            entity.rf_ObjectID = await this._context.wo_Object
                 .Where(x => x.ObjectID == dto.Object.Id)
                 .Select(x => x.ObjectID)
                 .FirstOrDefaultAsync()
@@ -194,7 +194,7 @@ namespace WarspearOnlineApi.Api.Services
                 .Server.ThrowOnCondition(x => (x?.Id).IsNullOrDefault(), "Не указан идентификатор сервера")
                 .Id.ThrowOnCondition(x => x != entity.rf_ServerID, "Попытка изменить сервер у дропа.");
 
-            await _context.wo_Group.Where(x => x.GroupID == dto.Group.Id).Select(x => x.rf_ServerID).FirstOrDefaultAsync()
+            await this._context.wo_Group.Where(x => x.GroupID == dto.Group.Id).Select(x => x.rf_ServerID).FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Группа")
                 .ThrowOnConditionAsync(x => x != dto.Group.Server.Id, "Группа не относится к указанному серверу");
         }

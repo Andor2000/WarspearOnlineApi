@@ -28,12 +28,12 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// <param name="httpContextAccessor">Объект, предоставляющий доступ к HTTP-запросу.</param>
         public JwtTokenService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
-            jwtSetting.SecretKey = configuration["JwtSettings:SecretKey"];
-            jwtSetting.Issuer = configuration["JwtSettings:Issuer"];
-            jwtSetting.Audience = configuration["JwtSettings:Audience"];
-            jwtSetting.ExpirationTimes = int.Parse(configuration["JwtSettings:ExpirationInTimes"]);
+            this.jwtSetting.SecretKey = configuration["JwtSettings:SecretKey"];
+            this.jwtSetting.Issuer = configuration["JwtSettings:Issuer"];
+            this.jwtSetting.Audience = configuration["JwtSettings:Audience"];
+            this.jwtSetting.ExpirationTimes = int.Parse(configuration["JwtSettings:ExpirationInTimes"]);
 
-            _httpContextAccessor = httpContextAccessor;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>

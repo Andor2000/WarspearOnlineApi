@@ -20,6 +20,11 @@ namespace WarspearOnlineApi.Api.Models.Dto.Users
         /// <summary>
         /// Сервер.
         /// </summary>
-        public NameBaseModel Server { get; set; } = new NameBaseModel();
+        public CodeNameBaseModel Server { get; set; } = new CodeNameBaseModel();
+
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public CodeNameBaseModel Fraction { get; set; } = new CodeNameBaseModel();
     }
 }

@@ -21,7 +21,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="playerService">Сервис для работы с игроками.</param>
         public PlayerController(PlayerService playerService)
         {
-            _playerService = playerService;
+            this._playerService = playerService;
         }
     }
 }

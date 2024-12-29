@@ -20,10 +20,10 @@ namespace WarspearOnlineApi.Api.Controllers.Journals
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="dropService">Сервис для работы с дропом.</param>
+        /// <param name="dropPlayerService">Сервис для работы с дропом.</param>
         public JournalPlayerController(JournalPlayerService dropPlayerService)
         {
-            _journalPlayerService = dropPlayerService;
+            this._journalPlayerService = dropPlayerService;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace WarspearOnlineApi.Api.Controllers.Journals
         [HttpGet]
         public async Task<ActionResult<JournalPlayerDto[]>> GetJournalPlayers(JournalPlayerFilterDto filter)
         {
-            return Ok(await _journalPlayerService.GetJournalPlayers(filter));
+            return Ok(await this._journalPlayerService.GetJournalPlayers(filter));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace WarspearOnlineApi.Api.Controllers.Journals
         [HttpGet("Count")]
         public async Task<ActionResult<int>> GetJournalPlayersCount(JournalPlayerFilterDto filter)
         {
-            return Ok(await _journalPlayerService.GetJournalPlayersCount(filter));
+            return Ok(await this._journalPlayerService.GetJournalPlayersCount(filter));
         }
     }
 }

@@ -63,7 +63,8 @@ namespace WarspearOnlineApi.Api.Models.Mapper
                 .ForMember(x => x.Name, opt => opt.MapFrom(s => s.UserName))
                 .ForMember(x => x.RangeAccessLevel, opt => opt.MapFrom(s => s.RangeAccessLevel))
                 .ForMember(x => x.AccessLevel, opt => opt.MapFrom(s => s.rf_AccessLevel))
-                .ForMember(x => x.Server, opt => opt.MapFrom(s => s.rf_Server));
+                .ForMember(x => x.Server, opt => opt.MapFrom(s => s.rf_Server))
+                .ForMember(x => x.Fraction, opt => opt.MapFrom(s => s.rf_Fraction));
 
             CreateMap<wo_User, UserSessionDto>()
                 .ForMember(x => x.Token, opt => opt.Ignore())

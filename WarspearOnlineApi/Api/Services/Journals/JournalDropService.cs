@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using NPoco.Expressions;
-using System.Linq;
 using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Extensions;
@@ -10,7 +9,6 @@ using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Models.Entity;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Models.Filters;
-using WarspearOnlineApi.Api.Services;
 using WarspearOnlineApi.Api.Services.Base;
 
 namespace WarspearOnlineApi.Api.Services.Journals
@@ -40,8 +38,8 @@ namespace WarspearOnlineApi.Api.Services.Journals
             IMapper mapper,
             DropService dropService) : base(context)
         {
-            _mapper = mapper;
-            _dropService = dropService;
+            this._mapper = mapper;
+            this._dropService = dropService;
         }
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
         {
             var drops = await BuildFilter(filter)
                 .OrderByDescending(x => x.DropID)
-                .ProjectTo<DropDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<DropDto>(this._mapper.ConfigurationProvider)
                 .SkipTake(filter)
                 .ToArrayAsync();
 
@@ -62,7 +60,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
                 return drops;
             }
 
-            await _dropService.SetPlayerCountAndPart(drops);
+            await this._dropService.SetPlayerCountAndPart(drops);
             return drops;
         }
 
@@ -73,7 +71,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <returns>Количества дропа.</returns>
         public async Task<int> GetJournalDropCount(JournalDropFilter filter)
         {
-            return await BuildFilter(filter).CountAsync();
+            return await this.BuildFilter(filter).CountAsync();
         }
 
         /// <summary>
@@ -83,7 +81,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <returns>Запрос для фильтрации записей.</returns>
         private IQueryable<wo_Drop> BuildFilter(JournalDropFilter filter)
         {
-            var query = _context.wo_Drop
+            var query = this._context.wo_Drop
                 .Where(x => x.DropID > 0)
                 .Where(x => x.rf_ServerID == filter.ServerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера."))
                 .Where(x => x.rf_FractionID == filter.FractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции."));
