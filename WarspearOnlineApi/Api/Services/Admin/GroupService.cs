@@ -5,6 +5,7 @@ using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto;
+using WarspearOnlineApi.Api.Models.Entity;
 using WarspearOnlineApi.Api.Services.Base;
 using WarspearOnlineApi.Api.Services.Users;
 
@@ -41,7 +42,6 @@ namespace WarspearOnlineApi.Api.Services.Admin
         public async Task<GroupDto[]> GetGroups()
         {
             var user = await this.GetAdminUserModel();
-
             return await this._context.wo_Group
                 .Where(x => x.rf_ServerID == user.ServerId && x.rf_FractionID == user.FractionId)
                 .ProjectTo<GroupDto>(this._mapper.ConfigurationProvider)
@@ -52,32 +52,30 @@ namespace WarspearOnlineApi.Api.Services.Admin
         /// Добавить группу.
         /// </summary>
         /// <returns></returns>
-        public async Task<GroupDto> AddGroup(int serverId, int fractionId, string groupName)
+        public async Task<GroupDto> AddGroup(string groupName)
         {
-            // Админ сервера > выдает права админа, который редактирует конкретную группу
-            // проверить что это админ конкретного сервера.
-            var userId = this._jwtTokenService.GetUserIdFromToken()
-                .ThrowOnCondition(x => x.IsNullOrDefault(), "В токене не указан пользователь");
+            groupName.ValidateUserLogin();
+            var user = await this.GetAdminUserModel();
 
-            var user = await this._context.wo_User
-                .Where(x => x.UserId == userId)
-                .Select(x => new 
-                {
-                    x.UserId,
-                    x.rf_ServerID,
-                    x.rf_AccessLevel.AccessLevelCode,
-                }).FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Пользователь")
-                .ThrowOnConditionAsync(x => x.rf_ServerID != serverId, "Вы не являетесь администратором сервера");
+            await this._context.wo_Group
+                .AnyAsync(x => x.GroupName == groupName &&
+                               x.rf_ServerID == user.ServerId &&
+                               x.rf_FractionID == user.FractionId)
+                .ThrowOnConditionAsync(x => x, "Группа с таким именем уже существует");
 
-
-            if (user.AccessLevelCode != AccessLevelEnum.MainAdmin &&
-                !await this._context.wo_UserServer.AnyAsync(x => x.rf_UserID == userId && x.rf_ServerID == serverId))
+            var entity = new wo_Group
             {
-                throw new Exception("У пользователя нет доступа к серверу");
-            }
+                GroupName = groupName,
+                rf_UserID = user.Id,
+                rf_ServerID = user.ServerId,
+                rf_FractionID = user.FractionId
+            };
+
+            await this._context.wo_Group.AddAsync(entity);
+            await this._context.SaveChangesAsync();
 
             return await this._context.wo_Group
+                .Where(x => x.GroupID == entity.GroupID)
                 .ProjectTo<GroupDto>(this._mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }

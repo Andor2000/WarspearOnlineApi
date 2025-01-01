@@ -1,8 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Models.Dto;
-using WarspearOnlineApi.Api.Models.Dto.Users;
 
 namespace WarspearOnlineApi.Api.Extensions
 {
@@ -54,10 +52,22 @@ namespace WarspearOnlineApi.Api.Extensions
         /// <param name="player">Игрок.</param>
         public static void ValidatePlayer(this PlayerDto player)
         {
+            player.Nick = player.Nick.Trim();
             player.ThrowOnCondition(x => x.Nick.IsNullOrDefault(), "Не указан ник игрока")
             .ThrowOnCondition(x => x.Nick.Length < 3 || x.Nick.Length > 10, "Неверный размер ника игрока")
             .ThrowOnCondition(x => !Regex.IsMatch(x.Nick, @"^[a-zA-Z]+$"), "Ник должен содержать только английские буквы")
             .ThrowOnCondition(x => (x?.Class?.Id).IsNullOrDefault(), "Не указан класс игрока");
+        }
+
+        /// <summary>
+        /// Валидания наименования группы.
+        /// </summary>
+        /// <param name="groupName">Наименование группы.</param>
+        /// <returns>Наименование группы.</returns>
+        public static string ValidateGroupName(this string groupName)
+        {
+            return groupName.Trim()
+                .ThrowOnCondition(x => x.IsNullOrDefault(), "Не указано наименование группы");
         }
     }
 }

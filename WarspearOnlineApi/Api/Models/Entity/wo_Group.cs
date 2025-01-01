@@ -40,6 +40,11 @@ namespace WarspearOnlineApi.Api.Models.Entity
         public wo_Fraction rf_Fraction { get; set; }
 
         /// <summary>
+        /// Идентификатор пользователя.
+        /// </summary>
+        public int rf_UserID { get; set; }
+
+        /// <summary>
         /// Список дропа.
         /// </summary>
         public ICollection<wo_Drop> Drops { get; set; } = new List<wo_Drop>();

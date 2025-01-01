@@ -13,7 +13,7 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
     [Authorize]
     [RoleAuthorize(nameof(RoleEnum.AddGuild))]
     [ApiController]
-    [Route("api/admin/[controller]")]
+    [Route("api/Admin/[controller]")]
     public class GuildController : Controller
     {
         /// <summary>

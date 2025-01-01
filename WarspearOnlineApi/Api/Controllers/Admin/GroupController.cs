@@ -13,7 +13,7 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
     [Authorize]
     [RoleAuthorize(nameof(RoleEnum.AddDeleteGroup))]
     [ApiController]
-    [Route("api/admin/[controller]")]
+    [Route("api/Admin/[controller]")]
     public class GroupController : Controller
     {
         /// <summary>
@@ -45,9 +45,9 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         /// Добавление группы.
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult<GroupDto>> AddGroup(int serverId, int fractionId, string groupName)
+        public async Task<ActionResult<GroupDto>> AddGroup(string groupName)
         {
-            return Ok(await this._groupService.AddGroup(serverId, fractionId, groupName);
+            return Ok(await this._groupService.AddGroup(groupName));
         }
     }
 }
