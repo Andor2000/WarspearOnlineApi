@@ -67,7 +67,22 @@ namespace WarspearOnlineApi.Api.Extensions
         public static string ValidateGroupName(this string groupName)
         {
             return groupName.Trim()
-                .ThrowOnCondition(x => x.IsNullOrDefault(), "Не указано наименование группы");
+                .ThrowOnCondition(x => x.IsNullOrDefault(), "Не указано наименование группы")
+                .ThrowOnCondition(x => x.Length < 3, "Наименование группы должно содержать не менее 3 символов")
+                .ThrowOnCondition(x => x.Length > SizeFieldEnum.GroupName, $"Наименование группы должно содержать не более {SizeFieldEnum.GroupName} символов");
+        }
+
+        /// <summary>
+        /// Валидания наименования гильдии.
+        /// </summary>
+        /// <param name="groupName">Наименование гильдии.</param>
+        /// <returns>Наименование гильдии.</returns>
+        public static string ValidateGuildName(this string guildName)
+        {
+            return guildName.Trim()
+                .ThrowOnCondition(x => x.IsNullOrDefault(), "Не указано наименование гильдии")
+                .ThrowOnCondition(x => x.Length < 3, "Наименованиее гильдии должно содержать не менее 3 символов")
+                .ThrowOnCondition(x => x.Length > SizeFieldEnum.GroupName, $"Наименование гильдии должно содержать не более {SizeFieldEnum.GuildName} символов");
         }
     }
 }

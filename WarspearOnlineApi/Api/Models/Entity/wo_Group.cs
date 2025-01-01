@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
 
 namespace WarspearOnlineApi.Api.Models.Entity
@@ -16,7 +17,7 @@ namespace WarspearOnlineApi.Api.Models.Entity
         /// <summary>
         /// Название группы.
         /// </summary>
-        [MaxLength(50)]
+        [MaxLength(SizeFieldEnum.GroupName)]
         public string GroupName { get; set; }
 
         /// <summary>

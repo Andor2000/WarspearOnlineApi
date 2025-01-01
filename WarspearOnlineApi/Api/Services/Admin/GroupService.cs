@@ -54,7 +54,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
         /// <returns></returns>
         public async Task<GroupDto> AddGroup(string groupName)
         {
-            groupName.ValidateUserLogin();
+            groupName.ValidateGroupName();
             var user = await this.GetAdminUserModel();
 
             await this._context.wo_Group

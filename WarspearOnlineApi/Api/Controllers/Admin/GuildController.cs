@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using WarspearOnlineApi.Api.Controllers.Attributies;
 using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Models.BaseModels;
@@ -38,6 +39,17 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         public async Task<ActionResult<CodeNameBaseModel[]>> GetGuilds()
         {
             return Ok(await this._guildService.GetGuilds());
+        }
+
+        /// <summary>
+        /// Добавление гильдии.
+        /// </summary>
+        /// <param name="guildName">Наименование гильдии.</param>
+        /// <returns>Гильдия.</returns>
+        [HttpPost]
+        public async Task<ActionResult<CodeNameBaseModel>> AddGuild(string guildName)
+        {
+            return Ok(await this._guildService.AddGuild(guildName));
         }
     }
 }

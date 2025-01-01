@@ -46,6 +46,37 @@ namespace WarspearOnlineApi.Api.Services.Admin
                 .ToArrayAsync();
         }
 
-        //public async Task
+        /// <summary>
+        /// Добавление гильдии.
+        /// </summary>
+        /// <param name="guildName">Наименование гильдии.</param>
+        /// <returns>Гильдия.</returns>
+        public async Task<CodeNameBaseModel> AddGuild(string guildName)
+        {
+            guildName.ValidateGuildName();
+            var user = await this.GetAdminUserModel();
+
+            await this._context.wo_Guild
+                .AnyAsync(x => x.GuildName == guildName &&
+                               x.rf_ServerID == user.ServerId &&
+                               x.rf_FractionID == user.FractionId)
+                .ThrowOnConditionAsync(x => x, "Группа с таким именем уже существует");
+
+            var entity = new wo_Guild
+            {
+                GuildName = guildName,
+                rf_UserID = user.Id,
+                rf_ServerID = user.ServerId,
+                rf_FractionID = user.FractionId
+            };
+
+            await this._context.wo_Guild.AddAsync(entity);
+            await this._context.SaveChangesAsync();
+
+            return await this._context.wo_Guild
+                .Where(x => x.GuildID == entity.GuildID)
+                .ProjectTo<CodeNameBaseModel>(this._mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+        }
     }
 }

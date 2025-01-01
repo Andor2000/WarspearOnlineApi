@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
 
 namespace WarspearOnlineApi.Api.Models.Entity
@@ -16,7 +17,7 @@ namespace WarspearOnlineApi.Api.Models.Entity
         /// <summary>
         /// Название.
         /// </summary>
-        [MaxLength(10)]
+        [MaxLength(SizeFieldEnum.GuildName)]
         public string GuildName { get; set; }
 
         /// <summary>
@@ -38,6 +39,11 @@ namespace WarspearOnlineApi.Api.Models.Entity
         /// Фракция.
         /// </summary>
         public wo_Fraction rf_Fraction { get; set; }
+
+        /// <summary>
+        /// Идентификатор пользователя.
+        /// </summary>
+        public int rf_UserID { get; set; }
 
         /// <summary>
         /// Интерсекиция группы и гильдии.

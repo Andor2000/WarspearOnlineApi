@@ -19,5 +19,15 @@
         /// Имя пользователя.
         /// </summary>
         public const int UserName = 20;
+
+        /// <summary>
+        /// Название группы.
+        /// </summary>
+        public const int GroupName = 50;
+
+        /// <summary>
+        /// Название гильдии.
+        /// </summary>
+        public const int GuildName = 50;
     }
 }
