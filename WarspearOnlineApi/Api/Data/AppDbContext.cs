@@ -56,11 +56,6 @@ namespace WarspearOnlineApi.Api.Data
         /// </summary>
         public DbSet<wo_User> wo_User { get; set; }
 
-        /// <summary>
-        /// Набор данных связи пользователя и сервера.
-        /// </summary>
-        public DbSet<wo_UserServer> wo_UserServer { get; set; }
-
         /* Интерфейс */
 
         /// <summary>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WarspearOnlineApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration23 : Migration
+    public partial class InitMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,6 +19,7 @@ namespace WarspearOnlineApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccessLevelCode = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
                     AccessLevelName = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
+                    AccessLevelInt = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_ParentAccessLevelID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
@@ -102,27 +103,6 @@ namespace WarspearOnlineApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "wo_User",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Login = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
-                    Password = table.Column<string>(type: "nvarchar(100)", nullable: false, defaultValue: ""),
-                    RangeAccessLevel = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_AccessLevelID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_wo_User", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_wo_User_wo_AccessLevel_rf_AccessLevelID",
-                        column: x => x.rf_AccessLevelID,
-                        principalTable: "wo_AccessLevel",
-                        principalColumn: "AccessLevelID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "wo_ClassFraction",
                 columns: table => new
                 {
@@ -199,7 +179,8 @@ namespace WarspearOnlineApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GroupName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_UserID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -267,6 +248,40 @@ namespace WarspearOnlineApi.Migrations
                         principalColumn: "FractionID");
                     table.ForeignKey(
                         name: "FK_wo_Player_wo_Server_rf_ServerID",
+                        column: x => x.rf_ServerID,
+                        principalTable: "wo_Server",
+                        principalColumn: "ServerID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "wo_User",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Login = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false, defaultValue: ""),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
+                    RangeAccessLevel = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_AccessLevelID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_wo_User", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_wo_User_wo_AccessLevel_rf_AccessLevelID",
+                        column: x => x.rf_AccessLevelID,
+                        principalTable: "wo_AccessLevel",
+                        principalColumn: "AccessLevelID");
+                    table.ForeignKey(
+                        name: "FK_wo_User_wo_Fraction_rf_FractionID",
+                        column: x => x.rf_FractionID,
+                        principalTable: "wo_Fraction",
+                        principalColumn: "FractionID");
+                    table.ForeignKey(
+                        name: "FK_wo_User_wo_Server_rf_ServerID",
                         column: x => x.rf_ServerID,
                         principalTable: "wo_Server",
                         principalColumn: "ServerID");
@@ -474,6 +489,16 @@ namespace WarspearOnlineApi.Migrations
                 name: "IX_wo_User_rf_AccessLevelID",
                 table: "wo_User",
                 column: "rf_AccessLevelID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_User_rf_FractionID",
+                table: "wo_User",
+                column: "rf_FractionID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wo_User_rf_ServerID",
+                table: "wo_User",
+                column: "rf_ServerID");
         }
 
         /// <inheritdoc />

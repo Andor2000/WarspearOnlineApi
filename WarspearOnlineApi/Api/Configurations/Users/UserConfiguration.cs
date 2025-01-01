@@ -14,6 +14,7 @@ namespace WarspearOnlineApi.Api.Configurations.Users
             builder.Property(m => m.UserId).UseIdentityColumn();
             builder.Property(m => m.Login).HasDefaultValue(string.Empty);
             builder.Property(m => m.Password).HasDefaultValue(string.Empty);
+            builder.Property(m => m.UserName).HasDefaultValue(string.Empty);
             builder.Property(m => m.RangeAccessLevel).HasDefaultValue(0);
 
             builder.Property(m => m.rf_AccessLevelID).HasDefaultValue(0);

@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WarspearOnlineApi.Api.Services;
-using WarspearOnlineApi.Api.Services.Journals;
 using WarspearOnlineApi.Api.Services.Users;
 using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Models;
@@ -15,7 +13,10 @@ using System.Reflection;
 
 
 // Добавить миграцию: add-migration InitMigration
+// работа
 // dotnet ef migrations add InitMigration --project "D:\Project\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
+// дом
+// dotnet ef migrations add InitMigration --project "F:\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
 var builder = WebApplication.CreateBuilder(args);
 
 // Настройка сервисов
@@ -28,7 +29,7 @@ builder.Services.AddTransient<DatabaseInitializer>();
 
 // Настройка приложения
 var app = builder.Build();
-this.ConfigureApplication(app, builder.Environment);
+ConfigureApplication(app, builder.Environment);
 app.Run();
 
 // Метод для настройки сервисов

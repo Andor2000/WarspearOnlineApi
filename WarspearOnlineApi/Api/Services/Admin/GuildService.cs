@@ -46,6 +46,6 @@ namespace WarspearOnlineApi.Api.Services.Admin
                 .ToArrayAsync();
         }
 
-        public async Task
+        //public async Task
     }
 }

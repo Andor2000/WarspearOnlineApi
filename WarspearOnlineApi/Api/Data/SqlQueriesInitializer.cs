@@ -267,31 +267,31 @@ WHEN NOT MATCHED THEN
 MERGE wo_User AS TARGET
 USING (
 	select
-	source.UserLogin,
-	source.UserPassword,
+	source.Login,
+	source.Password,
 	source.RangeAccessLevel,
 	al.AccessLevelID,
 	source.UserName
 	from (
     VALUES
         ('admin', 'admin', '0', 'MainAdmin', 'Андрей')
-	) AS source (UserLogin, UserPassword, RangeAccessLevel, AccessLevelCode, UserName)
+	) AS source (Login, Password, RangeAccessLevel, AccessLevelCode, UserName)
 	join wo_AccessLevel as al on source.AccessLevelCode = al.AccessLevelCode
-) AS source (UserLogin, UserPassword, RangeAccessLevel, rf_AccessLevelID, UserName)
-ON TARGET.UserLogin = source.UserLogin
+) AS source (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName)
+ON TARGET.Login = source.Login
 WHEN MATCHED and
-   (TARGET.UserPassword != source.UserPassword or
+   (TARGET.Password != source.Password or
     TARGET.RangeAccessLevel != source.RangeAccessLevel or
     TARGET.rf_AccessLevelID != source.rf_AccessLevelID or
     TARGET.UserName != source.UserName)
 THEN
     UPDATE SET
-        TARGET.UserPassword = source.UserPassword,
+        TARGET.Password = source.Password,
         TARGET.RangeAccessLevel = source.RangeAccessLevel,
         TARGET.rf_AccessLevelID = source.rf_AccessLevelID,
         TARGET.UserName = source.UserName
 WHEN NOT MATCHED THEN
-    INSERT (UserLogin, UserPassword, RangeAccessLevel, rf_AccessLevelID, UserName)
-    VALUES (source.UserLogin, source.UserPassword, source.RangeAccessLevel, source.rf_AccessLevelID, source.UserName);";
+    INSERT (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName)
+    VALUES (source.Login, source.Password, source.RangeAccessLevel, source.rf_AccessLevelID, source.UserName);";
     }
 }
