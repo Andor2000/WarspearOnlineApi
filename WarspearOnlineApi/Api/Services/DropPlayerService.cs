@@ -194,7 +194,7 @@ namespace WarspearOnlineApi.Api.Services
         {
             var drop = await this._context.wo_Drop
                 .Where(x => x.DropID == dropId)
-                .Select(x => new { x.DropID, x.rf_ServerID, x.rf_FractionID })
+                .Select(x => new { x.DropID, x.rf_Group.rf_ServerID, x.rf_Group.rf_FractionID })
                 .FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x?.DropID == null, "Дроп")
                 .ThrowOnConditionAsync(x => (x?.rf_ServerID).IsNullOrDefault(), "У дропа не указан сервер")

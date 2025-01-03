@@ -47,11 +47,6 @@ namespace WarspearOnlineApi.Api.Models.Entity
         public ICollection<wo_ClassFraction> ClassFractions { get; set; } = new List<wo_ClassFraction>();
 
         /// <summary>
-        /// Список дропа.
-        /// </summary>
-        public ICollection<wo_Drop> Drops { get; set; } = new List<wo_Drop>();
-
-        /// <summary>
         /// Пользователи.
         /// </summary>
         public ICollection<wo_User> Users { get; set; } = new List<wo_User>();

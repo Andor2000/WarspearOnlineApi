@@ -41,11 +41,6 @@ namespace WarspearOnlineApi.Api.Models.Entity
         public ICollection<wo_Player> Players { get; set; } = new List<wo_Player>();
 
         /// <summary>
-        /// Список дропа.
-        /// </summary>
-        public ICollection<wo_Drop> Drops { get; set; } = new List<wo_Drop>();
-
-        /// <summary>
         /// Пользователи.
         /// </summary>
         public ICollection<wo_User> Users { get; set; } = new List<wo_User>();

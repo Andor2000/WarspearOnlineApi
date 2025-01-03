@@ -252,12 +252,13 @@ WHEN MATCHED and
     TARGET.{nameof(wo_Object.rf_ObjectTypeID)}!= source.{nameof(wo_Object.rf_ObjectTypeID)})
 THEN
     UPDATE SET
-        TARGET.{nameof(wo_Object.ObjectName)}= source.{nameof(wo_Object.ObjectName)},
-        TARGET.{nameof(wo_Object.Image)}= source.{nameof(wo_Object.Image)},
+        TARGET.{nameof(wo_Object.ObjectName)} = source.{nameof(wo_Object.ObjectName)},
+        TARGET.{nameof(wo_Object.Image)} = source.{nameof(wo_Object.Image)},
         TARGET.{nameof(wo_Object.rf_ObjectTypeID)} = source.{nameof(wo_Object.rf_ObjectTypeID)}
 WHEN NOT MATCHED THEN
     INSERT ({nameof(wo_Object.ObjectCode)}, {nameof(wo_Object.ObjectName)}, {nameof(wo_Object.Image)}, {nameof(wo_Object.rf_ObjectTypeID)})
     VALUES (source.{nameof(wo_Object.ObjectCode)}, source.{nameof(wo_Object.ObjectName)}, source.{nameof(wo_Object.Image)}, source.{nameof(wo_Object.rf_ObjectTypeID)});
+
 
 
 
@@ -271,27 +272,139 @@ USING (
 	source.Password,
 	source.RangeAccessLevel,
 	al.AccessLevelID,
-	source.UserName
+	source.UserName,
+	s.ServerID,
+	f.FractionID
 	from (
     VALUES
-        ('admin', 'admin', '0', 'MainAdmin', 'Андрей')
-	) AS source (Login, Password, RangeAccessLevel, AccessLevelCode, UserName)
+        ('admin', 'admin', '0', 'MainAdmin', 'Андрей', 'RU_Ruby', 'Guardian')
+	) AS source (Login, Password, RangeAccessLevel, AccessLevelCode, UserName, ServerCode, FractionCode)
 	join wo_AccessLevel as al on source.AccessLevelCode = al.AccessLevelCode
-) AS source (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName)
+	join wo_Server as s on source.ServerCode = s.ServerCode
+	join wo_Fraction as f on source.FractionCode = f.FractionCode
+) AS source (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName, rf_ServerID, rf_FractionID)
 ON TARGET.Login = source.Login
 WHEN MATCHED and
    (TARGET.Password != source.Password or
     TARGET.RangeAccessLevel != source.RangeAccessLevel or
     TARGET.rf_AccessLevelID != source.rf_AccessLevelID or
-    TARGET.UserName != source.UserName)
+    TARGET.UserName != source.UserName or
+    TARGET.rf_ServerID != source.rf_ServerID or
+    TARGET.rf_FractionID != source.rf_FractionID)
 THEN
     UPDATE SET
         TARGET.Password = source.Password,
         TARGET.RangeAccessLevel = source.RangeAccessLevel,
         TARGET.rf_AccessLevelID = source.rf_AccessLevelID,
-        TARGET.UserName = source.UserName
+        TARGET.UserName = source.UserName,
+        TARGET.rf_ServerID = source.rf_ServerID,
+        TARGET.rf_FractionID = source.rf_FractionID
 WHEN NOT MATCHED THEN
-    INSERT (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName)
-    VALUES (source.Login, source.Password, source.RangeAccessLevel, source.rf_AccessLevelID, source.UserName);";
+    INSERT (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName, rf_ServerID, rf_FractionID)
+    VALUES (source.Login, source.Password, source.RangeAccessLevel, source.rf_AccessLevelID, source.UserName, source.rf_ServerID, source.rf_FractionID);
+
+MERGE wo_Group AS TARGET
+USING (
+	select
+	source.GroupName,
+	s.ServerID,
+	f.FractionID
+	from (
+    VALUES
+        ('Альянс', 'RU_Ruby', 'Guardian')
+	) AS source (GroupName, ServerCode, FractionCode)
+	join wo_Server as s on source.ServerCode = s.ServerCode
+	join wo_Fraction as f on source.FractionCode = f.FractionCode
+) AS source (GroupName, rf_ServerID, rf_FractionID)
+ON TARGET.GroupName = source.GroupName
+WHEN MATCHED and
+   (TARGET.rf_ServerID != source.rf_ServerID or
+    TARGET.rf_FractionID != source.rf_FractionID)
+THEN
+    UPDATE SET
+        TARGET.rf_ServerID = source.rf_ServerID,
+        TARGET.rf_FractionID = source.rf_FractionID
+WHEN NOT MATCHED THEN
+    INSERT (GroupName, rf_ServerID, rf_FractionID)
+    VALUES (source.GroupName, source.rf_ServerID, source.rf_FractionID);
+
+
+
+MERGE wo_Drop AS TARGET
+USING (
+	select
+	source.Price,
+	o.ObjectID,
+	g.GroupID
+	from (
+    VALUES
+        ('7500000', 'vyaz_krit_dd', 'Альянс')
+	) AS source (Price, ObjectCode, GroupName)
+	join wo_Object as o on source.objectCode = o.objectCode
+	join wo_Group as g on source.GroupName = g.GroupName
+) AS source (Price, rf_ObjectID, rf_GroupID)
+ON TARGET.Price = source.Price
+WHEN MATCHED and
+   (TARGET.rf_ObjectID != source.rf_ObjectID or
+    TARGET.rf_GroupID != source.rf_GroupID)
+THEN
+    UPDATE SET
+        TARGET.rf_ObjectID = source.rf_ObjectID,
+        TARGET.rf_GroupID = source.rf_GroupID
+WHEN NOT MATCHED THEN
+    INSERT (Price, Drop_Date, rf_ObjectID, rf_GroupID)
+    VALUES (source.Price, getdate(), source.rf_ObjectID, source.rf_GroupID);
+
+
+MERGE wo_Player AS TARGET
+USING (
+	select
+	source.Nick,
+	s.ServerID,
+	f.FractionID,
+	c.ClassID
+	from (
+    VALUES
+        ('Karkarich', 'RU_Ruby', 'Guardian', 'Seeker')
+	) AS source (Nick, ServerCode, FractionCode, ClassCode)
+	join wo_Server as s on source.ServerCode = s.ServerCode
+	join wo_Fraction as f on source.FractionCode = f.FractionCode
+	join wo_Class as c on c.ClassCode = source.ClassCode
+) AS source (Nick, rf_ServerID, rf_FractionID, rf_ClassID)
+ON TARGET.Nick = source.Nick
+WHEN MATCHED and
+   (TARGET.rf_ServerID != source.rf_ServerID or
+    TARGET.rf_FractionID != source.rf_FractionID or
+	TARGET.rf_ClassID != source.rf_ClassID)
+THEN
+    UPDATE SET
+        TARGET.rf_ServerID = source.rf_ServerID,
+        TARGET.rf_FractionID = source.rf_FractionID,
+        TARGET.rf_ClassID = source.rf_ClassID
+WHEN NOT MATCHED THEN
+    INSERT (Nick, rf_ServerID, rf_FractionID, rf_ClassID)
+    VALUES (source.Nick, source.rf_ServerID, source.rf_FractionID, source.rf_ClassID);
+
+
+MERGE wo_DropPlayer AS TARGET
+USING (
+	select
+	'1',
+	'0',
+	(select top(1) DropID from wo_Drop where DropID > 0),
+	(select PlayerID from wo_Player where Nick = 'Karkarich')
+) AS source (Part, IsPaid, rf_DropID, rf_PlayerID)
+ON TARGET.rf_DropID = source.rf_DropID and TARGET.rf_PlayerID = source.rf_PlayerID
+WHEN MATCHED and
+   (TARGET.Part != source.Part or
+    TARGET.IsPaid != source.IsPaid)
+THEN
+    UPDATE SET
+        TARGET.Part = source.Part,
+        TARGET.IsPaid = source.IsPaid
+WHEN NOT MATCHED THEN
+    INSERT (Part, IsPaid, rf_DropID, rf_PlayerID)
+    VALUES (source.Part, source.IsPaid, source.rf_DropID, source.rf_PlayerID);
+";
     }
 }

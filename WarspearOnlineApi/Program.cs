@@ -17,6 +17,8 @@ using System.Reflection;
 // dotnet ef migrations add InitMigration --project "D:\Project\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
 // дом
 // dotnet ef migrations add InitMigration --project "F:\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
+// Арина
+// dotnet ef migrations add InitMigration --project "C:\git-rep\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
 var builder = WebApplication.CreateBuilder(args);
 
 // Настройка сервисов

@@ -37,15 +37,5 @@ namespace WarspearOnlineApi.Api.Models.Dto
         /// Группа.
         /// </summary>
         public GroupDto Group { get; set; } = new GroupDto();
-
-        /// <summary>
-        /// Сервер.
-        /// </summary>
-        public CodeNameBaseModel Server { get; set; } = new CodeNameBaseModel();
-
-        /// <summary>
-        /// Фракция.
-        /// </summary>
-        public CodeNameBaseModel Fraction { get; set; } = new CodeNameBaseModel();
     }
 }

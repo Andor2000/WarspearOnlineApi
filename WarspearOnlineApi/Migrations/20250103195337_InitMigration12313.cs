@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WarspearOnlineApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration : Migration
+    public partial class InitMigration12313 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -203,9 +203,10 @@ namespace WarspearOnlineApi.Migrations
                 {
                     GuildID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GuildName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false, defaultValue: ""),
+                    GuildName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    rf_UserID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,7 +260,7 @@ namespace WarspearOnlineApi.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: ""),
                     Login = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false, defaultValue: ""),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
                     RangeAccessLevel = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
@@ -296,18 +297,11 @@ namespace WarspearOnlineApi.Migrations
                     Drop_Date = table.Column<DateTime>(type: "datetime2(3)", nullable: false, defaultValue: new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
                     Price = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_ObjectID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_GroupID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    rf_GroupID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_wo_Drop", x => x.DropID);
-                    table.ForeignKey(
-                        name: "FK_wo_Drop_wo_Fraction_rf_FractionID",
-                        column: x => x.rf_FractionID,
-                        principalTable: "wo_Fraction",
-                        principalColumn: "FractionID");
                     table.ForeignKey(
                         name: "FK_wo_Drop_wo_Group_rf_GroupID",
                         column: x => x.rf_GroupID,
@@ -318,11 +312,6 @@ namespace WarspearOnlineApi.Migrations
                         column: x => x.rf_ObjectID,
                         principalTable: "wo_Object",
                         principalColumn: "ObjectID");
-                    table.ForeignKey(
-                        name: "FK_wo_Drop_wo_Server_rf_ServerID",
-                        column: x => x.rf_ServerID,
-                        principalTable: "wo_Server",
-                        principalColumn: "ServerID");
                 });
 
             migrationBuilder.CreateTable(
@@ -401,11 +390,6 @@ namespace WarspearOnlineApi.Migrations
                 column: "rf_FractionID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_wo_Drop_rf_FractionID",
-                table: "wo_Drop",
-                column: "rf_FractionID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_wo_Drop_rf_GroupID",
                 table: "wo_Drop",
                 column: "rf_GroupID");
@@ -414,11 +398,6 @@ namespace WarspearOnlineApi.Migrations
                 name: "IX_wo_Drop_rf_ObjectID",
                 table: "wo_Drop",
                 column: "rf_ObjectID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_wo_Drop_rf_ServerID",
-                table: "wo_Drop",
-                column: "rf_ServerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_wo_DropPlayer_rf_DropID",

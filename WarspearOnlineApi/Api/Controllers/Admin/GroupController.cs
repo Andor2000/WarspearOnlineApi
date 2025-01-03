@@ -44,10 +44,23 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         /// <summary>
         /// Добавление группы.
         /// </summary>
+        /// <param name="groupName">Название группы.</param>
+        /// <returns>Группа.</returns>
         [HttpPost]
         public async Task<ActionResult<GroupDto>> AddGroup(string groupName)
         {
             return Ok(await this._groupService.AddGroup(groupName));
+        }
+
+        /// <summary>
+        /// Удаление группы.
+        /// </summary>
+        /// <param name="groupId">Идентификатор группы.</param>
+        /// <returns>Строка.</returns>
+        [HttpDelete("{groupId}")]
+        public async Task<ActionResult<string>> DeleteGroup(int groupId)
+        {
+            return Ok(await this._groupService.DeleteGroup(groupId));
         }
     }
 }

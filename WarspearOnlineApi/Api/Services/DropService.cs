@@ -43,8 +43,9 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Дроп.</returns>
         public async Task<DropDto> GetDrop(int dropId)
         {
+            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
             var drop = await this._context.wo_Drop
-                .Where(x => x.DropID == dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа."))
+                .Where(x => x.DropID == dropId)
                 .ProjectTo<DropDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNullAsync("Дроп");
@@ -137,21 +138,11 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Entity-модель.</returns>
         private async Task<wo_Drop> CreateDropEntity(DropDto dto)
         {
+            dto.Group?.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор группы");
+
             var entity = new wo_Drop();
-            (dto.Server?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
-            (dto.Fraction?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции");
-
-            entity.rf_ServerID = await this._context.wo_Server
-                .Where(x => x.ServerID == dto.Server.Id)
-                .Select(x => x.ServerID)
-                .FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Сервер");
-
-            entity.rf_FractionID = await this._context.wo_Fraction
-                .Where(x => x.FractionID == dto.Fraction.Id)
-                .Select(x => x.FractionID)
-                .FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Фракция");
+            entity.rf_Group = await this._context.wo_Group.FirstOrDefaultAsync(x => x.GroupID == dto.Group.Id)
+                .ThrowOnConditionAsync(x => (x?.GroupID).IsNullOrDefault(), "Группа");
 
             return entity;
         }
@@ -167,12 +158,6 @@ namespace WarspearOnlineApi.Api.Services
 
             entity.Drop_Date = dto.Date;
             entity.Price = dto.Price;
-
-            entity.rf_GroupID = await this._context.wo_Group
-                .Where(x => x.GroupID == dto.Group.Id)
-                .Select(x => x.GroupID)
-                .FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Группа");
 
             entity.rf_ObjectID = await this._context.wo_Object
                 .Where(x => x.ObjectID == dto.Object.Id)
@@ -192,7 +177,7 @@ namespace WarspearOnlineApi.Api.Services
 
             dto.Group.ThrowOnCondition(x => x.Id.IsNullOrDefault(), "Не указан идентификатор группы")
                 .Server.ThrowOnCondition(x => (x?.Id).IsNullOrDefault(), "Не указан идентификатор сервера")
-                .Id.ThrowOnCondition(x => x != entity.rf_ServerID, "Попытка изменить сервер у дропа.");
+                .Id.ThrowOnCondition(x => x != entity.rf_Group.rf_ServerID, "Попытка изменить сервер у дропа.");
 
             await this._context.wo_Group.Where(x => x.GroupID == dto.Group.Id).Select(x => x.rf_ServerID).FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Группа")

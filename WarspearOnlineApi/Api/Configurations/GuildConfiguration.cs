@@ -22,6 +22,8 @@ namespace WarspearOnlineApi.Api.Configurations
 
             builder.Property(m => m.rf_FractionID).HasDefaultValue(0);
             builder.HasOne(x => x.rf_Fraction).WithMany(x => x.Guilds).HasForeignKey(x => x.rf_FractionID).OnDelete(DeleteBehavior.NoAction);
+
+            builder.Property(m => m.rf_UserID).HasDefaultValue(0);
         }
     }
 }

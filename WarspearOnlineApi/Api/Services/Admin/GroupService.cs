@@ -79,5 +79,24 @@ namespace WarspearOnlineApi.Api.Services.Admin
                 .ProjectTo<GroupDto>(this._mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }
+
+        /// <summary>
+        /// Удаление группы.
+        /// </summary>
+        /// <param name="groupId">Идентификатор группы.</param>
+        /// <returns>Строка.</returns>
+        public async Task<string> DeleteGroup(int groupId)
+        {
+            var user = await this.GetAdminUserModel();
+            var group = await this._context.wo_Group
+                .Where(x => x.GroupID == groupId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор группы."))
+                .Select(x => new
+                {
+                    x.GroupID
+                }).FirstOrDefaultAsync()
+                .ThrowNotFoundAsync(x => (x?.GroupID).IsNullOrDefault() ,"Дроп");
+
+            return "Группа была успешно удалена";
+        }
     }
 }

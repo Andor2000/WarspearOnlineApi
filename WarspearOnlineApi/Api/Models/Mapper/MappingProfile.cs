@@ -93,9 +93,7 @@ namespace WarspearOnlineApi.Api.Models.Mapper
                 .ForMember(x => x.PlayersCount, opt => opt.Ignore())
                 .ForMember(x => x.Part, opt => opt.Ignore())
                 .ForMember(x => x.Object, opt => opt.MapFrom(s => s.rf_Object))
-                .ForMember(x => x.Group, opt => opt.MapFrom(s => s.rf_Group))
-                .ForMember(x => x.Server, opt => opt.MapFrom(s => s.rf_Server))
-                .ForMember(x => x.Fraction, opt => opt.MapFrom(s => s.rf_Fraction));
+                .ForMember(x => x.Group, opt => opt.MapFrom(s => s.rf_Group));
 
             CreateMap<wo_Player, PlayerDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.PlayerID))
