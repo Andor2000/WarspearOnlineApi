@@ -21,6 +21,16 @@ using System.Reflection;
 // dotnet ef migrations add InitMigration --project "C:\git-rep\WarspearOnlineApi\WarspearOnlineApi\WarspearOnlineApi.csproj"
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Настройка сервисов
 ConfigureServices(builder);
 
@@ -31,6 +41,7 @@ builder.Services.AddTransient<DatabaseInitializer>();
 
 // Настройка приложения
 var app = builder.Build();
+app.UseCors("AllowAll");
 ConfigureApplication(app, builder.Environment);
 app.Run();
 
