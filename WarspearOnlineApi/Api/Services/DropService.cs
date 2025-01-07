@@ -6,13 +6,14 @@ using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Models.Entity;
 using WarspearOnlineApi.Api.Services.Base;
+using WarspearOnlineApi.Api.Services.Users;
 
 namespace WarspearOnlineApi.Api.Services
 {
     /// <summary>
     /// Сервис для работы со страницей дропа.
     /// </summary>
-    public class DropService : BaseService
+    public class DropService : AdminBaseService
     {
         /// <summary>
         /// Сервис для работы с игроками.
@@ -28,9 +29,12 @@ namespace WarspearOnlineApi.Api.Services
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст данных.</param>
+        /// <param name="playerService">Сервис для работы с игроками.</param>
+        /// <param name="mapper">Маппер.</param>
         public DropService(AppDbContext context,
             PlayerService playerService,
-            IMapper mapper) : base(context)
+            JwtTokenService jwtTokenService,
+            IMapper mapper) : base(context, jwtTokenService)
         {
             this._playerService = playerService;
             this._mapper = mapper;
@@ -43,7 +47,7 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Дроп.</returns>
         public async Task<DropDto> GetDrop(int dropId)
         {
-            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
+            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
             var drop = await this._context.wo_Drop
                 .Where(x => x.DropID == dropId)
                 .ProjectTo<DropDto>(_mapper.ConfigurationProvider)
@@ -77,9 +81,11 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Дроп.</returns>
         public async Task<DropDto> EditDrop(DropDto dto)
         {
-            dto.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
+            dto.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
 
-            var entity = await this._context.wo_Drop.FirstOrDefaultAsync(x => x.DropID == dto.Id)
+            var entity = await this._context.wo_Drop
+                .Include(x => x.rf_Group)
+                .FirstOrDefaultAsync(x => x.DropID == dto.Id)
                 .ThrowIfNullAsync("Дроп");
 
             await this.MapToEntity(entity, dto);
@@ -108,7 +114,7 @@ namespace WarspearOnlineApi.Api.Services
                 drop.PlayersCount = dropPlayer.CountPlayer;
                 drop.Part = drop.PlayersCount > 0
                     ? drop.Price / drop.PlayersCount
-                    : 0;
+                    : drop.Price;
             }
         }
 
@@ -120,15 +126,20 @@ namespace WarspearOnlineApi.Api.Services
         public async Task<string> Delete(int dropId)
         {
             dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
-            var entityId = await this._context.wo_Drop
+            var entity = await this._context.wo_Drop
                 .Where(x => x.DropID == dropId)
-                .Select(x => x.DropID)
+                .Select(x =>new
+                {
+                    x.DropID,
+                    x.rf_GroupID
+                })
                 .FirstOrDefaultAsync()
-                .ThrowOnConditionAsync(x => x.IsNullOrDefault(), "Дроп");
+                .ThrowOnConditionAsync(x => (x?.DropID).IsNullOrDefault(), "Дроп");
+            await this.CheckUserHasGroupAsync(entity.rf_GroupID);
 
-            this._context.wo_Drop.Remove(new wo_Drop { DropID = entityId });
+            this._context.wo_Drop.Remove(new wo_Drop { DropID = entity.DropID });
             await this._context.SaveChangesAsync();
-            return "Дроп удален.";
+            return "Дроп удален";
         }
 
         /// <summary>
@@ -139,12 +150,12 @@ namespace WarspearOnlineApi.Api.Services
         private async Task<wo_Drop> CreateDropEntity(DropDto dto)
         {
             dto.Group?.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор группы");
+            await this.CheckUserHasGroupAsync(dto.Group.Id);
 
-            var entity = new wo_Drop();
-            entity.rf_Group = await this._context.wo_Group.FirstOrDefaultAsync(x => x.GroupID == dto.Group.Id)
+            var group = await this._context.wo_Group.FirstOrDefaultAsync(x => x.GroupID == dto.Group.Id)
                 .ThrowOnConditionAsync(x => (x?.GroupID).IsNullOrDefault(), "Группа");
 
-            return entity;
+            return new wo_Drop() { rf_Group = group };
         }
 
         /// <summary>
@@ -177,7 +188,7 @@ namespace WarspearOnlineApi.Api.Services
 
             dto.Group.ThrowOnCondition(x => x.Id.IsNullOrDefault(), "Не указан идентификатор группы")
                 .Server.ThrowOnCondition(x => (x?.Id).IsNullOrDefault(), "Не указан идентификатор сервера")
-                .Id.ThrowOnCondition(x => x != entity.rf_Group.rf_ServerID, "Попытка изменить сервер у дропа.");
+                .Id.ThrowOnCondition(x => x != entity.rf_Group.rf_ServerID, "Попытка изменить сервер у дропа");
 
             await this._context.wo_Group.Where(x => x.GroupID == dto.Group.Id).Select(x => x.rf_ServerID).FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Группа")

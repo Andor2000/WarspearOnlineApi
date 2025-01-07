@@ -60,10 +60,9 @@ namespace WarspearOnlineApi.Api.Services
         {
             dto.ValidatePlayer();
             serverId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан сервер");
-            fractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указана фракция");
 
             var playerId = await this._context.wo_Player
-                .Where(x => x.Nick == dto.Nick && x.rf_ServerID == serverId && x.rf_FractionID == fractionId)
+                .Where(x => x.Nick == dto.Nick && x.rf_ServerID == serverId)
                 .Select(x => x.PlayerID)
                 .FirstOrDefaultAsync();
 
@@ -73,7 +72,7 @@ namespace WarspearOnlineApi.Api.Services
                 {
                     Nick = dto.Nick,
                     rf_ClassID = dto.Class.Id,
-                    rf_FractionID = fractionId,
+                    rf_FractionID = fractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указана фракция"),
                     rf_ServerID = serverId,
                 };
 

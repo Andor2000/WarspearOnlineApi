@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WarspearOnlineApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration12313 : Migration
+    public partial class InitMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -206,7 +206,7 @@ namespace WarspearOnlineApi.Migrations
                     GuildName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_FractionID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    rf_UserID = table.Column<int>(type: "int", nullable: false)
+                    rf_UserID = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {

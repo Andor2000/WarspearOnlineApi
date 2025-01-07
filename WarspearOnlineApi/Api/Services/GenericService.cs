@@ -1,18 +1,19 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.BaseModels;
-using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Services.Base;
+using WarspearOnlineApi.Api.Services.Users;
 
 namespace WarspearOnlineApi.Api.Services
 {
     /// <summary>
     /// Сервис для получения общих данных.
     /// </summary>
-    public class GenericService : BaseService
+    public class GenericService : AdminBaseService
     {
         /// <summary>
         /// Маппер.
@@ -23,8 +24,13 @@ namespace WarspearOnlineApi.Api.Services
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст данных.</param>
+        /// <param name="jwtTokenService">Сервис для работы с JWT токенами.</param>
         /// <param name="mapper">Маппер.</param>
-        public GenericService(AppDbContext context, IMapper mapper) : base(context)
+        public GenericService(
+            AppDbContext context,
+            JwtTokenService jwtTokenService,
+            IMapper mapper)
+            : base(context, jwtTokenService)
         {
             this._mapper = mapper;
         }
@@ -51,7 +57,8 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Список серверов.</returns>
         public async Task<CodeNameBaseModel[]> GetServerList(string search)
         {
-            return await this._context.wo_Server
+            return await this._context.wo_Group
+                .Select(x => x.rf_Server)
                 .Where(x => x.ServerID > 0)
                 .ProjectTo<CodeNameBaseModel>(this._mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
@@ -81,7 +88,8 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Список фракций.</returns>
         public async Task<CodeNameBaseModel[]> GetFractionList(string search)
         {
-            return await this._context.wo_Fraction
+            return await this._context.wo_Group
+                .Select(x => x.rf_Fraction)
                 .Where(x => x.FractionID > 0)
                 .ProjectTo<CodeNameBaseModel>(this._mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
@@ -108,9 +116,18 @@ namespace WarspearOnlineApi.Api.Services
         /// Получение списка классов.
         /// </summary>
         /// <param name="search">Строка поиска.</param>
+        /// <param name="isChechUserFraction">Признак проверки фракции пользователя.</param>
         /// <returns>Список классов.</returns>
-        public async Task<CodeNameBaseModel[]> GetClassList(string search)
+        public async Task<CodeNameBaseModel[]> GetClassList(string search, bool isChechUserFraction)
         {
+            var help = this._context.wo_Class
+                .Where(x => x.ClassID > 0);
+
+            if (isChechUserFraction)
+            {
+                var user = _jwtTokenService.
+            }
+
             return await this._context.wo_Class
                 .Where(x => x.ClassID > 0)
                 .ProjectTo<CodeNameBaseModel>(this._mapper.ConfigurationProvider)

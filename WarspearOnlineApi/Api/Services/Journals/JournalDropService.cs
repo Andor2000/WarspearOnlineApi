@@ -81,8 +81,8 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <returns>Запрос для фильтрации записей.</returns>
         private IQueryable<wo_Drop> BuildFilter(JournalDropFilter filter)
         {
-            filter.ServerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера.");
-            filter.FractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции.");
+            filter.ServerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера");
+            filter.FractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции");
 
             var query = this._context.wo_Drop
                 .Where(x => x.DropID > 0 &&

@@ -94,7 +94,7 @@ namespace WarspearOnlineApi.Api.Services.Users
             }
             catch
             {
-                throw new Exception("Ошибка обработки токена.");
+                throw new Exception("Ошибка обработки токена");
             }
         }
     }

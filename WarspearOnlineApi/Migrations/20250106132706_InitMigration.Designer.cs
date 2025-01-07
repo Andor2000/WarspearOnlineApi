@@ -12,8 +12,8 @@ using WarspearOnlineApi.Api.Data;
 namespace WarspearOnlineApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250103195337_InitMigration12313")]
-    partial class InitMigration12313
+    [Migration("20250106132706_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -434,7 +434,9 @@ namespace WarspearOnlineApi.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<int>("rf_UserID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.HasKey("GuildID");
 

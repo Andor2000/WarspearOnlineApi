@@ -41,7 +41,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
         /// <returns>Список групп</returns>
         public async Task<GroupDto[]> GetGroups()
         {
-            var user = await this.GetAdminUserModel();
+            var user = await this.GetAdminUserModelAsync();
             return await this._context.wo_Group
                 .Where(x => x.rf_ServerID == user.ServerId && x.rf_FractionID == user.FractionId)
                 .ProjectTo<GroupDto>(this._mapper.ConfigurationProvider)
@@ -55,13 +55,13 @@ namespace WarspearOnlineApi.Api.Services.Admin
         public async Task<GroupDto> AddGroup(string groupName)
         {
             groupName.ValidateGroupName();
-            var user = await this.GetAdminUserModel();
+            var user = await this.GetAdminUserModelAsync();
 
             await this._context.wo_Group
                 .AnyAsync(x => x.GroupName == groupName &&
                                x.rf_ServerID == user.ServerId &&
                                x.rf_FractionID == user.FractionId)
-                .ThrowOnConditionAsync(x => x, "Группа с таким именем уже существует");
+                .ThrowOnConditionAsync(x => x, "Группа с таким названием уже существует");
 
             var entity = new wo_Group
             {
@@ -87,14 +87,13 @@ namespace WarspearOnlineApi.Api.Services.Admin
         /// <returns>Строка.</returns>
         public async Task<string> DeleteGroup(int groupId)
         {
-            var user = await this.GetAdminUserModel();
-            var group = await this._context.wo_Group
-                .Where(x => x.GroupID == groupId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор группы."))
-                .Select(x => new
-                {
-                    x.GroupID
-                }).FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => (x?.GroupID).IsNullOrDefault() ,"Дроп");
+            groupId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор группы");
+            await this.CheckUserHasGroupAsync(groupId);
+            await this._context.wo_Drop.AnyAsync(x => x.rf_GroupID == groupId)
+                .ThrowOnConditionAsync(x => x, "Нельзя удалить группу к которой относится дроп");
+
+            this._context.wo_Group.Remove(new wo_Group { GroupID = groupId });
+            await this._context.SaveChangesAsync();
 
             return "Группа была успешно удалена";
         }

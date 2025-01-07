@@ -133,7 +133,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
         private async Task<UserDto> GetUserById(int userId)
         {
             return await this._context.wo_User
-                .Where(x => x.UserId == userId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор пользователя."))
+                .Where(x => x.UserId == userId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор пользователя"))
                 .ProjectTo<UserDto>(this._mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNull("Пользователь");

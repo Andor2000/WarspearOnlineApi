@@ -92,7 +92,7 @@ namespace WarspearOnlineApi.Api.Services.Users
                 .ThrowOnConditionAsync(x => x.Password.IsNullOrDefault(), "Пользователь уже зарегистрирован");
 
             userDb.UserName = dto.Name;
-            userDb.Password = dto.Password;
+            userDb.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
             await this._context.SaveChangesAsync();
 
             return await this.GetUserByLoginAndPassword(dto.Login, dto.Password);
@@ -106,16 +106,18 @@ namespace WarspearOnlineApi.Api.Services.Users
         /// <returns>Пользователь.</returns>
         private async Task<UserSessionDto> GetUserByLoginAndPassword(string login, string password)
         {
-            var user = await this._context.wo_User
-                .Where(x => x.Login == login && x.Password == password)
-                .ProjectTo<UserSessionDto>(this._mapper.ConfigurationProvider)
+            var entity = await this._context.wo_User
+                .Include(x => x.rf_AccessLevel)
+                .Where(x => x.Login == login)
                 .FirstOrDefaultAsync()
-                .ThrowIfNullAsync("Пользователь");
+                .ThrowIfNullAsync("Пользователь")
+                .ThrowOnConditionAsync(x => !BCrypt.Net.BCrypt.Verify(password, x.Password), "Неверный пароль");
 
-            this._jwtTokenService.GenerateToken(user);
-            user.Roles = await this._roleService.GetRoleCodes(user.Token);
+            var dto = this._mapper.Map<UserSessionDto>(entity);
+            this._jwtTokenService.GenerateToken(dto);
+            dto.Roles = await this._roleService.GetRoleCodes(dto.Token);
 
-            return user;
+            return dto;
         }
     }
 }

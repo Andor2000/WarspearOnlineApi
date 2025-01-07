@@ -85,11 +85,12 @@ namespace WarspearOnlineApi.Api.Controllers
         /// Получение списка классов.
         /// </summary>
         /// <param name="search">Строка поиска.</param>
+        /// <param name="isChechUserFraction">Признак проверки фракции пользователя.</param>
         /// <returns>Список классов.</returns>
         [HttpGet("Class/List")]
-        public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search, bool isChechUserFraction)
         {
-            return Ok(await _genericService.GetClassList(search));
+            return Ok(await _genericService.GetClassList(search, isChechUserFraction));
         }
     }
 }

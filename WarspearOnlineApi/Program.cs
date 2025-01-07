@@ -7,7 +7,6 @@ using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Models;
 using WarspearOnlineApi.Api.Models.Mapper;
 using WarspearOnlineApi.Api.Extensions;
-using WarspearOnlineApi.Api.Controllers.Users;
 using WarspearOnlineApi.Api.Services.Base;
 using System.Reflection;
 
@@ -64,7 +63,6 @@ static void ConfigureServices(WebApplicationBuilder builder)
     }
     /* Конец */
 
-    builder.Services.AddSingleton<AuthController>();
     builder.Services.AddSingleton<JwtTokenService>();
 
     builder.Services.AddAuthorization();
@@ -72,7 +70,7 @@ static void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddHttpContextAccessor();
 }
 
-///
+
 void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
 {
     // Настройка middleware
@@ -85,9 +83,10 @@ void ConfigureApplication(WebApplication app, IWebHostEnvironment env)
         dbContext.Database.Migrate(); // Применяет все миграции, которые еще не были применены
         dbContext.Database.ExecuteSqlRaw("ALTER DATABASE WarspearOnlineApi COLLATE Cyrillic_General_CI_AS;");
 
-        // Инициализация пустых записей
         var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
-        initializer.AddEmptyRecords(); // Вставка пустых записей
+        initializer.WaitForDatabaseConnection();
+        initializer.CreateHistoryTables();
+        initializer.AddEmptyRecords();
         initializer.AddBaseRecords();
     }
 }
@@ -133,12 +132,12 @@ static void UseMiddlewareConfiguration(IApplicationBuilder app, IWebHostEnvironm
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseMiddleware<ExceptionMiddleware>();
+    app.UseMiddleware<UserSessionMiddleware>();
 
-    app.UseRouting(); // Маршрутизация должна быть до авторизации
-
+    // Маршрутизация должна быть до авторизации
+    app.UseRouting();
     // Аутентификация
     app.UseAuthentication();
-
     // Авторизация
     app.UseAuthorization();
 

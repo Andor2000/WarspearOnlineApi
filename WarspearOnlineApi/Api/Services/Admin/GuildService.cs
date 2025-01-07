@@ -40,7 +40,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
         public async Task<CodeNameBaseModel[]> GetGuilds()
         {
             var userId = this._jwtTokenService.GetUserIdFromToken();
-            var user = await this.GetAdminUserModel();
+            var user = await this.GetAdminUserModelAsync();
             
             return await this._context.wo_Guild
                 .Where(x => x.rf_ServerID == user.ServerId && x.rf_FractionID == user.FractionId)
@@ -56,7 +56,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
         public async Task<CodeNameBaseModel> AddGuild(string guildName)
         {
             guildName.ValidateGuildName();
-            var user = await this.GetAdminUserModel();
+            var user = await this.GetAdminUserModelAsync();
 
             await this._context.wo_Guild
                 .AnyAsync(x => x.GuildName == guildName &&

@@ -43,7 +43,7 @@ namespace WarspearOnlineApi.Api.Extensions
         /// <returns>Запрос с примененными Skip и Take.</returns>
         public static IQueryable<T> SkipTake<T>(this IQueryable<T> query, BaseFilterDto filter, int defaultTake = 50)
         {
-            filter.ThrowIfNull("Фильтр не может быть null.");
+            filter.ThrowIfNull("Фильтр не может быть null");
 
             var take = filter.Take > 0 ? filter.Take : defaultTake;
             var skip = filter.Skip < 0 ? 0 : filter.Skip;

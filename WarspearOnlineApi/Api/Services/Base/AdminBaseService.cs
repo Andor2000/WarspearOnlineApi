@@ -31,7 +31,7 @@ namespace WarspearOnlineApi.Api.Services.Base
         /// Получить модель администратора.
         /// </summary>
         /// <returns>Модель администратора.</returns>
-        public async Task<UserAdminDto> GetAdminUserModel()
+        public async Task<UserAdminDto> GetAdminUserModelAsync()
         {
             var userId = this._jwtTokenService.GetUserIdFromToken();
             return await this._context.wo_User
@@ -46,6 +46,22 @@ namespace WarspearOnlineApi.Api.Services.Base
                 .ThrowNotFoundAsync(x => (x?.Id).IsNullOrDefault(), "Пользователь")
                 .ThrowOnConditionAsync(x => x.ServerId == 0, "У пользователя не указан сервер")
                 .ThrowOnConditionAsync(x => x.FractionId == 0, "У пользователя не указана фракция");
+        }
+
+        /// <summary>
+        /// Проверить доступ пользователя к группе.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        public async Task CheckUserHasGroupAsync(int groupId)
+        {
+            var userId = this._jwtTokenService.GetUserIdFromToken();
+            await this._context.wo_UserGroup
+                .Where(x => x.rf_UserID == userId)
+                .Select(x => x.rf_GroupID)
+                .ToArrayAsync()
+                .ThrowOnConditionAsync(x => x.Length == 0, "У пользователя нет доступных групп которыми он может управлять")
+                .ThrowOnConditionAsync(x => !x.Contains(groupId), "У пользователя нет доступа к данной группе");
         }
     }
 }

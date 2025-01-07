@@ -56,6 +56,11 @@ namespace WarspearOnlineApi.Api.Data
         /// </summary>
         public DbSet<wo_User> wo_User { get; set; }
 
+        /// <summary>
+        /// Набор данных групп пользователей.
+        /// </summary>
+        public DbSet<wo_UserGroup> wo_UserGroup { get; set; }
+
         /* Интерфейс */
 
         /// <summary>

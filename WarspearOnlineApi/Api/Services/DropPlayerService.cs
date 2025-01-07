@@ -13,7 +13,7 @@ namespace WarspearOnlineApi.Api.Services
     /// <summary>
     /// Сервис для работы с интерсекцией дропа и игрока.
     /// </summary>
-    public class DropPlayerService : BaseService
+    public class DropPlayerService : AdminBaseService
     {
         /// <summary>
         /// Сервис для работы с игроками.
@@ -71,7 +71,7 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Количетсво игроков.</returns>
         public async Task<int> GetCountPlayerByDropId(int dropId)
         {
-            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
+            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
             return await this._context.wo_DropPlayer.CountAsync(x => x.rf_DropID == dropId);
         }
 
@@ -103,7 +103,7 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Модель игрока.</returns>
         public async Task<DropPlayerDto> Add(DropPlayerDto dto, int dropId)
         {
-            var entity = await MapToEntity(dto, dropId)
+            var entity = await this.MapToEntity(dto, dropId)
                 .ThrowOnConditionAsync(x => x.DropPlayerID > 0, "Игрок уже находится в списоке");
 
             await this._context.wo_DropPlayer.AddAsync(entity);
@@ -123,7 +123,7 @@ namespace WarspearOnlineApi.Api.Services
         public async Task<DropPlayerDto> Update(DropPlayerDto dto, int dropId)
         {
             dto.Id.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор связи игрока и дропа");
-            var entity = await MapToEntity(dto, dropId);
+            var entity = await this.MapToEntity(dto, dropId);
 
             this._context.wo_DropPlayer.Update(entity);
             await this._context.SaveChangesAsync();
@@ -139,13 +139,17 @@ namespace WarspearOnlineApi.Api.Services
         public async Task<string> Delete(int dropPlayerId)
         {
             dropPlayerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор связи игрока и дропа");
-            var entityId = await this._context.wo_DropPlayer
+            var entity = await this._context.wo_DropPlayer
                 .Where(x => x.DropPlayerID == dropPlayerId)
-                .Select(x => x.DropPlayerID)
-                .FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Связь игрока с дропом");
+                .Select(x => new
+                {
+                    x.DropPlayerID,
+                    x.rf_Drop.rf_GroupID
+                }).FirstOrDefaultAsync()
+                .ThrowNotFoundAsync(x => (x?.DropPlayerID).IsNullOrDefault(), "Связь игрока с дропом");
+            await this.CheckUserHasGroupAsync(entity.rf_GroupID);
 
-            this._context.wo_DropPlayer.Remove(new wo_DropPlayer { DropPlayerID = entityId });
+            this._context.wo_DropPlayer.Remove(new wo_DropPlayer { DropPlayerID = entity.DropPlayerID });
             await this._context.SaveChangesAsync();
             return "Связь игрока с дропом удалена.";
         }
@@ -172,8 +176,9 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Entity-модель.</returns>
         private async Task<wo_DropPlayer> MapToEntity(DropPlayerDto dto, int dropId)
         {
-            dto.ThrowOnCondition(x => x.Part.IsNullOrDefault(), "Не указана доля игрока.");
-            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа.");
+            dto.ThrowOnCondition(x => x.Part.IsNullOrDefault(), "Не указана доля игрока")
+                .ThrowOnCondition(x => (x.Player?.Class?.Id).IsNullOrDefault(), "Не указан класс игрока");
+            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
 
             var drop = await this.GetDrop(dropId);
             var playerId = await this.GetOrCreatePlayerId(dto.Player, drop.ServerID, drop.FractionID);
@@ -196,7 +201,7 @@ namespace WarspearOnlineApi.Api.Services
                 .Where(x => x.DropID == dropId)
                 .Select(x => new { x.DropID, x.rf_Group.rf_ServerID, x.rf_Group.rf_FractionID })
                 .FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => x?.DropID == null, "Дроп")
+                .ThrowNotFoundAsync(x => (x?.DropID).IsNullOrDefault(), "Дроп")
                 .ThrowOnConditionAsync(x => (x?.rf_ServerID).IsNullOrDefault(), "У дропа не указан сервер")
                 .ThrowOnConditionAsync(x => (x?.rf_FractionID).IsNullOrDefault(), "У дропа не указана фракция");
 

@@ -104,8 +104,8 @@ namespace WarspearOnlineApi.Api.Services.Journals
         {
             var query = _context.wo_Player
                 .Where(x => x.PlayerID > 0)
-                .Where(x => x.rf_ServerID == filter.ServerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера."))
-                .Where(x => x.rf_FractionID == filter.FractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции."));
+                .Where(x => x.rf_ServerID == filter.ServerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера"))
+                .Where(x => x.rf_FractionID == filter.FractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции"));
 
             if (!filter.Nick.IsNullOrDefault())
             {

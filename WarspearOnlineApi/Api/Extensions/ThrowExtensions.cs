@@ -17,7 +17,7 @@
         {
             if (predicate.Invoke(obj))
             {
-                throw new Exception(message);
+                throw new Exception(message + ".");
             }
 
             return obj!;
