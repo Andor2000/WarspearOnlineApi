@@ -42,8 +42,15 @@ namespace WarspearOnlineApi.Api.Services.Admin
         public async Task<GroupDto[]> GetGroups()
         {
             var user = await this.GetAdminUserModelAsync();
-            return await this._context.wo_Group
-                .Where(x => x.rf_ServerID == user.ServerId && x.rf_FractionID == user.FractionId)
+            var query = this._context.wo_Group.Where(x => x.rf_ServerID == user.ServerId && x.rf_FractionID == user.FractionId);
+
+            if (user.AccessLevelCode.LevelValue() < AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.AdminServer)))
+            {
+                var groupIds = await GetUserGroupIdsAsync();
+                query = query.Where(x => groupIds.Contains(x.GroupID));
+            }
+
+            return await query
                 .ProjectTo<GroupDto>(this._mapper.ConfigurationProvider)
                 .ToArrayAsync();
         }

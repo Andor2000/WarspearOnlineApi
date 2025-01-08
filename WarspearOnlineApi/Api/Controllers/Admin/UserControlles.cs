@@ -31,6 +31,17 @@ namespace WarspearOnlineApi.Api.Controllers.Admin
         }
 
         /// <summary>
+        /// Получение списка пользователей.
+        /// </summary>
+        /// <param name="search">Строка поиска.</param>
+        /// <returns>Список пользователей.</returns>
+        [HttpGet("List")]
+        public async Task<ActionResult<UserDto[]>> GetUsers(string search)
+        {
+            return Ok(await this._userService.GetUsers(search));
+        }
+
+        /// <summary>
         /// Добавление пользователя.
         /// </summary>
         /// <param name="dto">Dto-модель для создания пользователя.</param>

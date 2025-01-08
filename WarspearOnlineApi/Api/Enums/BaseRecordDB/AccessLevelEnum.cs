@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="name">Название роли.</param>
         /// <returns>Уровень доступа.</returns>
-        public static int LevelValue(string name)
+        public static int LevelValue(this string name)
         {
             return name switch
             {

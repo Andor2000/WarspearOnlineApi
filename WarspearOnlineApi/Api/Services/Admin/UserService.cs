@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Extensions;
+using WarspearOnlineApi.Api.Models.BaseModels;
 using WarspearOnlineApi.Api.Models.Dto.Users;
 using WarspearOnlineApi.Api.Models.Entity.Users;
 using WarspearOnlineApi.Api.Services.Base;
@@ -32,6 +33,23 @@ namespace WarspearOnlineApi.Api.Services.Admin
             IMapper mapper) : base(context, jwtTokenService)
         {
             this._mapper = mapper;
+        }
+
+        /// <summary>
+        /// Получение списка пользователей.
+        /// </summary>
+        /// <param name="search">Строка поиска.</param>
+        /// <returns>Список пользователей.</returns>
+        public async Task<UserDto[]> GetUsers(string search)
+        {
+            var user = await this.GetAdminUserModelAsync();
+            return await this._context.wo_User
+                .Where(x => x.UserId > 0)
+                .Where(x => x.rf_ServerID == user.ServerId && x.rf_FractionID == user.FractionId)
+                .ProjectTo<UserDto>(this._mapper.ConfigurationProvider)
+                .FilterByNameContains(search)
+                .SortByName()
+                .ToArrayAsync();
         }
 
         /// <summary>

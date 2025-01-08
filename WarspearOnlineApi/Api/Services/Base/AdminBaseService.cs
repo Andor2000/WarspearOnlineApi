@@ -49,6 +49,19 @@ namespace WarspearOnlineApi.Api.Services.Base
         }
 
         /// <summary>
+        /// Получить идентификаторы групп пользователя.
+        /// </summary>
+        public async Task<int[]> GetUserGroupIdsAsync()
+        {
+            var userId = this._jwtTokenService.GetUserIdFromToken();
+            return await this._context.wo_UserGroup
+                    .Where(x => x.rf_UserID == userId)
+                    .Select(x => x.rf_GroupID)
+                    .ToArrayAsync()
+                    .ThrowOnConditionAsync(x => x.Length.IsNullOrDefault(), "У пользователя нет доступных групп которыми он может управлять");
+        }
+
+        /// <summary>
         /// Проверить доступ пользователя к группе.
         /// </summary>
         /// <param name="groupId"></param>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using WarspearOnlineApi.Api.Models.BaseModels;
 using WarspearOnlineApi.Api.Models.Dto;
+using WarspearOnlineApi.Api.Models.Dto.Intersections;
 using WarspearOnlineApi.Api.Models.Dto.Journals;
 using WarspearOnlineApi.Api.Models.Dto.Users;
 using WarspearOnlineApi.Api.Models.Entity;
@@ -112,6 +113,11 @@ namespace WarspearOnlineApi.Api.Models.Mapper
                 .ForMember(x => x.Part, opt => opt.MapFrom(s => s.Part))
                 .ForMember(x => x.IsPaid, opt => opt.MapFrom(s => s.IsPaid))
                 .ForMember(x => x.Player, opt => opt.MapFrom(s => s.rf_Player));
+
+            CreateMap<wo_UserGroup, UserGroupDto>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.UserGroupID))
+                .ForMember(x => x.GroupId, opt => opt.MapFrom(s => s.rf_GroupID))
+                .ForMember(x => x.User, opt => opt.MapFrom(s => s.rf_User));
         }
     }
 }
