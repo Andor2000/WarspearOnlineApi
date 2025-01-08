@@ -42,9 +42,9 @@ namespace WarspearOnlineApi.Api.Models.Entity
         public ICollection<wo_Player> Players { get; set; } = new List<wo_Player>();
 
         /// <summary>
-        /// Интерсекция класса и фракции.
+        /// Классы.
         /// </summary>
-        public ICollection<wo_ClassFraction> ClassFractions { get; set; } = new List<wo_ClassFraction>();
+        public ICollection<wo_Class> Classes { get; set; } = new List<wo_Class>();
 
         /// <summary>
         /// Пользователи.

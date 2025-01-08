@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Models.BaseModels;
 using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Services;
@@ -85,12 +86,12 @@ namespace WarspearOnlineApi.Api.Controllers
         /// Получение списка классов.
         /// </summary>
         /// <param name="search">Строка поиска.</param>
-        /// <param name="isChechUserFraction">Признак проверки фракции пользователя.</param>
+        /// <param name="fractionCode">Код фракции.</param>
         /// <returns>Список классов.</returns>
         [HttpGet("Class/List")]
-        public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search, bool isChechUserFraction)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search, FractionType fractionCode)
         {
-            return Ok(await _genericService.GetClassList(search, isChechUserFraction));
+            return Ok(await _genericService.GetClassList(search, fractionCode));
         }
     }
 }

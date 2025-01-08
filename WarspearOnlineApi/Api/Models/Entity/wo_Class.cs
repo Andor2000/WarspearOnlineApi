@@ -26,9 +26,14 @@ namespace WarspearOnlineApi.Api.Models.Entity
         public string ClassName { get; set; }
 
         /// <summary>
-        /// Интерсекция класса и фракции.
+        /// Идентификатор фракции.
         /// </summary>
-        public ICollection<wo_ClassFraction> ClassFractions { get; set; } = new List<wo_ClassFraction>();
+        public int rf_FractionID { get; set; }
+
+        /// <summary>
+        /// Фракция.
+        /// </summary>
+        public wo_Fraction rf_Fraction { get; set; }
 
         /// <summary>
         /// Игроки.

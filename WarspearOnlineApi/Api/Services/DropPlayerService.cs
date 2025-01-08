@@ -7,6 +7,7 @@ using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Services.Base;
+using WarspearOnlineApi.Api.Services.Users;
 
 namespace WarspearOnlineApi.Api.Services
 {
@@ -33,8 +34,9 @@ namespace WarspearOnlineApi.Api.Services
         /// <param name="mapper">Маппер.</param>
         public DropPlayerService(
             AppDbContext context,
+            JwtTokenService jwtTokenService,
             PlayerService playerService,
-            IMapper mapper) : base(context)
+            IMapper mapper) : base(context, jwtTokenService)
         {
             this._playerService = playerService;
             this._mapper = mapper;

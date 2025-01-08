@@ -14,6 +14,9 @@ namespace WarspearOnlineApi.Api.Configurations
             builder.Property(m => m.ClassID).UseIdentityColumn();
             builder.Property(m => m.ClassCode).HasDefaultValue(string.Empty);
             builder.Property(m => m.ClassName).HasDefaultValue(string.Empty);
+
+            builder.Property(m => m.rf_FractionID).HasDefaultValue(0);
+            builder.HasOne(x => x.rf_Fraction).WithMany(x => x.Classes).HasForeignKey(x => x.rf_FractionID).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

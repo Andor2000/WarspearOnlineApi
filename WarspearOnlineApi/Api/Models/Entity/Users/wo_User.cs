@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using WarspearOnlineApi.Api.Enums;
+using WarspearOnlineApi.Api.Models.Entity.Intersections;
 
 namespace WarspearOnlineApi.Api.Models.Entity.Users
 {
@@ -65,5 +66,10 @@ namespace WarspearOnlineApi.Api.Models.Entity.Users
         /// Фракция.
         /// </summary>
         public wo_Fraction rf_Fraction { get; set; }
+
+        /// <summary>
+        /// Интерсекция пользователя и группы.
+        /// </summary>
+        public ICollection<wo_UserGroup> UserGroups = new List<wo_UserGroup>();
     }
 }

@@ -20,7 +20,7 @@ namespace WarspearOnlineApi.Api.Models.Dto.Users
         /// <summary>
         /// Уровень доступа.
         /// </summary>
-        public CodeNameBaseModel AccessLevel { get; set; } = new CodeNameBaseModel();
+        public AccessLevelDto AccessLevel { get; set; } = new AccessLevelDto();
 
         /// <summary>
         /// Роли.

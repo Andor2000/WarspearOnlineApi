@@ -123,28 +123,35 @@ WHEN NOT MATCHED THEN
 
 MERGE {nameof(wo_Class)} AS TARGET
 USING (
+    select
+    f.{nameof(wo_Fraction.FractionID)},
+    source.{nameof(wo_Class.ClassCode)},
+    source.{nameof(wo_Class.ClassName)}
+    from (
     VALUES
-        ('{nameof(ClassEnum.Druid)}', '{ClassEnum.Druid}')
-       ,('{nameof(ClassEnum.StrikingBlade)}', '{ClassEnum.StrikingBlade}')
-       ,('{nameof(ClassEnum.Ranger)}', '{ClassEnum.Ranger}')
-       ,('{nameof(ClassEnum.Guardian)}', '{ClassEnum.Guardian}')
-       ,('{nameof(ClassEnum.Hunter)}', '{ClassEnum.Hunter}')
-       ,('{nameof(ClassEnum.Paladin)}', '{ClassEnum.Paladin}')
-       ,('{nameof(ClassEnum.Priest)}', '{ClassEnum.Priest}')
-       ,('{nameof(ClassEnum.Mage)}', '{ClassEnum.Mage}')
-       ,('{nameof(ClassEnum.Seeker)}', '{ClassEnum.Seeker}')
-       ,('{nameof(ClassEnum.Templar)}', '{ClassEnum.Templar}')
-       ,('{nameof(ClassEnum.Barbarian)}', '{ClassEnum.Barbarian}')
-       ,('{nameof(ClassEnum.Rogue)}', '{ClassEnum.Rogue}')
-       ,('{nameof(ClassEnum.Shaman)}', '{ClassEnum.Shaman}')
-       ,('{nameof(ClassEnum.Archer)}', '{ClassEnum.Archer}')
-       ,('{nameof(ClassEnum.Chieftain)}', '{ClassEnum.Chieftain}')
-       ,('{nameof(ClassEnum.Necromancer)}', '{ClassEnum.Necromancer}')
-       ,('{nameof(ClassEnum.Warlock)}', '{ClassEnum.Warlock}')
-       ,('{nameof(ClassEnum.DeathKnight)}', '{ClassEnum.DeathKnight}')
-       ,('{nameof(ClassEnum.Spellcaster)}', '{ClassEnum.Spellcaster}')
-       ,('{nameof(ClassEnum.Reaper)}', '{ClassEnum.Reaper}')
-) AS source ({nameof(wo_Class.ClassCode)}, {nameof(wo_Class.ClassName)})
+        ('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Druid)}', '{ClassEnum.Druid}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.StrikingBlade)}', '{ClassEnum.StrikingBlade}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Ranger)}', '{ClassEnum.Ranger}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Guardian)}', '{ClassEnum.Guardian}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Hunter)}', '{ClassEnum.Hunter}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Paladin)}', '{ClassEnum.Paladin}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Priest)}', '{ClassEnum.Priest}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Mage)}', '{ClassEnum.Mage}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Seeker)}', '{ClassEnum.Seeker}')
+       ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Templar)}', '{ClassEnum.Templar}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Barbarian)}', '{ClassEnum.Barbarian}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Rogue)}', '{ClassEnum.Rogue}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Shaman)}', '{ClassEnum.Shaman}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Archer)}', '{ClassEnum.Archer}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Chieftain)}', '{ClassEnum.Chieftain}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Necromancer)}', '{ClassEnum.Necromancer}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Warlock)}', '{ClassEnum.Warlock}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.DeathKnight)}', '{ClassEnum.DeathKnight}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Spellcaster)}', '{ClassEnum.Spellcaster}')
+       ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Reaper)}', '{ClassEnum.Reaper}')
+    ) as source ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Class.ClassCode)}, {nameof(wo_Class.ClassName)})
+    join {nameof(wo_Fraction)} as f on f.{nameof(wo_Fraction.FractionCode)} = source.{nameof(wo_Fraction.FractionCode)}
+) AS source ({nameof(wo_Class.rf_FractionID)}, {nameof(wo_Class.ClassCode)}, {nameof(wo_Class.ClassName)})
 ON TARGET.{nameof(wo_Class.ClassCode)} = source.{nameof(wo_Class.ClassCode)}
 WHEN MATCHED and
    (TARGET.{nameof(wo_Class.ClassName)} != source.{nameof(wo_Class.ClassName)})
@@ -170,42 +177,6 @@ THEN
 WHEN NOT MATCHED THEN
     INSERT ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Fraction.FractionName)})
     VALUES (source.{nameof(wo_Fraction.FractionCode)}, source.{nameof(wo_Fraction.FractionName)});
-
-MERGE {nameof(wo_ClassFraction)} AS TARGET
-USING (
-	select
-	class.{nameof(wo_Class.ClassID)},
-	fraction.{nameof(wo_Fraction.FractionID)}
-	from (
-		VALUES
-		    ('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Druid)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.StrikingBlade)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Ranger)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Guardian)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Hunter)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Paladin)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Priest)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Mage)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Seeker)}')
-           ,('{nameof(FractionEnum.Guardian)}', '{nameof(ClassEnum.Templar)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Barbarian)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Rogue)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Shaman)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Archer)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Chieftain)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Necromancer)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Warlock)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.DeathKnight)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Spellcaster)}')
-           ,('{nameof(FractionEnum.Legion)}', '{nameof(ClassEnum.Reaper)}')
-	) as source ({nameof(wo_Fraction.FractionCode)}, {nameof(wo_Class.ClassCode)})
-	join {nameof(wo_Fraction)} as fraction on source.{nameof(wo_Fraction.FractionCode)} = fraction.{nameof(wo_Fraction.FractionCode)}
-	join {nameof(wo_Class)} as class on source.{nameof(wo_Class.ClassCode)} = class.{nameof(wo_Class.ClassCode)}
-) AS source ({nameof(wo_ClassFraction.rf_ClassID)}, {nameof(wo_ClassFraction.rf_FractionID)})
-ON TARGET.{nameof(wo_ClassFraction.rf_FractionID)} = source.{nameof(wo_ClassFraction.rf_FractionID)} and TARGET.{nameof(wo_ClassFraction.rf_ClassID)} = source.{nameof(wo_ClassFraction.rf_ClassID)}
-WHEN NOT MATCHED THEN
-    INSERT ({nameof(wo_ClassFraction.rf_FractionID)}, {nameof(wo_ClassFraction.rf_ClassID)})
-    VALUES (source.{nameof(wo_ClassFraction.rf_FractionID)}, source.{nameof(wo_ClassFraction.rf_ClassID)});
 
 
 MERGE {nameof(wo_ObjectType)} AS TARGET

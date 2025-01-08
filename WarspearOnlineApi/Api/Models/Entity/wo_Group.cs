@@ -54,5 +54,10 @@ namespace WarspearOnlineApi.Api.Models.Entity
         /// Интерсекиция группы и гильдии.
         /// </summary>
         public ICollection<wo_GroupGuild> GroupGuilds { get; set; } = new List<wo_GroupGuild>();
+
+        /// <summary>
+        /// Интерсекция пользователя и группы.
+        /// </summary>
+        public ICollection<wo_UserGroup> UserGroups = new List<wo_UserGroup>();
     }
 }

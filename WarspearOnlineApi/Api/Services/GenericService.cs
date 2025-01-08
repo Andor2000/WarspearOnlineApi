@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using WarspearOnlineApi.Api.Data;
+using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.BaseModels;
 using WarspearOnlineApi.Api.Services.Base;
@@ -116,20 +116,12 @@ namespace WarspearOnlineApi.Api.Services
         /// Получение списка классов.
         /// </summary>
         /// <param name="search">Строка поиска.</param>
-        /// <param name="isChechUserFraction">Признак проверки фракции пользователя.</param>
+        /// <param name="fractionCode">Код фракции.</param>
         /// <returns>Список классов.</returns>
-        public async Task<CodeNameBaseModel[]> GetClassList(string search, bool isChechUserFraction)
+        public async Task<CodeNameBaseModel[]> GetClassList(string search, FractionType fractionCode)
         {
-            var help = this._context.wo_Class
-                .Where(x => x.ClassID > 0);
-
-            if (isChechUserFraction)
-            {
-                var user = _jwtTokenService.
-            }
-
             return await this._context.wo_Class
-                .Where(x => x.ClassID > 0)
+                .Where(x => x.ClassID > 0 && x.rf_Fraction.FractionCode == fractionCode.ToString())
                 .ProjectTo<CodeNameBaseModel>(this._mapper.ConfigurationProvider)
                 .FilterByNameContains(search)
                 .SortByName()
