@@ -14,7 +14,7 @@ namespace WarspearOnlineApi.Api.Services
     /// <summary>
     /// Сервис для работы с интерсекцией дропа и игрока.
     /// </summary>
-    public class DropPlayerService : AdminBaseService
+    public class DropPlayerService : UserBaseService
     {
         /// <summary>
         /// Сервис для работы с игроками.

@@ -9,7 +9,7 @@ namespace WarspearOnlineApi.Api.Services.Base
     /// <summary>
     /// Базовый сервис администратора.
     /// </summary>
-    public class AdminBaseService : BaseService
+    public class UserBaseService : BaseService
     {
         /// <summary>
         /// Сервис для работы с токенами.
@@ -20,7 +20,7 @@ namespace WarspearOnlineApi.Api.Services.Base
         /// Конструктор.
         /// </summary>
         /// <param name="context">Контекст данных.</param>
-        public AdminBaseService(
+        public UserBaseService(
             AppDbContext context,
             JwtTokenService jwtTokenService) : base (context)
         {

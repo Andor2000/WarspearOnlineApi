@@ -14,7 +14,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
     /// <summary>
     /// Сервис для работы с пользователями.
     /// </summary>
-    public class UserService : AdminBaseService
+    public class UserService : UserBaseService
     {
         /// <summary>
         /// Маппер.

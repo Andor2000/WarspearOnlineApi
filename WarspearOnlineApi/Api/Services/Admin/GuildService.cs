@@ -13,7 +13,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
     /// <summary>
     /// Сервис для работы с гильдиями.
     /// </summary>
-    public class GuildService : AdminBaseService
+    public class GuildService : UserBaseService
     {
         /// <summary>
         /// Маппер.

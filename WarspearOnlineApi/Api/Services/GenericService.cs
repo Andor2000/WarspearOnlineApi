@@ -13,7 +13,7 @@ namespace WarspearOnlineApi.Api.Services
     /// <summary>
     /// Сервис для получения общих данных.
     /// </summary>
-    public class GenericService : AdminBaseService
+    public class GenericService : UserBaseService
     {
         /// <summary>
         /// Маппер.
