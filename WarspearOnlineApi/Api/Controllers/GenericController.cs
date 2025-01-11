@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Models.BaseModels;
-using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Services;
 
 namespace WarspearOnlineApi.Api.Controllers
@@ -91,7 +90,7 @@ namespace WarspearOnlineApi.Api.Controllers
         [HttpGet("Class/List")]
         public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search, FractionType fractionCode)
         {
-            return Ok(await _genericService.GetClassList(search, fractionCode));
+            return Ok(await this._genericService.GetClassList(search, fractionCode));
         }
     }
 }

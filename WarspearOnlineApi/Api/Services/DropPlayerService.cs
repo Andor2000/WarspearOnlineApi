@@ -50,7 +50,7 @@ namespace WarspearOnlineApi.Api.Services
         public async Task<DropPlayerDto[]> GetPlayerByDropId(int dropId)
         {
             dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
-            return await GetPlayersByPredicate(x => x.rf_DropID == dropId);
+            return await this.GetPlayersByPredicate(x => x.rf_DropID == dropId);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace WarspearOnlineApi.Api.Services
         public async Task<DropPlayerDto> GetDropPlayerById(int dropPlayerId)
         {
             dropPlayerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор связи игрока и дропа");
-            return (await GetPlayersByPredicate(x => x.DropPlayerID == dropPlayerId))
+            return (await this.GetPlayersByPredicate(x => x.DropPlayerID == dropPlayerId))
                 .FirstOrDefault()
                 .ThrowIfNull("Связь игрока с дропом");
         }
@@ -111,7 +111,7 @@ namespace WarspearOnlineApi.Api.Services
             await this._context.wo_DropPlayer.AddAsync(entity);
             await this._context.SaveChangesAsync();
 
-            return (await GetPlayersByPredicate(x => x.DropPlayerID == entity.DropPlayerID))
+            return (await this.GetPlayersByPredicate(x => x.DropPlayerID == entity.DropPlayerID))
                 .FirstOrDefault()
                 .ThrowIfNull("Связь игрока с дропом");
         }

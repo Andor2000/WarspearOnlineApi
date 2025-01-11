@@ -49,7 +49,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <returns>Журнал дропа.</returns>
         public async Task<DropDto[]> GetJournalDrop(JournalDropFilter filter)
         {
-            var drops = await BuildFilter(filter)
+            var drops = await this.BuildFilter(filter)
                 .OrderByDescending(x => x.DropID)
                 .ProjectTo<DropDto>(this._mapper.ConfigurationProvider)
                 .SkipTake(filter)

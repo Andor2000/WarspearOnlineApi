@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using WarspearOnlineApi.Api.Data;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto.Intersections;
-using WarspearOnlineApi.Api.Models.Dto.Users;
-using WarspearOnlineApi.Api.Models.Entity;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Services.Base;
 using WarspearOnlineApi.Api.Services.Users;

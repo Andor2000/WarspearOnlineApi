@@ -37,7 +37,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <returns>Список игроков журнала.</returns>
         public async Task<JournalPlayerDto[]> GetJournalPlayers(JournalPlayerFilterDto filter)
         {
-            var players = await BuildFilter(filter)
+            var players = await this.BuildFilter(filter)
                 .OrderByDescending(x => x.PlayerID)
                 .ProjectTo<JournalPlayerDto>(_mapper.ConfigurationProvider)
                 .SkipTake(filter)

@@ -27,11 +27,11 @@
         {
             try
             {
-                await _next(context);
+                await this._next(context);
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, ex);
+                await this.HandleExceptionAsync(context, ex);
             }
         }
 
