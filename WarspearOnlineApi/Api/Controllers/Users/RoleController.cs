@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using WarspearOnlineApi.Api.Models.BaseModels;
 using WarspearOnlineApi.Api.Services.Users;
 
+//
 // СКОРЕЕ ВСЕГО УДАЛИТЬ
+// 
 namespace WarspearOnlineApi.Api.Controllers.Users
 {
     /// <summary>
@@ -34,6 +36,7 @@ namespace WarspearOnlineApi.Api.Controllers.Users
         [HttpGet("Roles")]
         public async Task<ActionResult<CodeNameBaseModel[]>> GetRoles()
         {
+            // ??? Нужен ли
             return Ok(await this._roleService.GetRoleCodes());
         }
     }

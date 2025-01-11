@@ -111,9 +111,10 @@ namespace WarspearOnlineApi.Api.Services.Journals
 
                 playerPredicate = filter.DropPaymentStatusPlayer switch
                 {
+                    DropPaymentStatus.All => playerPredicate,
                     DropPaymentStatus.Paid => playerPredicate.And(dp => dp.IsPaid),
                     DropPaymentStatus.NotPaid => playerPredicate.And(dp => !dp.IsPaid),
-                    _ => playerPredicate
+                    _ => throw new Exception("Неизвестный статус выплаты дропа")
                 };
 
                 query = query.Where(x => x.DropPlayers.AsQueryable().Any(playerPredicate));

@@ -49,15 +49,14 @@ namespace WarspearOnlineApi.Api.Services.Journals
             }
 
             var playerIds = players.Select(x => x.Player.Id).ToArray();
-            var dropPlayer = await _context.wo_DropPlayer
+            var dropPlayer = await this._context.wo_DropPlayer
                 .Where(x => playerIds.Contains(x.rf_PlayerID))
                 .Select(x => new
                 {
                     x.rf_DropID,
                     x.rf_PlayerID,
                     x.IsPaid,
-                })
-                .ToArrayAsync();
+                }).ToArrayAsync();
 
             if (dropPlayer.IsNullOrDefault())
             {
@@ -65,7 +64,7 @@ namespace WarspearOnlineApi.Api.Services.Journals
             }
 
             var dtopIds = dropPlayer.Select(x => x.rf_DropID).Distinct().ToArray();
-            var dropInfo = await _context.wo_DropPlayer
+            var dropInfo = await this._context.wo_DropPlayer
                 .Where(x => dtopIds.Contains(x.rf_DropID))
                 .GroupBy(x => new { x.rf_Drop.DropID, x.rf_Drop.Price })
                 .Select(x => new
@@ -102,10 +101,13 @@ namespace WarspearOnlineApi.Api.Services.Journals
         /// <returns>Запрос для фильтрации записей.</returns>
         private IQueryable<wo_Player> BuildFilter(JournalPlayerFilterDto filter)
         {
-            var query = _context.wo_Player
+            filter.ThrowOnCondition(x => x.ServerId.IsNullOrDefault(), "Не указан идентификатор сервера")
+                .ThrowOnCondition(x => x.FractionId.IsNullOrDefault(), "Не указан идентификатор фракции");
+
+            var query = this._context.wo_Player
                 .Where(x => x.PlayerID > 0)
-                .Where(x => x.rf_ServerID == filter.ServerId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор сервера"))
-                .Where(x => x.rf_FractionID == filter.FractionId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор фракции"));
+                .Where(x => x.rf_ServerID == filter.ServerId)
+                .Where(x => x.rf_FractionID == filter.FractionId);
 
             if (!filter.Nick.IsNullOrDefault())
             {

@@ -82,7 +82,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
                     x.rf_FractionID,
                     x.rf_AccessLevel.AccessLevelInt
                 }).FirstOrDefaultAsync()
-                .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Пользователь")
+                .ThrowNotFoundAsync(x => (x?.UserId).IsNullOrDefault(), "Вы не являетесь пользователем")
                 .ThrowOnConditionAsync(x => x.AccessLevelInt < accessLevel, "Вы не можете дать право доступа выше собственного");
 
             var newUser = new wo_User()
@@ -150,8 +150,9 @@ namespace WarspearOnlineApi.Api.Services.Admin
         /// <returns>пользователь.</returns>
         private async Task<UserDto> GetUserById(int userId)
         {
+            userId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор пользователя");
             return await this._context.wo_User
-                .Where(x => x.UserId == userId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор пользователя"))
+                .Where(x => x.UserId == userId)
                 .ProjectTo<UserDto>(this._mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync()
                 .ThrowIfNull("Пользователь");

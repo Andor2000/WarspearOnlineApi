@@ -137,6 +137,9 @@ namespace WarspearOnlineApi.Api.Services
                 .ThrowOnConditionAsync(x => (x?.DropID).IsNullOrDefault(), "Дроп");
             await this.CheckUserHasGroupAsync(entity.rf_GroupID);
 
+            await this._context.wo_DropPlayer.AnyAsync(x => x.rf_DropID == entity.DropID)
+                .ThrowOnConditionAsync(x => x, "Необходимо удалить игроков из дропа");
+
             this._context.wo_Drop.Remove(new wo_Drop { DropID = entity.DropID });
             await this._context.SaveChangesAsync();
             return "Дроп удален";
