@@ -92,5 +92,15 @@ namespace WarspearOnlineApi.Api.Controllers
         {
             return Ok(await this._genericService.GetClassList(search, fractionCode));
         }
+
+        /// <summary>
+        /// Получить список статусов дропа.
+        /// </summary>
+        /// <param name="search">Строка поиска.</param>
+        /// <returns>Список статусов дропа.</returns>
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetDropStatuses(string search)
+        {
+            return Ok(await this._genericService.GetDropStatuses(search));
+        }
     }
 }

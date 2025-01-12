@@ -3,7 +3,7 @@ using WarspearOnlineApi.Api.Models.Entity;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
 using WarspearOnlineApi.Api.Models.Entity.Users;
 
-namespace WarspearOnlineApi.Api.Data
+namespace WarspearOnlineApi.Api.SqlQueries
 {
     /// <summary>
     /// Sql-запросы для инициализации базы данных.
@@ -17,10 +17,10 @@ namespace WarspearOnlineApi.Api.Data
 MERGE {nameof(wo_AccessLevel)} as TARGET
 USING (
 	VALUES
-	    ('{nameof(AccessLevelEnum.Moderator)}', '{AccessLevelEnum.Moderator}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.Moderator))}')
-	   ,('{nameof(AccessLevelEnum.Admin)}', '{AccessLevelEnum.Admin}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.Admin))}')
-	   ,('{nameof(AccessLevelEnum.AdminServer)}', '{AccessLevelEnum.AdminServer}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.AdminServer))}')
-	   ,('{nameof(AccessLevelEnum.MainAdmin)}', '{AccessLevelEnum.MainAdmin}', '{AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.MainAdmin))}')
+	    ('{nameof(AccessLevelEnum.Moderator)}', '{AccessLevelEnum.Moderator}', '{nameof(AccessLevelEnum.Moderator).LevelValue()}')
+	   ,('{nameof(AccessLevelEnum.Admin)}', '{AccessLevelEnum.Admin}', '{nameof(AccessLevelEnum.Admin).LevelValue()}')
+	   ,('{nameof(AccessLevelEnum.AdminServer)}', '{AccessLevelEnum.AdminServer}', '{nameof(AccessLevelEnum.AdminServer).LevelValue()}')
+	   ,('{nameof(AccessLevelEnum.MainAdmin)}', '{AccessLevelEnum.MainAdmin}', '{nameof(AccessLevelEnum.MainAdmin).LevelValue()}')
 ) as source ({nameof(wo_AccessLevel.AccessLevelCode)}, {nameof(wo_AccessLevel.AccessLevelName)}, {nameof(wo_AccessLevel.AccessLevelInt)})
 on TARGET.{nameof(wo_AccessLevel.AccessLevelCode)} = source.{nameof(wo_AccessLevel.AccessLevelCode)}
 WHEN MATCHED and
@@ -229,6 +229,24 @@ THEN
 WHEN NOT MATCHED THEN
     INSERT ({nameof(wo_Object.ObjectCode)}, {nameof(wo_Object.ObjectName)}, {nameof(wo_Object.Image)}, {nameof(wo_Object.rf_ObjectTypeID)})
     VALUES (source.{nameof(wo_Object.ObjectCode)}, source.{nameof(wo_Object.ObjectName)}, source.{nameof(wo_Object.Image)}, source.{nameof(wo_Object.rf_ObjectTypeID)});
+
+
+MERGE {nameof(wo_DropStatus)} AS TARGET
+USING (
+    VALUES
+        ('{DropStatusEnum.GetCode(nameof(DropStatusEnum.Filling))}', '{DropStatusEnum.Filling}')
+       ,('{DropStatusEnum.GetCode(nameof(DropStatusEnum.ReadyForPickup))}', '{DropStatusEnum.ReadyForPickup}')
+       ,('{DropStatusEnum.GetCode(nameof(DropStatusEnum.Closed))}', '{DropStatusEnum.Closed}')
+) AS source ({nameof(wo_DropStatus.DropStatusCode)}, {nameof(wo_DropStatus.DropStatusName)})
+ON TARGET.{nameof(wo_DropStatus.DropStatusCode)} = source.{nameof(wo_DropStatus.DropStatusName)}
+WHEN MATCHED and TARGET.{nameof(wo_DropStatus.DropStatusName)} != source.{nameof(wo_DropStatus.DropStatusName)}
+THEN
+    UPDATE SET
+        TARGET.{nameof(wo_DropStatus.DropStatusName)} = source.{nameof(wo_DropStatus.DropStatusName)}
+WHEN NOT MATCHED THEN
+    INSERT ({nameof(wo_DropStatus.DropStatusCode)}, {nameof(wo_DropStatus.DropStatusName)})
+    VALUES (source.{nameof(wo_DropStatus.DropStatusCode)}, source.{nameof(wo_DropStatus.DropStatusName)});
+
 
 
 

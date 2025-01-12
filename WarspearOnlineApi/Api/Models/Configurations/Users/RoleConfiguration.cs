@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Models.Entity.Users;
 
-namespace WarspearOnlineApi.Api.Configurations.Users
+namespace WarspearOnlineApi.Api.Models.Configurations.Users
 {
     public class RoleConfiguration : IEntityTypeConfiguration<wo_Role>
     {

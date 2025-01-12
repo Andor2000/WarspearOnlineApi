@@ -43,6 +43,16 @@ namespace WarspearOnlineApi.Api.Models.Entity
         public wo_Group rf_Group { get; set; }
 
         /// <summary>
+        /// Идентификатор статуса выпавшего дропа.
+        /// </summary>
+        public int rf_DropStatusID { get; set; }
+
+        /// <summary>
+        /// Статус выпавшего дропа.
+        /// </summary>
+        public wo_DropStatus rf_DropStatus { get; set; }
+
+        /// <summary>
         /// Интерсекция дропа с игроками.
         /// </summary>
         public ICollection<wo_DropPlayer> DropPlayers { get; set; } = new List<wo_DropPlayer>();

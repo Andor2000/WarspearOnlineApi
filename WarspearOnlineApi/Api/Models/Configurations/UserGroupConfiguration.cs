@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
 
-namespace WarspearOnlineApi.Api.Configurations
+namespace WarspearOnlineApi.Api.Models.Configurations
 {
     public class UserGroupConfiguration : IEntityTypeConfiguration<wo_UserGroup>
     {

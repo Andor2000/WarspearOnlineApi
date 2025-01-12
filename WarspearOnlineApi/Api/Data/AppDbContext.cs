@@ -99,6 +99,11 @@ namespace WarspearOnlineApi.Api.Data
         public DbSet<wo_Drop> wo_Drop { get; set; }
 
         /// <summary>
+        /// Набор данных статусов выпавшего дропа.
+        /// </summary>
+        public DbSet<wo_DropStatus> wo_DropStatus { get; set; }
+
+        /// <summary>
         /// Набор данных для связи журнала выпадений и игроков.
         /// </summary>
         public DbSet<wo_DropPlayer> wo_DropPlayer { get; set; }

@@ -104,6 +104,5 @@
         /// Жнец.
         /// </summary>
         public static readonly string Reaper = "Жнец";
-
     }
 }

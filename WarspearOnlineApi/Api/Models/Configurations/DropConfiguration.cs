@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WarspearOnlineApi.Api.Enums;
 using WarspearOnlineApi.Api.Models.Entity;
 
-namespace WarspearOnlineApi.Api.Configurations
+namespace WarspearOnlineApi.Api.Models.Configurations
 {
     /// <summary>
     /// Конфигуратор набора данных для <see cref="wo_Drop"/>.
@@ -24,6 +24,9 @@ namespace WarspearOnlineApi.Api.Configurations
 
             builder.Property(m => m.rf_GroupID).HasDefaultValue(0);
             builder.HasOne(x => x.rf_Group).WithMany(x => x.Drops).HasForeignKey(x => x.rf_GroupID).OnDelete(DeleteBehavior.NoAction);
+
+            builder.Property(m => m.rf_DropStatusID).HasDefaultValue(0);
+            builder.HasOne(x => x.rf_DropStatus).WithMany(x => x.Drops).HasForeignKey(x => x.rf_DropStatusID).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

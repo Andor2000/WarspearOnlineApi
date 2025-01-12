@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using WarspearOnlineApi.Api.SqlQueries;
 
 namespace WarspearOnlineApi.Api.Data
 {

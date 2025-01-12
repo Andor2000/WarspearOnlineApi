@@ -127,5 +127,20 @@ namespace WarspearOnlineApi.Api.Services
                 .SortByName()
                 .ToArrayAsync();
         }
+
+        /// <summary>
+        /// Получить список статусов дропа.
+        /// </summary>
+        /// <param name="search">Строка поиска.</param>
+        /// <returns>Список статусов дропа.</returns>
+        public async Task<CodeNameBaseModel[]> GetDropStatuses(string search)
+        {
+            return await this._context.wo_DropStatus
+                .Where(x => x.DropStatusID > 0)
+                .ProjectTo<CodeNameBaseModel>(this._mapper.ConfigurationProvider)
+                .FilterByNameContains(search)
+                .OrderBy(x => x.Code.Length).ThenBy(x => x.Code)
+                .ToArrayAsync();
+        }
     }
 }

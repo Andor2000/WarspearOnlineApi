@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Models.Entity;
 
-namespace WarspearOnlineApi.Api.Configurations
+namespace WarspearOnlineApi.Api.Models.Configurations
 {
     public class ClassConfiguration : IEntityTypeConfiguration<wo_Class>
     {

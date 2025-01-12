@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WarspearOnlineApi.Api.Models.Entity;
 
-namespace WarspearOnlineApi.Api.Configurations
+namespace WarspearOnlineApi.Api.Models.Configurations
 {
     /// <summary>
     /// Конфигуратор набора данных для <see cref="wo_Server"/>.

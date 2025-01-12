@@ -1,4 +1,6 @@
-﻿namespace WarspearOnlineApi.Api.Enums.BaseRecordDB
+﻿using WarspearOnlineApi.Api.Extensions;
+
+namespace WarspearOnlineApi.Api.Enums.BaseRecordDB
 {
     /// <summary>
     /// Уровень доступа.
@@ -38,7 +40,7 @@
                 var x when x == nameof(Admin) => 2,
                 var x when x == nameof(AdminServer) => 3,
                 var x when x == nameof(MainAdmin) => 4,
-                _ => throw new Exception("Новой роли нужно выдать числовой уровень доступа"),
+                _ => 0.ThrowOnCondition(x => true, "Новой роли нужно выдать числовой уровень доступа"),
             };
         }
     }

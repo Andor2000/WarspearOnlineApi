@@ -95,7 +95,13 @@ namespace WarspearOnlineApi.Api.Models.Mapper
                 .ForMember(x => x.PlayersCount, opt => opt.Ignore())
                 .ForMember(x => x.Part, opt => opt.Ignore())
                 .ForMember(x => x.Object, opt => opt.MapFrom(s => s.rf_Object))
-                .ForMember(x => x.Group, opt => opt.MapFrom(s => s.rf_Group));
+                .ForMember(x => x.Group, opt => opt.MapFrom(s => s.rf_Group))
+                .ForMember(x => x.Status, opt => opt.MapFrom(s => s.rf_DropStatus));
+
+            CreateMap<wo_DropStatus, CodeNameBaseModel>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(s => s.DropStatusID))
+                .ForMember(x => x.Code, opt => opt.MapFrom(s => s.DropStatusCode))
+                .ForMember(x => x.Name, opt => opt.MapFrom(s => s.DropStatusName));
 
             CreateMap<wo_Player, PlayerDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.PlayerID))
