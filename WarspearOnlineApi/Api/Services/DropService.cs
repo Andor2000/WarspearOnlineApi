@@ -212,12 +212,11 @@ namespace WarspearOnlineApi.Api.Services
         private async Task ValidateSaving(wo_Drop entity, DropDto dto)
         {
             (dto.Object?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор объекта");
+            (dto.Status?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор статуса дропа");
 
             dto.Group.ThrowOnCondition(x => x.Id.IsNullOrDefault(), "Не указан идентификатор группы")
                 .Server.ThrowOnCondition(x => (x?.Id).IsNullOrDefault(), "Не указан идентификатор сервера")
                 .Id.ThrowOnCondition(x => x != entity.rf_Group.rf_ServerID, "Попытка изменить сервер у дропа");
-
-            (dto.Status?.Id).ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор статуса дропа");
 
             await this._context.wo_Group.Where(x => x.GroupID == dto.Group.Id).Select(x => x.rf_ServerID).FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => x.IsNullOrDefault(), "Группа")

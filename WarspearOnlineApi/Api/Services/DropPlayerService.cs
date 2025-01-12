@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using WarspearOnlineApi.Api.Data;
+using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto;
 using WarspearOnlineApi.Api.Models.Entity.Intersections;
@@ -157,6 +158,26 @@ namespace WarspearOnlineApi.Api.Services
         }
 
         /// <summary>
+        /// Проверить статус дропа.
+        /// </summary>
+        /// <param name="dropId">Идентификатор дропа.</param>
+        /// <returns>Строка.</returns>
+        private async Task ValidateDropStatus(int dropId)
+        {
+            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
+            var status = await this._context.wo_Drop
+                .Where(x => x.DropID == dropId)
+                .Select(x => new
+                {
+                    x.rf_DropStatusID,
+                    x.rf_DropStatus.DropStatusCode,
+                    x.rf_DropStatus.DropStatusName,
+                }).FirstOrDefaultAsync()
+                .ThrowOnConditionAsync(x => (x?.rf_DropStatusID).IsNullOrDefault(), "Не указан статус дропа");
+            status.ThrowOnCondition(x => x.DropStatusCode != DropStatusEnum.GetCode(nameof(DropStatusEnum.Filling)), $"Нельзя редактировать дроп со статусом \"{status.DropStatusName}\"");
+        }
+
+        /// <summary>
         /// Получить список игроков по предикату.
         /// </summary>
         /// <param name="predicate">Предикат.</param>
@@ -178,11 +199,13 @@ namespace WarspearOnlineApi.Api.Services
         /// <returns>Entity-модель.</returns>
         private async Task<wo_DropPlayer> MapToEntity(DropPlayerDto dto, int dropId)
         {
+            await this.ValidateDropStatus(dropId);
             dto.ThrowOnCondition(x => x.Part.IsNullOrDefault(), "Не указана доля игрока")
                 .ThrowOnCondition(x => (x.Player?.Class?.Id).IsNullOrDefault(), "Не указан класс игрока");
-            dropId.ThrowOnCondition(x => x.IsNullOrDefault(), "Не указан идентификатор дропа");
 
             var drop = await this.GetDrop(dropId);
+            await this.CheckUserHasGroupAsync(drop.GroupID);
+
             var playerId = await this.GetOrCreatePlayerId(dto.Player, drop.ServerID, drop.FractionID);
             var entity = await this.GetOrCreateDropPlayerAsync(dto.Id, drop.DropID, playerId);
 
@@ -197,17 +220,23 @@ namespace WarspearOnlineApi.Api.Services
         /// </summary>
         /// <param name="dropId">Идентификатор дропа.</param>
         /// <returns>Модель дропа.</returns>
-        private async Task<(int DropID, int ServerID, int FractionID)> GetDrop(int dropId)
+        private async Task<(int DropID, int GroupID, int ServerID, int FractionID)> GetDrop(int dropId)
         {
             var drop = await this._context.wo_Drop
                 .Where(x => x.DropID == dropId)
-                .Select(x => new { x.DropID, x.rf_Group.rf_ServerID, x.rf_Group.rf_FractionID })
+                .Select(x => new
+                {
+                    x.DropID,
+                    x.rf_GroupID,
+                    x.rf_Group.rf_ServerID,
+                    x.rf_Group.rf_FractionID
+                })
                 .FirstOrDefaultAsync()
                 .ThrowNotFoundAsync(x => (x?.DropID).IsNullOrDefault(), "Дроп")
                 .ThrowOnConditionAsync(x => (x?.rf_ServerID).IsNullOrDefault(), "У дропа не указан сервер")
                 .ThrowOnConditionAsync(x => (x?.rf_FractionID).IsNullOrDefault(), "У дропа не указана фракция");
 
-            return (drop.DropID, drop.rf_ServerID, drop.rf_FractionID);
+            return (drop.DropID, drop.rf_GroupID, drop.rf_ServerID, drop.rf_FractionID);
         }
 
         /// <summary>
