@@ -46,7 +46,7 @@ namespace WarspearOnlineApi.Api.Services.Admin
 
             if (user.AccessLevelCode.LevelValue() < AccessLevelEnum.LevelValue(nameof(AccessLevelEnum.AdminServer)))
             {
-                var groupIds = await GetUserGroupIdsAsync();
+                var groupIds = await this.GetUserGroupIdsAsync();
                 query = query.Where(x => groupIds.Contains(x.GroupID));
             }
 
