@@ -200,7 +200,7 @@ namespace WarspearOnlineApi.Api.Services
         private async Task<wo_DropPlayer> MapToEntity(DropPlayerDto dto, int dropId)
         {
             await this.ValidateDropStatus(dropId);
-            dto.ThrowOnCondition(x => x.Part.IsNullOrDefault(), "Не указана доля игрока")
+            dto.ThrowOnCondition(x => x.Part.IsNullOrDefault() || x.Part < 0, "Не указана доля игрока")
                 .ThrowOnCondition(x => (x.Player?.Class?.Id).IsNullOrDefault(), "Не указан класс игрока");
 
             var drop = await this.GetDrop(dropId);

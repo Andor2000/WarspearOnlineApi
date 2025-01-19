@@ -8,6 +8,6 @@
         /// <summary>
         /// Ник игрока.
         /// </summary>
-        public string Nick { get; set; }
+        public string Nick { get; set; } = string.Empty;
     }
 }

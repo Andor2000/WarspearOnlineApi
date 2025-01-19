@@ -113,7 +113,8 @@ namespace WarspearOnlineApi.Api.Models.Mapper
             CreateMap<wo_Player, JournalPlayerDto>()
                 .ForMember(x => x.Player, opt => opt.MapFrom(s => s))
                 .ForMember(x => x.PaidOut, opt => opt.Ignore())
-                .ForMember(x => x.NotPaid, opt => opt.Ignore());
+                .ForMember(x => x.NotPaid, opt => opt.Ignore())
+                .ForMember(x => x.NotPaidClosed, opt => opt.Ignore());
 
             CreateMap<wo_DropPlayer, DropPlayerDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(s => s.DropPlayerID))

@@ -98,6 +98,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// </summary>
         /// <param name="search">Строка поиска.</param>
         /// <returns>Список статусов дропа.</returns>
+        [HttpGet("DropStatuses")]
         public async Task<ActionResult<CodeNameBaseModel[]>> GetDropStatuses(string search)
         {
             return Ok(await this._genericService.GetDropStatuses(search));

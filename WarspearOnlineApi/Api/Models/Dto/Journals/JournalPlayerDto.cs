@@ -24,5 +24,10 @@
         /// Не выплачено.
         /// </summary>
         public int NotPaid { get; set; }
+
+        /// <summary>
+        /// Не выплачено и дроп закрыт.
+        /// </summary>
+        public int NotPaidClosed { get; set; }
     }
 }

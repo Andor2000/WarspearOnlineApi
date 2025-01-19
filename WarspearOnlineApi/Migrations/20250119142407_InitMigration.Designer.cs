@@ -12,8 +12,8 @@ using WarspearOnlineApi.Api.Data;
 namespace WarspearOnlineApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250112153725_InitMigration4")]
-    partial class InitMigration4
+    [Migration("20250119142407_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -326,6 +326,11 @@ namespace WarspearOnlineApi.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
+                    b.Property<int>("rf_DropStatusID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<int>("rf_GroupID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -337,6 +342,8 @@ namespace WarspearOnlineApi.Migrations
                         .HasDefaultValue(0);
 
                     b.HasKey("DropID");
+
+                    b.HasIndex("rf_DropStatusID");
 
                     b.HasIndex("rf_GroupID");
 
@@ -356,17 +363,17 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("DropStatusCode")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
+                        .HasMaxLength(10)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(10)")
                         .HasDefaultValue("");
 
                     b.Property<string>("DropStatusName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
+                        .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(50)")
                         .HasDefaultValue("");
 
                     b.HasKey("DropStatusID");
@@ -756,6 +763,12 @@ namespace WarspearOnlineApi.Migrations
 
             modelBuilder.Entity("WarspearOnlineApi.Api.Models.Entity.wo_Drop", b =>
                 {
+                    b.HasOne("WarspearOnlineApi.Api.Models.Entity.wo_DropStatus", "rf_DropStatus")
+                        .WithMany("Drops")
+                        .HasForeignKey("rf_DropStatusID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("WarspearOnlineApi.Api.Models.Entity.wo_Group", "rf_Group")
                         .WithMany("Drops")
                         .HasForeignKey("rf_GroupID")
@@ -767,6 +780,8 @@ namespace WarspearOnlineApi.Migrations
                         .HasForeignKey("rf_ObjectID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("rf_DropStatus");
 
                     b.Navigation("rf_Group");
 
@@ -876,6 +891,11 @@ namespace WarspearOnlineApi.Migrations
             modelBuilder.Entity("WarspearOnlineApi.Api.Models.Entity.wo_Drop", b =>
                 {
                     b.Navigation("DropPlayers");
+                });
+
+            modelBuilder.Entity("WarspearOnlineApi.Api.Models.Entity.wo_DropStatus", b =>
+                {
+                    b.Navigation("Drops");
                 });
 
             modelBuilder.Entity("WarspearOnlineApi.Api.Models.Entity.wo_Fraction", b =>

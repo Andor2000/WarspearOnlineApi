@@ -32,7 +32,7 @@ namespace WarspearOnlineApi.Api.Controllers.Journals
         /// <param name="filter">Фильтр.</param>
         /// <returns>Список игроков.</returns>
         [HttpGet]
-        public async Task<ActionResult<JournalPlayerDto[]>> GetJournalPlayers(JournalPlayerFilterDto filter)
+        public async Task<ActionResult<JournalPlayerDto[]>> GetJournalPlayers([FromQuery] JournalPlayerFilterDto filter)
         {
             return Ok(await this._journalPlayerService.GetJournalPlayers(filter));
         }

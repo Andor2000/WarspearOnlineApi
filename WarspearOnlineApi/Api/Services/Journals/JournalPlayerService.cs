@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WarspearOnlineApi.Api.Data;
+using WarspearOnlineApi.Api.Enums.BaseRecordDB;
 using WarspearOnlineApi.Api.Extensions;
 using WarspearOnlineApi.Api.Models.Dto.Journals;
 using WarspearOnlineApi.Api.Models.Entity;
@@ -64,13 +65,15 @@ namespace WarspearOnlineApi.Api.Services.Journals
             }
 
             var dtopIds = dropPlayer.Select(x => x.rf_DropID).Distinct().ToArray();
+
             var dropInfo = await this._context.wo_DropPlayer
                 .Where(x => dtopIds.Contains(x.rf_DropID))
-                .GroupBy(x => new { x.rf_Drop.DropID, x.rf_Drop.Price })
+                .GroupBy(x => new { x.rf_Drop.DropID, x.rf_Drop.Price, x.rf_Drop.rf_DropStatus.DropStatusCode })
                 .Select(x => new
                 {
                     x.Key.DropID,
                     Part = x.Key.Price / x.Count(),
+                    StatucCode = x.Key.DropStatusCode,
                 }).ToArrayAsync();
 
             foreach (var player in players)
@@ -78,7 +81,14 @@ namespace WarspearOnlineApi.Api.Services.Journals
                 var dropsByPlayer = dropPlayer.Where(x => x.rf_PlayerID == player.Player.Id).ToArray();
                 player.ParticipationCount = dropsByPlayer.Length;
                 player.PaidOut = dropInfo.Where(x => dropsByPlayer.Any(y => y.IsPaid && y.rf_DropID == x.DropID)).Sum(x => x.Part);
-                player.NotPaid = dropInfo.Where(x => dropsByPlayer.Any(y => !y.IsPaid && y.rf_DropID == x.DropID)).Sum(x => x.Part);
+                player.NotPaid = dropInfo
+                    .Where(x => x.StatucCode != DropStatusEnum.Closed &&
+                                dropsByPlayer.Any(y => !y.IsPaid && y.rf_DropID == x.DropID))
+                    .Sum(x => x.Part);
+                player.NotPaidClosed = dropInfo
+                    .Where(x => x.StatucCode == DropStatusEnum.Closed &&
+                                dropsByPlayer.Any(y => !y.IsPaid && y.rf_DropID == x.DropID))
+                    .Sum(x => x.Part);
             }
 
             return players;
