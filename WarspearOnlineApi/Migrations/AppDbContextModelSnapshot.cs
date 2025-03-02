@@ -225,9 +225,9 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
+                        .HasMaxLength(150)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(150)")
                         .HasDefaultValue("");
 
                     b.Property<int>("RangeAccessLevel")

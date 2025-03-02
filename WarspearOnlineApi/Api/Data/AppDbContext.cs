@@ -116,6 +116,13 @@ namespace WarspearOnlineApi.Api.Data
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
+            /// Отключаем все ограничения для таблиц с триггерами
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                modelBuilder.Entity(entity.ClrType)
+                    .ToTable(entity.GetTableName(), tb => tb.HasTrigger("dummy_trigger"));
+            }
+
             base.OnModelCreating(modelBuilder);
 
             foreach (var entity in modelBuilder.Model.GetEntityTypes())

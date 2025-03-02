@@ -227,7 +227,7 @@ namespace WarspearOnlineApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: ""),
                     Login = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false, defaultValue: ""),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: ""),
+                    Password = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false, defaultValue: ""),
                     RangeAccessLevel = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_AccessLevelID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     rf_ServerID = table.Column<int>(type: "int", nullable: false, defaultValue: 0),

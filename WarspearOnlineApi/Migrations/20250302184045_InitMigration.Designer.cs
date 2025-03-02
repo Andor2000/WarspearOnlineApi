@@ -12,7 +12,7 @@ using WarspearOnlineApi.Api.Data;
 namespace WarspearOnlineApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250119142407_InitMigration")]
+    [Migration("20250302184045_InitMigration")]
     partial class InitMigration
     {
         /// <inheritdoc />
@@ -228,9 +228,9 @@ namespace WarspearOnlineApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
+                        .HasMaxLength(150)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(150)")
                         .HasDefaultValue("");
 
                     b.Property<int>("RangeAccessLevel")

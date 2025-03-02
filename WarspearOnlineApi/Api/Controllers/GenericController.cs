@@ -43,7 +43,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="search">Строка поиска.</param>
         /// <returns>Список серверов.</returns>
         [HttpGet("Server/List")]
-        public async Task<ActionResult<CodeNameBaseModel[]>> GetServerList(string search)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetServerList(string search = "")
         {
             return Ok(await this._genericService.GetServerList(search));
         }
@@ -65,7 +65,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="search">Строка поиска.</param>
         /// <returns>Список фракций.</returns>
         [HttpGet("Fraction/List")]
-        public async Task<ActionResult<CodeNameBaseModel[]>> GetFractionList(string search)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetFractionList(string search = "")
         {
             return Ok(await this._genericService.GetFractionList(search));
         }
@@ -88,7 +88,7 @@ namespace WarspearOnlineApi.Api.Controllers
         /// <param name="fractionCode">Код фракции.</param>
         /// <returns>Список классов.</returns>
         [HttpGet("Class/List")]
-        public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search, FractionType fractionCode)
+        public async Task<ActionResult<CodeNameBaseModel[]>> GetClassList(string search = "", FractionType fractionCode = FractionType.Guardian)
         {
             return Ok(await this._genericService.GetClassList(search, fractionCode));
         }

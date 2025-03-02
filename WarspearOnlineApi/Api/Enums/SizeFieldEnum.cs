@@ -13,7 +13,7 @@
         /// <summary>
         /// Пароль.
         /// </summary>
-        public const int UserPassword = 50;
+        public const int UserPassword = 150;
 
         /// <summary>
         /// Имя пользователя.

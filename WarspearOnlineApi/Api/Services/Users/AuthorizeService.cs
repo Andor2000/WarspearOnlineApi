@@ -89,7 +89,7 @@ namespace WarspearOnlineApi.Api.Services.Users
 
             var userDb = await this._context.wo_User.FirstOrDefaultAsync(x => x.Login == dto.Login)
                 .ThrowIfNullAsync("Пользователь")
-                .ThrowOnConditionAsync(x => x.Password.IsNullOrDefault(), "Пользователь уже зарегистрирован");
+                .ThrowOnConditionAsync(x => !x.Password.IsNullOrDefault(), "Пользователь уже зарегистрирован");
 
             userDb.UserName = dto.Name;
             userDb.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);

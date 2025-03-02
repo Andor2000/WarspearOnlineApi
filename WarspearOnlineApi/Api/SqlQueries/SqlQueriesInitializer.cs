@@ -273,21 +273,6 @@ USING (
 	join wo_Fraction as f on source.FractionCode = f.FractionCode
 ) AS source (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName, rf_ServerID, rf_FractionID)
 ON TARGET.Login = source.Login
-WHEN MATCHED and
-   (TARGET.Password != source.Password or
-    TARGET.RangeAccessLevel != source.RangeAccessLevel or
-    TARGET.rf_AccessLevelID != source.rf_AccessLevelID or
-    TARGET.UserName != source.UserName or
-    TARGET.rf_ServerID != source.rf_ServerID or
-    TARGET.rf_FractionID != source.rf_FractionID)
-THEN
-    UPDATE SET
-        TARGET.Password = source.Password,
-        TARGET.RangeAccessLevel = source.RangeAccessLevel,
-        TARGET.rf_AccessLevelID = source.rf_AccessLevelID,
-        TARGET.UserName = source.UserName,
-        TARGET.rf_ServerID = source.rf_ServerID,
-        TARGET.rf_FractionID = source.rf_FractionID
 WHEN NOT MATCHED THEN
     INSERT (Login, Password, RangeAccessLevel, rf_AccessLevelID, UserName, rf_ServerID, rf_FractionID)
     VALUES (source.Login, source.Password, source.RangeAccessLevel, source.rf_AccessLevelID, source.UserName, source.rf_ServerID, source.rf_FractionID);
