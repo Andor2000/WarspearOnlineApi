@@ -87,22 +87,10 @@ namespace WarspearOnlineApi.Api.Services.Journals
             var query = this._context.wo_Drop
                 .Where(x => x.DropID > 0 &&
                             x.rf_Group.rf_ServerID == filter.ServerId &&
-                            x.rf_Group.rf_FractionID == filter.FractionId);
-
-            if (!filter.GroupId.IsNullOrDefault())
-            {
-                query = query.Where(x => x.rf_GroupID == filter.GroupId);
-            }
-
-            if (!filter.ObjectId.IsNullOrDefault())
-            {
-                query = query.Where(x => x.rf_ObjectID == filter.ObjectId);
-            }
-
-            if (!filter.ObjectTypeId.IsNullOrDefault())
-            {
-                query = query.Where(x => x.rf_Object.rf_ObjectTypeID == filter.ObjectTypeId);
-            }
+                            x.rf_Group.rf_FractionID == filter.FractionId)
+                .WhereIf(!filter.GroupId.IsNullOrDefault(), x => x.rf_GroupID == filter.GroupId)
+                .WhereIf(!filter.ObjectId.IsNullOrDefault(), x => x.rf_ObjectID == filter.ObjectId)
+                .WhereIf(!filter.ObjectTypeId.IsNullOrDefault(), x => x.rf_Object.rf_ObjectTypeID == filter.ObjectTypeId);
 
             if (!filter.PlayerId.IsNullOrDefault())
             {
